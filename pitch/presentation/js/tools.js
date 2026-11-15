@@ -194,6 +194,13 @@
     // Any key brings the picture back from a black or white screen.
     if (blankMode && a !== 'keys') { toggleBlank(blankMode); return; }
 
+    if (Deck.autoMode && (a === 'next' || a === 'prev' || a === 'enter')) {
+      e.preventDefault();
+      if (e.key === 'ArrowRight') Deck.autoSeek(5);
+      else if (a === 'prev') Deck.autoSeek(-5);
+      else Deck.autoToggle();
+      return;
+    }
     if (a === 'esc') { closePanels(); digits = ''; if (document.documentElement.classList.contains('snapshot')) toggleSnapshot(); return; }
     if (anyPanel() && a !== 'help' && a !== 'overview') { if (a === 'next' || a === 'prev') closePanels(); else return; }
 
@@ -234,11 +241,13 @@
     if (e.target.closest && e.target.closest('.panel')) return;
     if (anyPanel()) { closePanels(); return; }
     if (blankMode) { toggleBlank(blankMode); return; }
+    if (Deck.autoMode) { Deck.autoToggle(); return; }
     Deck.next();
   });
   document.addEventListener('contextmenu', function (e) {
     e.preventDefault();
     if (anyPanel()) { closePanels(); return; }
+    if (Deck.autoMode) { Deck.autoSeek(-5); return; }
     Deck.prev();
   });
 

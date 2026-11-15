@@ -1,15 +1,23 @@
 # AYYUR — la présentation (5 minutes)
 
-Une présentation qui est une page web, et non un PowerPoint. On l'avance au clicker, exactement comme un PowerPoint.
+Une présentation qui est une page web, et non un PowerPoint. Elle marche **sans Internet**, de trois façons :
+
+| Mode | Ce qu'on ouvre | Comment |
+|---|---|---|
+| **Au clicker** | `index.html` | Chaque clic passe à l'étape suivante, comme un PowerPoint. |
+| **Le film, qui défile seul** | `index.html?auto` | **Espace** ou clic : lecture / pause · **→** : +5 s · **←** ou clic droit : −5 s. Durée totale : **5:00**. |
+| Ordinateur lent | `index.html?lite` | Moins d'étoiles. Se combine avec les autres : `index.html?auto&lite`. |
+
+Pour ajouter `?auto` ou `?lite`, tapez-le dans la barre d'adresse juste après `index.html`.
+
+La même présentation existe en vidéo MP4 : `../demo/AYYUR-pitch-5min.mp4`.
 
 ## Lancer la présentation (Windows)
 
 1. Copiez tout le dossier `presentation` sur l'ordinateur, par exemple sur le Bureau. Gardez tous les sous-dossiers.
-2. Double-cliquez sur `index.html` : la présentation s'ouvre dans **Chrome** ou **Edge**. Internet n'est pas nécessaire.
+2. Double-cliquez sur `index.html` : la présentation s'ouvre dans **Chrome** ou **Edge**.
 3. Appuyez sur **F** (ou **F5**) pour passer en plein écran.
-4. L'écran reste vide, avec seulement les étoiles : c'est l'écran d'attente. Le premier clic lance la présentation.
-
-Ordinateur lent ? Ouvrez plutôt `index.html?lite` : il y aura moins d'étoiles. Dans la barre d'adresse, ajoutez `?lite` juste après `index.html`.
+4. L'écran reste vide, avec seulement les étoiles : c'est l'écran d'attente. Le premier clic lance la page de garde (l'équipe en orbite autour du croissant AYYUR).
 
 ## Avec un projecteur : la vue présentateur
 
@@ -23,7 +31,7 @@ Ordinateur lent ? Ouvrez plutôt `index.html?lite` : il y aura moins d'étoiles.
    - l'image actuelle et l'image du clic suivant.
 5. Le clicker fonctionne dans les deux fenêtres.
 
-## Les touches
+## Les touches (mode clicker)
 
 | Touche | Effet |
 |---|---|
@@ -42,22 +50,18 @@ Si vous actualisez la page (F5 en dehors du plein écran, ou Ctrl+R), la présen
 
 **Avant la présentation**, testez le clicker avec **K** : chaque bouton doit afficher « Next » ou « Back ».
 
-## Ce que contient le dossier
+## Le texte à dire (darija)
 
-| Dossier | Contenu |
+| Mode | Document |
 |---|---|
-| `index.html` | La page à ouvrir |
-| `js/deck.js` | Les pages, les animations et les **notes du présentateur** (le 2e texte de chaque `B.beat(...)`) |
-| `js/engine.js`, `js/tools.js` | Le moteur et les outils de présentation |
-| `js/globe.js`, `js/background.js` | Les globes NASA qui tournent, le fond étoilé |
-| `js/logo.js` | Le logo AYYUR de l'équipe |
-| `assets/img/` | Images des globes calculées à partir des modèles 3D NASA, photos NASA, captures du site, pages du livre Pioneer 10, logo |
-| `assets/fonts/` | Polices (Space Grotesk, Inter, Noto Kufi Arabic) |
-| `vendor/gsap.min.js` | La bibliothèque d'animation GSAP 3 |
-| `docs/sources.md` | D'où vient chaque information affichée |
+| Film ou vidéo (temps de 0:00 à 5:00) | `docs/script-video-darija.md` |
+| Clicker (clic par clic) | `docs/script-darija.md` |
 
-## Les 10 pages (25 clics)
+Les notes de la vue présentateur sont dans `js/notes-darija.js`.
 
+## Les 11 pages (26 clics)
+
+0. Page de garde : l'équipe en orbite autour du croissant AYYUR, qui se change en vraie Lune.
 1. Ils sont toujours là : la Lune, ses 10 sites, Mars, l'espace lointain, le nombre 13.
 2. Des histoires éparpillées, et ce que demande le défi.
 3. Le logo AYYUR et sa phrase.
@@ -65,6 +69,24 @@ Si vous actualisez la page (F5 en dehors du plein écran, ou Ctrl+R), la présen
 5. Une histoire : Ingenuity, 5 vols prévus, 72 réalisés.
 6. Le coin des explorateurs : Tiziri, puis les 5 jeux.
 7. Quatre langues, dont l'arabe de droite à gauche.
-8. De l'écran aux vraies mains : les cartes Memory, le livre de coloriage Pioneer 10, le modèle économique (prix proposés).
+8. De l'écran aux vraies mains : les cartes Memory, les livres de coloriage Apollo 11 et Pioneer 10, le modèle économique (prix proposés).
 9. Notre règle : sources NASA, faits vérifiés, IA déclarée.
 10. Conclusion.
+
+## Ce que contient le dossier
+
+| Fichier | Contenu |
+|---|---|
+| `index.html` | La page à ouvrir |
+| `js/deck.js` | Les pages, les animations et les notes en anglais (le 2e texte de chaque `B.beat(...)`) |
+| `js/notes-darija.js` | Les notes du présentateur en darija |
+| `js/video-timing.js` | La durée de chaque image dans le film (`?auto` et MP4), une ligne par image, en secondes |
+| `js/engine.js`, `js/tools.js` | Le moteur (clicker, `?auto`, `?record` pour enregistrer le MP4) et les outils de présentation |
+| `js/globe.js`, `js/background.js` | Les globes NASA qui tournent, le fond étoilé |
+| `js/logo.js` | Le logo AYYUR de l'équipe |
+| `assets/img/` | Images des globes calculées à partir des modèles 3D NASA, photos NASA, captures du site, pages des livres, photos de l'équipe |
+| `assets/fonts/` | Polices (Space Grotesk, Inter, Noto Kufi Arabic) |
+| `vendor/gsap.min.js` | La bibliothèque d'animation GSAP 3 |
+| `docs/sources.md` | D'où vient chaque information affichée |
+
+Si vous changez une durée dans `js/video-timing.js`, il faut ensuite réenregistrer le MP4.

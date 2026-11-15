@@ -3,9 +3,11 @@
    Les clés sont les noms des clics définis dans deck.js. */
 Deck.notes = {
   'Start':
-    '[0:00 — Avant le premier clic. Regarde le jury, pas l’écran.] ' +
-    'Salam. F 20 juillet 1969, juj d nnass mchaw l l9mer w rj3o. Walakin nos dyal lmerkba dyalhom… ba9a temma. 7tal l-youm. ' +
-    'Ana [smiytek], men l’équipe AYYUR, Béni Mellal. Ghadi nwerrikom chnou dernaha b dakchi. → CLIQUE',
+    '[0:00] Salam.',
+
+  'The crew':
+    '[0:03 — Regarde le jury.] F 20 juillet 1969, juj d nnass mchaw l l9mer w rj3o. Walakin nos dyal lmerkba dyalhom… ba9a temma. 7tal l-youm. ' +
+    '7na AYYUR : khamsa d les étudiants ingénieurs men ENSA Béni Mellal — Haytame, Imad, Othmane, Salah w Youssef.',
 
   'The Moon':
     '[0:15] Hada howa l9mer l-7a9i9i, mrsoum men l-modèle 3D dyal NASA rasso. Mn 1966, NASA kat-khelli machinat f l-3awalim lakhrin.',
@@ -85,8 +87,8 @@ Deck.notes = {
     '13 carte : common, rare, legendary — b7al les cartes li drari dejà kayjm3o.',
 
   'Colouring book':
-    'W ktab 7a9i9i : Pioneer 10, livre de coloriage l-drari men 6 l 9 snin. 23 page, 20 rasm bach ylwnoh, kol jomla mt7a99a 3la NASA Science. ' +
-    '[KOUN WADE7 :] les dessins tsawbo b l-IA, w l-ktab kaygoulha. F l-site t9der t9leb l-ktab w tlwn 3 pages.',
+    'W jouj ktouba 7a9i9iyin : Apollo 11 Eagle w Pioneer 10, livres de coloriage l-drari men 6 l 9 snin, 23 page kol wa7ed, kol jomla mt7a99a 3la NASA. ' +
+    '[KOUN WADE7 :] les dessins tsawbo b l-IA, w mktouba 3la kol page. F l-site t9der t9leb l-ktab w tlwn.',
 
   'Business model':
     '[4:15] Le modèle dyalna : le musée en ligne yb9a gratuit. L-flous kaydkhol men les objets 7a9i9iyin — les cartes w les boosters, w les livres : ' +

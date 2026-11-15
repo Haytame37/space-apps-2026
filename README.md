@@ -224,11 +224,11 @@ deployed, and works offline. Guide in French: [`pitch/README.md`](pitch/README.m
 
 | Path | Content |
 |---|---|
-| `pitch/presentation/` | Clicker version: open `index.html` in Chrome or Edge. Guide in French: `README.md` |
-| `pitch/presentation-video/` | Self-running version: `index.html?auto`, plus the cover with the crew in orbit |
+| `pitch/presentation/index.html` | Web presentation, advanced with a clicker; `P` opens the presenter view |
+| `pitch/presentation/index.html?auto` | The same presentation as a self-running 5-minute film |
 | `pitch/demo/AYYUR-pitch-5min.mp4` | The 5-minute video (1080p, 30 fps) |
 
-Speaker texts in Darija: `pitch/presentation/docs/script-darija.md` and `pitch/presentation-video/docs/script-video-darija.md`.
+Speaker texts in Darija: `pitch/presentation/docs/script-darija.md` (clicker) and `pitch/presentation/docs/script-video-darija.md` (film).
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 

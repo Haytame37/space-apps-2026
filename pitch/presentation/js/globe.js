@@ -24,7 +24,7 @@
     var sheet = Deck.image(o.sheet);
     var lastDraw = 0;
     var state = { reveal: 0, labels: 0, focus: -1, lock: 0 };
-    var t0 = performance.now();
+    var t0 = 0;
     var sites = o.sites || [];
     var R = size / 2 / 1.02; // frames were rendered with a 1.02 orthographic margin
 
@@ -33,7 +33,7 @@
       // Skip work when invisible.
       if (wrapEl.style.visibility === 'hidden' || wrapEl.style.opacity === '0') return;
       // 30 frames per second is plenty for a slow spin.
-      if (now - lastDraw < 30) return;
+      if (!Deck.recording && now - lastDraw < 30) return;
       lastDraw = now;
       var t = (now - t0) / 1000;
       // `swing` keeps one face toward us with a slow sway; otherwise the body turns all the way.
@@ -107,7 +107,7 @@
       }
       ctx.globalAlpha = 1;
     }
-    gsap.ticker.add(function () { draw(performance.now()); });
+    Deck.addDrawer(draw);
     return { el: wrapEl, state: state, canvas: canvas };
   };
 

@@ -65,6 +65,69 @@ Deck.start(function (B) {
   var tags = [['Dawn · Ceres', 800, 290], ['NEAR Shoemaker · Eros', 1120, 300], ['Pioneer 10', 520, 74], ['Pioneer 11', 1420, 70], ['Kepler', 960, 380]];
   tags.forEach(function (t) { at(el('div', 'deep-tag', deep, t[0]), t[1], t[2]); });
 
+  /* ===================== COVER — the crew in orbit ===================== */
+  B.scene('The crew');
+  var s0 = el('div', 'scene');
+  var orbitSvg = Deck.svg('orbit-svg', s0, 1920, 1080,
+    '<ellipse cx="960" cy="540" rx="660" ry="235" fill="none" stroke="#5ee7ff" stroke-opacity=".28" stroke-width="2" stroke-dasharray="4 10"/>');
+  gsap.set(orbitSvg, { left: 0, top: 0, autoAlpha: 0, scale: 0.4, transformOrigin: '960px 540px' });
+  var crewLogo = el('div', 'logo', s0, Deck.LOGO);
+  gsap.set(crewLogo, { left: 960, top: 520, width: 300, xPercent: -50, yPercent: -50, zIndex: 3 });
+  var crewCres = crewLogo.querySelectorAll('path')[0], crewLetters = crewLogo.querySelectorAll('path')[1];
+  gsap.set(crewCres, { transformOrigin: '50% 50%', rotation: -150, scale: 0.2, autoAlpha: 0 });
+  gsap.set(crewLetters, { autoAlpha: 0, y: 30 });
+  var k0 = at(el('div', 'kicker', s0, 'NASA Space Apps Challenge 2026'), 960, 92);
+  var t0 = at(el('div', 'crew-title', s0, 'Abandoned but not Forgotten'), 960, 160);
+  var sch0 = at(el('div', 'crew-school', s0, 'ENSA Béni Mellal · Morocco'), 960, 1010);
+  hide(k0, t0, sch0);
+  var CREW = [
+    ['haytame-el-atraoui', 'Haytame El Atraoui', 'Industrial digital transformation'],
+    ['imad-el-ades', 'Imad El Ades', 'Industrial digital transformation'],
+    ['othmane-karim', 'Othmane Karim', 'Cybersecurity & AI'],
+    ['salah-atmane', 'Salah Atmane', 'Industrial digital transformation'],
+    ['youssef-ait-karroum', 'Youssef Ait Karroum', 'Cybersecurity & AI']
+  ];
+  var crewEls = CREW.map(function (m) {
+    var e = el('div', 'crew', s0, '');
+    img('assets/img/team/' + m[0] + '.webp', '', e, m[1]);
+    el('b', '', e, m[1]);
+    el('span', '', e, m[2]);
+    gsap.set(e, { left: 0, top: 0, xPercent: -50, yPercent: -40, autoAlpha: 0 });
+    return e;
+  });
+  var crew = { r: 0, out: 0 };
+  // The crew turns slowly around the AYYUR crescent, like moons (ambient, same clock as the globes).
+  Deck.addDrawer(function (now) {
+    if (crew.r <= 0.001 || crew.out >= 0.999) {
+      for (var j = 0; j < crewEls.length; j++) if (crewEls[j].style.visibility !== 'hidden') gsap.set(crewEls[j], { autoAlpha: 0 });
+      return;
+    }
+    var t = now / 1000;
+    var grow = 0.25 + 0.75 * crew.r, fly = 1 + crew.out * 1.4;
+    for (var i = 0; i < crewEls.length; i++) {
+      var th = (i / crewEls.length) * 6.2832 + t * 6.2832 / 80 + 0.6;
+      var depth = (Math.sin(th) + 1) / 2;
+      var x = 960 + Math.cos(th) * 660 * grow * fly, y = 540 + Math.sin(th) * 235 * grow * fly;
+      gsap.set(crewEls[i], {
+        left: x, top: y,
+        scale: 0.68 + 0.32 * depth,
+        autoAlpha: Math.min(1, crew.r * 1.4) * (1 - crew.out) * (0.5 + 0.5 * depth),
+        zIndex: depth > 0.5 ? 5 : 1
+      });
+    }
+  });
+
+  B.beat('The crew',
+    'Hook, then introduce the team: five engineering students from ENSA Béni Mellal.');
+  var a = B.t();
+  tl.to(crewCres, { autoAlpha: 1, rotation: 0, scale: 1, duration: 2, ease: 'expo.out' }, a)
+    .to(crewLetters, { autoAlpha: 1, y: 0, duration: 1, ease: 'power3.out' }, a + 0.8)
+    .to(k0, { autoAlpha: 1, duration: 0.8 }, a + 0.6)
+    .to(t0, { autoAlpha: 1, duration: 1 }, a + 0.9)
+    .to(orbitSvg, { autoAlpha: 1, scale: 1, duration: 2.6, ease: 'power3.out' }, a + 1)
+    .to(crew, { r: 1, duration: 2.8, ease: 'power3.out' }, a + 1.2)
+    .to(sch0, { autoAlpha: 1, duration: 0.8 }, a + 2.6);
+
   /* ===================== PAGE 1 — Still out there ===================== */
   B.scene('Still out there');
   var s1 = el('div', 'scene');
@@ -89,8 +152,14 @@ Deck.start(function (B) {
   B.beat('The Moon',
     'Since 1966, NASA has been leaving machines on other worlds. ' +
     'This is the real Moon, drawn from NASA\'s own 3D model. Let it turn for a second before you speak.');
-  var a = B.t();
-  tl.to(moon.el, { autoAlpha: 1, scale: 1, duration: 2.2, ease: 'power2.out' }, a)
+  a = B.t();
+  // The crescent grows into the real Moon while the crew drifts away.
+  tl.to(crew, { out: 1, duration: 1.8, ease: 'power2.in' }, a)
+    .to([k0, t0, sch0], { autoAlpha: 0, duration: 0.8 }, a)
+    .to(orbitSvg, { autoAlpha: 0, scale: 1.6, duration: 1.8, ease: 'power2.in' }, a)
+    .to(crewLetters, { autoAlpha: 0, duration: 0.6 }, a)
+    .to(crewCres, { scale: 2.6, autoAlpha: 0, duration: 2.2, ease: 'power2.inOut' }, a + 0.3)
+    .to(moon.el, { autoAlpha: 1, scale: 1, duration: 2.4, ease: 'power2.out' }, a + 0.9)
     .to(k1, { autoAlpha: 1, duration: 0.3 }, a + 0.6)
     .to(dk1, { p: 1, duration: 1.4, ease: 'none' }, a + 0.6)
     .to(src1a, { autoAlpha: 1, duration: 0.6 }, a + 1.2);
@@ -437,11 +506,11 @@ Deck.start(function (B) {
   });
   var src8a = src(s8, 'Card photos: NASA, from the official challenge resources · card facts: the same NASA sources as the museum');
 
-  var k8b = at(el('div', 'kicker', s8, 'Pioneer 10 · the colouring book'), 1240, 230, 'left');
-  var h8b = at(el('div', 'headline mid', s8, 'A real book.<br>Ages 6 to 9.'), 1240, 380, 'left');
-  var f8b = at(el('div', 'facts-line', s8, '23 pages · 20 to colour · A4'), 1240, 540, 'left');
-  var g8b = at(el('div', 'facts-line', s8, 'Every caption checked on NASA Science'), 1240, 600, 'left');
-  var PAGES = ['page-01', 'page-03', 'page-08', 'page-14'];
+  var k8b = at(el('div', 'kicker', s8, 'Colouring books'), 1240, 230, 'left');
+  var h8b = at(el('div', 'headline mid', s8, 'Two real books.<br>Ages 6 to 9.'), 1240, 380, 'left');
+  var f8b = at(el('div', 'facts-line', s8, 'Apollo 11 Eagle · Pioneer 10'), 1240, 540, 'left');
+  var g8b = at(el('div', 'facts-line', s8, '23 pages each · facts checked on NASA'), 1240, 600, 'left');
+  var PAGES = ['apollo-01', 'page-01', 'page-03', 'page-14'];
   var pages = PAGES.map(function (p, i) {
     var e = el('div', 'page', s8);
     img('assets/img/book/' + p + '.webp', '', e, 'Pioneer 10 colouring book, ' + p);
@@ -449,13 +518,13 @@ Deck.start(function (B) {
     gsap.set(e, { left: 560 - 210 + i * 70, top: 540 - 297 + i * 18, autoAlpha: 0, rotation: -8 + i * 5, rotationY: 25, transformPerspective: 1600, x: -300, zIndex: 10 - i });
     return e;
   });
-  var src8b = src(s8, 'Book by team AYYUR · facts: NASA Science, “Pioneer 10” · drawings generated with AI (Google Gemini), as stated in the book');
+  var src8b = src(s8, 'Books by team AYYUR · facts: NSSDCA (Apollo 11) and NASA Science (Pioneer 10) · drawings generated with AI (Google Gemini), marked on every page');
 
   var k8c = at(el('div', 'kicker', s8, 'From the screen to real hands'), 960, 150);
   var COLS = [
     ['Online museum', 'Free', 'Explore, play and learn in four languages.'],
     ['Memory cards', '€0.90–€3.90', 'per card, by rarity.<br>Booster of 5 cards: €3.90.'],
-    ['Colouring book', '€2.90–€49', 'PDF €2.90 · printed €6.90.<br>Class pack of 10: €49.']
+    ['Colouring books', '€2.90–€49', 'PDF €2.90 · printed €6.90.<br>Class pack of 10: €49.']
   ];
   var cols = COLS.map(function (c, i) {
     var e = at(el('div', 'col', s8, '<h3>' + c[0] + '</h3><strong>' + c[1] + '</strong><p>' + c[2] + '</p>'), 960 + (i - 1) * 560, 560);

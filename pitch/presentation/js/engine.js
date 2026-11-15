@@ -6,6 +6,7 @@
 
   var params = new URLSearchParams(location.search);
   var MODE = params.has('presenter') ? 'presenter' : params.has('mirror') ? 'mirror' : 'show';
+  var RECORD = params.has('record');
   var LITE = params.has('lite') || MODE === 'mirror';
 
   var Deck = {
@@ -18,9 +19,70 @@
     index: 0,
     master: null,
     images: [],   // Image objects to wait for before the show starts
-    listeners: []
+    listeners: [],
+    recording: RECORD,
+    drawers: []
   };
   window.Deck = Deck;
+
+  /* ---------- one clock for every ambient motion (globes, orbits, stars) ----------
+     While a video is being recorded, the recorder sets the time frame by frame. */
+  var virtualMs = null;
+  Deck.now = function () { return virtualMs === null ? performance.now() : virtualMs; };
+  Deck.addDrawer = function (fn) { Deck.drawers.push(fn); };
+
+  /* ---------- video timing ----------
+     SLOTS[i] is how long beat i stays on screen in the video (seconds). Its animation
+     plays at SLOW speed at the start of the slot, then the picture holds while you talk. */
+  Deck.SLOW = 0.72;
+  Deck.SLOTS = null;
+  Deck.videoLength = function () {
+    var t = 0; for (var i = 0; i < Deck.SLOTS.length; i++) t += Deck.SLOTS[i]; return t;
+  };
+  Deck.videoState = function (T) {
+    var start = 0;
+    for (var i = 0; i < Deck.beats.length; i++) {
+      var slot = Deck.SLOTS[i] || 6;
+      if (T < start + slot || i === Deck.beats.length - 1) {
+        var b = Deck.beats[i];
+        var anim = Math.max(0, b.stop - b.start);
+        var local = Math.max(0, T - start);
+        return { index: i, time: i === 0 ? 0 : b.start + Math.min(anim, local * Deck.SLOW) };
+      }
+      start += slot;
+    }
+  };
+  Deck.slotStart = function (i) { var t = 0; for (var k = 0; k < i; k++) t += Deck.SLOTS[k]; return t; };
+
+  /* ?auto: the film plays by itself in the browser, like the video. */
+  Deck.autoMode = params.has('auto');
+  var autoT = 0, autoPlaying = false, autoLast = 0;
+  function applyAuto() {
+    var st = Deck.videoState(autoT);
+    Deck.master.time(st.time);
+    if (st.index !== Deck.index) { Deck.index = st.index; emit(); }
+  }
+  Deck.autoToggle = function () { autoPlaying = !autoPlaying; autoLast = performance.now(); };
+  Deck.autoSeek = function (d) { autoT = Math.max(0, Math.min(Deck.videoLength(), autoT + d)); applyAuto(); };
+  Deck.autoTick = function () {
+    if (!Deck.autoMode || !autoPlaying) return;
+    var n = performance.now();
+    autoT += (n - autoLast) / 1000; autoLast = n;
+    if (autoT >= Deck.videoLength()) { autoT = Deck.videoLength(); autoPlaying = false; }
+    applyAuto();
+  };
+  Deck.autoTime = function () { return autoT; };
+
+  /* Draw exactly the picture of second T of the video (used by the recorder). */
+  Deck.renderAt = function (T) {
+    virtualMs = T * 1000;
+    var st = Deck.videoState(T);
+    Deck.master.time(st.time);
+    if (st.index !== Deck.index) { Deck.index = st.index; emit(); }
+    runWatchers(false);
+    document.getAnimations().forEach(function (a) { try { a.currentTime = virtualMs; } catch (err) {} });
+    for (var i = 0; i < Deck.drawers.length; i++) Deck.drawers[i](virtualMs);
+  };
 
   /* ---------- watchers: timeline tweens a plain object, we redraw when it changes ---------- */
   var watchers = [];
@@ -214,10 +276,16 @@
       return imagesReady(function (p) { if (bar) bar.style.transform = 'scaleX(' + p + ')'; });
     }).then(function () {
       if (loader) loader.classList.add('done');
-      var first = readHash();
+      var first = Deck.autoMode || RECORD ? 0 : readHash();
       jump(first, true);
       runWatchers(true);
-      gsap.ticker.add(function () { runWatchers(false); });
+      gsap.ticker.add(function () {
+        if (Deck.recording) return;
+        Deck.autoTick();
+        runWatchers(false);
+        var now = Deck.now();
+        for (var i = 0; i < Deck.drawers.length; i++) Deck.drawers[i](now);
+      });
       document.documentElement.classList.add('ready');
       emit();
     });

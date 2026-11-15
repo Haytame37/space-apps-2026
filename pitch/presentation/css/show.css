@@ -201,3 +201,13 @@ kbd { display: inline-block; min-width: 26px; padding: 2px 8px; margin: 0 2px 2p
 .game-label { font: 600 28px/1 var(--display); white-space: nowrap; }
 
 .globe, .device { will-change: transform, opacity; }
+
+/* ---------- cover: the crew in orbit ---------- */
+.crew { width: 260px; display: grid; justify-items: center; gap: 6px; text-align: center; }
+.crew img { position: static; width: 150px; height: 150px; border-radius: 50%; object-fit: cover; object-position: 50% 22%; border: 3px solid var(--accent); box-shadow: 0 0 0 6px rgba(94,231,255,.15), 0 18px 40px rgba(0,0,0,.6); background: #0d1426; }
+.crew b { position: static; font: 600 26px/1.1 var(--display); white-space: nowrap; }
+.crew span { position: static; font: 500 17px/1.2 var(--body); color: var(--muted); white-space: nowrap; }
+.crew-title { font: 600 52px/1.1 var(--display); letter-spacing: -.02em; white-space: nowrap; }
+.crew-school { font: 600 24px/1 var(--body); letter-spacing: .2em; text-transform: uppercase; color: var(--muted); white-space: nowrap; }
+.orbit-svg { overflow: visible; }
+.ai-badge { display: none; }
