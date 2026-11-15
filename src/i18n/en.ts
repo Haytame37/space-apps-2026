@@ -568,6 +568,26 @@ export const en = {
     total: "Total",
     checkout: "Order",
     cartNote: "Example: no order is sent and no payment is asked for.",
+    withAdult: "Buying is done with an adult. Payment is not connected yet.",
+    charter: {
+      eyebrow: "Our prices",
+      title: "Learning is free. The keepsakes are fairly priced.",
+      lead: "The museum stays free. The shop sells things to keep and to give, at prices in line with similar products.",
+      items: [
+        {
+          title: "Learning stays free",
+          body: "The museum, the games, the quiz, the books to leaf through and the trial booster: free, with no account and no ads.",
+        },
+        {
+          title: "Fair prices",
+          body: "A colouring book to print costs {pdf}, the printed book {print}, a card from {card} and a booster of five cards {booster}.",
+        },
+        {
+          title: "Made for schools",
+          body: "The class pack holds {copies} printed books, {perBook} each, and the PDF free for the teacher.",
+        },
+      ],
+    },
     notReady: "Payment is not available yet.",
     emptyToast: "Your cart is empty.",
     added: "{name} added to the cart",

@@ -74,6 +74,7 @@ export function CartPanel({ isOpen, onClose, nameOf, price, onCheckout }: Props)
       <button type="button" className="shop-buy shop-checkout" onClick={onCheckout}>
         {t.shop.checkout}
       </button>
+      <p className="shop-note shop-adult">{t.shop.withAdult}</p>
       <p className="shop-note">{t.shop.cartNote}</p>
     </aside>
   )

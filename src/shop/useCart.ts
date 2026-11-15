@@ -58,7 +58,8 @@ export function useCart() {
   return {
     lines,
     count: lines.reduce((n, l) => n + l.qty, 0),
-    total: lines.reduce((sum, l) => sum + l.qty * l.price, 0),
+    // Rounded to the cent: 0.9 × 3 is 2.7, not 2.7000000000000006.
+    total: Math.round(lines.reduce((sum, l) => sum + l.qty * l.price, 0) * 100) / 100,
     add,
     setQty,
     remove,

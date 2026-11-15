@@ -98,18 +98,16 @@ export default function BookPage({ book }: { book: ColouringBook }) {
           <Icon name="back" flip />
           {t.book.back}
         </Link>
-        {!isKid && (
-          <button
-            ref={cartButton}
-            type="button"
-            className="bk-cart"
-            aria-expanded={isCartOpen}
-            aria-controls="shop-cart"
-            onClick={() => setCartOpen((open) => !open)}
-          >
-            {t.shop.cart} · <b>{fmt(t.shop.items, { n: cart.count })}</b> · <b>{euros(cart.total)}</b>
-          </button>
-        )}
+        <button
+          ref={cartButton}
+          type="button"
+          className="bk-cart"
+          aria-expanded={isCartOpen}
+          aria-controls="shop-cart"
+          onClick={() => setCartOpen((open) => !open)}
+        >
+          {t.shop.cart} · <b>{fmt(t.shop.items, { n: cart.count })}</b> · <b>{euros(cart.total)}</b>
+        </button>
       </div>
 
       <div className="bk-main">
@@ -126,18 +124,11 @@ export default function BookPage({ book }: { book: ColouringBook }) {
               ))}
             </ul>
             <div className="bk-row">
-              {!isKid && (
-                <button type="button" className="bk-btn" onClick={() => add(featured.id)}>
-                  {fmt(t.book.addBook, { price: euros(featured.price) })}
-                </button>
-              )}
-              {isKid && (
-                <a className="bk-btn" href="#bk-colour">
-                  {t.book.goColour}
-                </a>
-              )}
-              <a className="bk-btn bk-btn-alt" href="#bk-flip">
-                {t.book.browse}
+              <button type="button" className="bk-btn" onClick={() => add(featured.id)}>
+                {fmt(t.book.addBook, { price: euros(featured.price) })}
+              </button>
+              <a className="bk-btn bk-btn-alt" href={isKid ? '#bk-colour' : '#bk-flip'}>
+                {isKid ? t.book.goColour : t.book.browse}
               </a>
             </div>
           </div>
@@ -160,14 +151,12 @@ export default function BookPage({ book }: { book: ColouringBook }) {
           <JourneyStrip book={book} />
         </Section>
 
-        {!isKid && (
-          <Section id="bk-buy" eyebrow={t.book.buyEyebrow} title={t.book.buyTitle}>
-            <Offers book={book} price={euros} onAdd={add} />
-          </Section>
-        )}
+        <Section id="bk-buy" eyebrow={t.book.buyEyebrow} title={t.book.buyTitle} lead={t.shop.withAdult}>
+          <Offers book={book} price={euros} onAdd={add} />
+        </Section>
 
         <div className="bk-note">
-          {!isKid && <p>{t.book.example}</p>}
+          <p>{t.book.example}</p>
           <p>
             {t.common.source}:{' '}
             <a className="link" href={book.source.url} target="_blank" rel="noopener noreferrer">
@@ -178,15 +167,13 @@ export default function BookPage({ book }: { book: ColouringBook }) {
         </div>
       </div>
 
-      {!isKid && (
-        <CartPanel
-          isOpen={isCartOpen}
-          onClose={closeCart}
-          nameOf={nameOf}
-          price={euros}
-          onCheckout={() => say(cart.count ? t.shop.notReady : t.shop.emptyToast)}
-        />
-      )}
+      <CartPanel
+        isOpen={isCartOpen}
+        onClose={closeCart}
+        nameOf={nameOf}
+        price={euros}
+        onCheckout={() => say(cart.count ? t.shop.notReady : t.shop.emptyToast)}
+      />
       <p className={toast ? 'shop-toast is-shown' : 'shop-toast'} role="status">
         {toast}
       </p>

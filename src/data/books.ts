@@ -138,9 +138,8 @@ export type BookOfferId = 'pdf' | 'print' | 'class'
 
 export interface BookOffer {
   id: BookOfferId
-  /** Euros. Proposals from the reference design: to be confirmed by the team. */
+  /** Euros, from the pricing strategy (docs/BUSINESS.md). */
   price: number
-  isPriceToConfirm: boolean
   /** Printed copies included (class pack). */
   copies?: number
   /** The offer shown first and highlighted. */
@@ -149,9 +148,9 @@ export interface BookOffer {
 
 /** The same three versions for every colouring book. */
 export const BOOK_OFFERS: BookOffer[] = [
-  { id: 'pdf', price: 3, isPriceToConfirm: true },
-  { id: 'print', price: 9, isPriceToConfirm: true, isFeatured: true },
-  { id: 'class', price: 39, isPriceToConfirm: true, copies: 10 },
+  { id: 'pdf', price: 2.9 },
+  { id: 'print', price: 6.9, isFeatured: true },
+  { id: 'class', price: 49, copies: 10 },
 ]
 
 /** Path of page `n` (1-based) of a book. */

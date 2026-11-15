@@ -548,6 +548,26 @@ export const fr: Dict = {
     total: "Total",
     checkout: "Commander",
     cartNote: "Exemple : aucune commande n’est envoyée et aucun paiement n’est demandé.",
+    withAdult: "Les achats se font avec un adulte. Le paiement n’est pas encore branché.",
+    charter: {
+      eyebrow: "Nos prix",
+      title: "Apprendre est gratuit. Les souvenirs ont un prix juste.",
+      lead: "Le musée reste gratuit. La boutique vend des objets à garder et à offrir, à des prix alignés sur les produits comparables.",
+      items: [
+        {
+          title: "Apprendre reste gratuit",
+          body: "Le musée, les jeux, le quiz, les livres à feuilleter et le booster d’essai : gratuits, sans compte et sans publicité.",
+        },
+        {
+          title: "Des prix justes",
+          body: "Un livre de coloriage à imprimer coûte {pdf}, le livre imprimé {print}, une carte dès {card} et un booster de cinq cartes {booster}.",
+        },
+        {
+          title: "Pensé pour les écoles",
+          body: "Le pack classe contient {copies} livres imprimés, à {perBook} le livre, et le PDF offert à l’enseignant.",
+        },
+      ],
+    },
     notReady: "Le paiement n’est pas encore disponible.",
     emptyToast: "Votre panier est vide.",
     added: "{name} ajouté au panier",

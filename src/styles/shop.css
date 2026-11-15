@@ -633,3 +633,56 @@
     transform: none;
   }
 }
+
+/* ---------- Pricing promise ---------- */
+
+.shop-charter {
+  padding: 26px;
+  border: 1px solid var(--line);
+  border-radius: 22px;
+  background:
+    radial-gradient(40rem 18rem at 10% 0%, rgba(61, 219, 180, 0.16), transparent 60%),
+    linear-gradient(140deg, #0b1140, #070b22);
+}
+
+.shop-charter-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr));
+  gap: 14px;
+  margin: 18px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.shop-charter-list li {
+  padding: 18px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.shop-charter-list svg {
+  width: 30px;
+  height: 30px;
+  color: #3ddbb4;
+}
+
+.shop-charter-list h3 {
+  margin: 10px 0 6px;
+  font-size: 1.1rem;
+}
+
+.shop-charter-list p {
+  margin: 0;
+  line-height: 1.5;
+}
+
+/* Reminds children that an adult does the buying. */
+.shop-adult {
+  margin: 16px 0 0;
+  padding: 10px 14px;
+  border-inline-start: 4px solid #ffd23f;
+  border-radius: 10px;
+  background: rgba(255, 210, 63, 0.1);
+  font-weight: 700;
+}

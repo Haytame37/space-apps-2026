@@ -3,6 +3,7 @@ import { MACHINES, WORLDS, type Machine, type WorldId } from '../data/machines'
 import type { ProductId } from '../data/shop'
 import { useI18n } from '../i18n/context'
 import { BookTile } from '../book/BookTile'
+import { PriceCharter } from '../shop/PriceCharter'
 import { COLOURING_BOOKS } from '../data/books'
 import { Booster } from '../shop/Booster'
 import { Books } from '../shop/Books'
@@ -56,7 +57,7 @@ export function Shop() {
     ...WORLDS.map((w) => ({ id: w, label: t.worlds[w].name })),
   ]
   const shown = MACHINES.filter((m) => filter === 'all' || m.world === filter)
-  const price = isKid ? null : euros
+  const price = euros
   const collected = MACHINES.filter((m) => found.includes(m.id)).length
 
   const openCard = (machine: Machine, from: HTMLElement, list: Machine[]) => {
@@ -79,8 +80,7 @@ export function Shop() {
 
   return (
     <div className="shop">
-      {!isKid && (
-        <div className="shop-bar">
+      <div className="shop-bar">
           <button
             ref={cartButton}
             type="button"
@@ -92,8 +92,7 @@ export function Shop() {
             {t.shop.cart} <b>{cart.count}</b>
             <span className="sr-only"> ({fmt(t.shop.items, { n: cart.count })})</span>
           </button>
-        </div>
-      )}
+      </div>
 
       <section className="shop-intro">
         <div>
@@ -113,7 +112,7 @@ export function Shop() {
 
       <div className="book-tiles">
         {COLOURING_BOOKS.map((b) => (
-          <BookTile key={b.id} book={b} price={isKid ? null : euros} />
+          <BookTile key={b.id} book={b} price={euros} />
         ))}
       </div>
 
@@ -144,7 +143,7 @@ export function Shop() {
               <MemoryCard
                 machine={m}
                 price={price}
-                onAdd={isKid ? undefined : () => add(`card:${m.id}`)}
+                onAdd={() => add(`card:${m.id}`)}
                 onOpen={(from) => openCard(m, from, shown)}
                 isCollected={found.includes(m.id)}
                 isAway={focus?.machine.id === m.id && focus.from.closest('.shop-grid') !== null}
@@ -154,7 +153,7 @@ export function Shop() {
         </ul>
       </section>
 
-      <Booster price={price} onAdd={isKid ? undefined : () => add('booster')} onOpen={openCard} />
+      <Booster price={price} onAdd={() => add('booster')} onOpen={openCard} />
 
       <CardFocus
         cards={focus?.list ?? MACHINES}
@@ -163,19 +162,19 @@ export function Shop() {
         onClose={closeFocus}
       />
 
-      {!isKid && <Books price={euros} onAdd={(id) => add(`book:${id}`)} />}
+      <Books price={euros} onAdd={(id) => add(`book:${id}`)} />
+
+      <PriceCharter price={euros} />
 
       <p className="shop-disclaimer">{t.shop.disclaimer}</p>
 
-      {!isKid && (
-        <CartPanel
+      <CartPanel
           isOpen={isCartOpen}
           onClose={closeCart}
           nameOf={nameOf}
           price={euros}
           onCheckout={() => say(cart.count ? t.shop.notReady : t.shop.emptyToast)}
         />
-      )}
       <p className={toast ? 'shop-toast is-shown' : 'shop-toast'} role="status">
         {toast}
       </p>

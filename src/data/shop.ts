@@ -1,6 +1,6 @@
 // Shop catalogue: what is for sale and at what price. Names and descriptions live in the
-// locale files (`shop`), so they follow the language. These are the team's proposals: prices
-// and books are not final, and no payment is connected.
+// locale files (`shop`), so they follow the language. Prices follow the pricing strategy in
+// docs/BUSINESS.md (benchmarked on similar products); no payment is connected yet.
 
 import { BOOK_OFFERS, COLOURING_BOOKS, type BookOfferId, type ColouringBookId } from './books'
 import { MACHINES, type MachineId } from './machines'
@@ -25,15 +25,16 @@ export const RARITY: Record<MachineId, Rarity> = {
 }
 
 /** Price of one card, in euros, by rarity. */
-export const CARD_PRICE: Record<Rarity, number> = { 1: 2, 2: 4, 3: 9 }
+export const CARD_PRICE: Record<Rarity, number> = { 1: 0.9, 2: 1.9, 3: 3.9 }
 
-export const BOOSTER = { id: 'booster', price: 12, size: 5 } as const
+/** Five cards for less than five commons bought one by one, with at least one rare. */
+export const BOOSTER = { id: 'booster', price: 3.9, size: 5 } as const
 
 /** The three books; their cover is drawn in CSS (`cover` picks the design). */
 export const BOOKS = [
-  { id: 'atlas', cover: 1, price: 29 },
-  { id: 'notebook', cover: 2, price: 12 },
-  { id: 'mars', cover: 3, price: 18 },
+  { id: 'atlas', cover: 1, price: 14.9 },
+  { id: 'notebook', cover: 2, price: 6.9 },
+  { id: 'mars', cover: 3, price: 9.9 },
 ] as const
 
 export type BookId = (typeof BOOKS)[number]['id']

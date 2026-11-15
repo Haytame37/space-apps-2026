@@ -76,6 +76,9 @@ Benefits and impact
 What makes it creative
 Each machine is told as a character with a life: launch, landing, work, last contact, and what remains. The timeline links time to place, and the same NASA facts become a museum for adults and a playground for children.
 
+Business model
+Learning is free: the museum, games, quiz and book previews need no account and show no ads. Revenue comes from keepsakes, at prices benchmarked on similar products: printable colouring book €2.90, printed book €6.90, class pack of 10 books €49, collectible cards from €0.90, booster of 5 cards €3.90. Schools and families in Morocco come first, then events and partners.
+
 What we considered
 Factual accuracy (no unsourced claim), respect for NASA branding rules, child-friendly language, performance on low-end phones, accessibility, and clear disclosure of AI use.
 
