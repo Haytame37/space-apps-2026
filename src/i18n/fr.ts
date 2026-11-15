@@ -579,11 +579,6 @@ export const fr: Dict = {
     },
     cartKind: "Livre de coloriage Pioneer 10",
     example: "Exemple de section : les prix et les trois versions sont des propositions, et le paiement n’est pas branché.",
-    credits: [
-      "Les dessins ont été générés avec une intelligence artificielle, puis vérifiés et mis en page par l’équipe AYYUR.",
-      "Les faits viennent de la page Pioneer 10 de NASA Science.",
-      "Ce livre n’est pas une publication officielle de la NASA et n’est pas approuvé par la NASA.",
-    ],
     tile: {
       eyebrow: "Nouveau · Livre de coloriage",
       title: "le livre à colorier",

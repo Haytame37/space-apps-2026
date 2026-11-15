@@ -579,11 +579,6 @@ export const es: Dict = {
     },
     cartKind: "Libro para colorear Pioneer 10",
     example: "Sección de ejemplo: los precios y las tres versiones son propuestas, y el pago no está conectado.",
-    credits: [
-      "Los dibujos se generaron con inteligencia artificial y después el equipo AYYUR los revisó y maquetó.",
-      "Los datos vienen de la página Pioneer 10 de NASA Science.",
-      "Este libro no es una publicación oficial de la NASA ni está avalado por la NASA.",
-    ],
     tile: {
       eyebrow: "Novedad · Libro para colorear",
       title: "el libro para colorear",

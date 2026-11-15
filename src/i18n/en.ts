@@ -599,11 +599,6 @@ export const en = {
     },
     cartKind: "Pioneer 10 colouring book",
     example: "Example section: the prices and the three versions are proposals, and payment is not connected.",
-    credits: [
-      "The drawings were generated with artificial intelligence, then checked and laid out by team AYYUR.",
-      "The facts come from NASA Science’s Pioneer 10 page.",
-      "This book is not an official NASA publication and is not endorsed by NASA.",
-    ],
     tile: {
       eyebrow: "New · Colouring book",
       title: "the colouring book",

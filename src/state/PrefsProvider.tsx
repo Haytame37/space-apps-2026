@@ -3,7 +3,9 @@ import { MACHINES, WORLDS, type MachineId, type WorldId } from '../data/machines
 import { KID_GAMES, PrefsContext, type KidGame, type Prefs, type PrefsState, type Profile } from './prefs'
 
 const STORAGE_KEY = 'space-memory:prefs:v1'
-const EMPTY: PrefsState = { profile: null, found: [], badges: [], stars: {} }
+/** The site is made for young explorers: every visitor gets their version. */
+const PROFILE = 'kid'
+const EMPTY: PrefsState = { profile: PROFILE, found: [], badges: [], stars: {} }
 
 function readStars(raw: unknown): PrefsState['stars'] {
   if (!raw || typeof raw !== 'object') return {}
@@ -21,7 +23,7 @@ function read(): PrefsState {
     if (!raw) return EMPTY
     const data = JSON.parse(raw) as Partial<PrefsState>
     return {
-      profile: data.profile === 'kid' || data.profile === 'teen' || data.profile === 'adult' ? data.profile : null,
+      profile: PROFILE,
       found: Array.isArray(data.found) ? data.found.filter((id) => MACHINES.some((m) => m.id === id)) : [],
       badges: Array.isArray(data.badges) ? data.badges.filter((w) => WORLDS.includes(w)) : [],
       stars: readStars(data.stars),

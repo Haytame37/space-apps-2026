@@ -2,8 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import { Link, NavLink, Outlet, useLocation, useNavigate } from 'react-router'
 import { LANGS, useI18n, type Lang } from '../i18n/context'
 import { useReducedMotion } from '../lib/useReducedMotion'
-import { usePrefs, type Profile } from '../state/prefs'
-import { AgeGate } from './AgeGate'
+import { usePrefs } from '../state/prefs'
 import { AyyurLogo } from './AyyurLogo'
 import { ErrorBoundary } from './ErrorBoundary'
 import { IntroSplash } from './IntroSplash'
@@ -11,8 +10,7 @@ import { KidSky } from '../kids/KidSky'
 
 export function Shell() {
   const { t, lang, setLang, switching } = useI18n()
-  const { profile, setProfile } = usePrefs()
-  const [settingsOpen, setSettingsOpen] = useState(false)
+  const { profile } = usePrefs()
   // The intro plays on each load of the site (first visit or refresh), unless motion is reduced.
   const reducedMotion = useReducedMotion()
   const [isSplashDone, setSplashDone] = useState(false)
@@ -56,13 +54,6 @@ export function Shell() {
     else delete root.dataset.profile
   }, [profile])
 
-  const choose = (next: Profile) => {
-    const first = profile === null
-    setProfile(next)
-    setSettingsOpen(false)
-    if (first && next === 'kid') navigate('/play')
-  }
-
   const links = [
     { to: '/', label: t.nav.home, end: true },
     { to: '/explore', label: t.nav.explore, end: false },
@@ -105,10 +96,6 @@ export function Shell() {
               ))}
             </select>
           </label>
-          <button type="button" className="profile-btn" onClick={() => setSettingsOpen(true)}>
-            <span className="sr-only">{t.nav.profile}: </span>
-            {profile ? t.age[profile].label : t.nav.profile}
-          </button>
         </div>
       </header>
       <main id="main" ref={main} tabIndex={-1} inert={isSplash}>
@@ -127,12 +114,6 @@ export function Shell() {
           <Outlet />
         </ErrorBoundary>
       </main>
-      <AgeGate
-        open={(profile === null && !isSplash) || settingsOpen}
-        current={profile}
-        onChoose={choose}
-        onClose={() => setSettingsOpen(false)}
-      />
       {isSplash && <IntroSplash onFinished={() => setSplashDone(true)} />}
     </div>
   )

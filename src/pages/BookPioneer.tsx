@@ -169,11 +169,6 @@ export default function BookPioneer() {
 
         <div className="bk-note">
           {!isKid && <p>{t.book.example}</p>}
-          <ul>
-            {t.book.credits.map((line) => (
-              <li key={line}>{line}</li>
-            ))}
-          </ul>
           <p>
             {t.common.source}:{' '}
             <a className="link" href={book.source} target="_blank" rel="noopener noreferrer">
