@@ -2,6 +2,7 @@
 // locale files (`shop`), so they follow the language. These are the team's proposals: prices
 // and books are not final, and no payment is connected.
 
+import { PIONEER_BOOK, PIONEER_OFFERS, type BookOfferId } from './books'
 import { MACHINES, type MachineId } from './machines'
 
 export type Rarity = 1 | 2 | 3
@@ -37,17 +38,26 @@ export const BOOKS = [
 
 export type BookId = (typeof BOOKS)[number]['id']
 
-/** Product ids used by the cart: `card:<machine>`, `booster`, `book:<book>`. */
-export type ProductId = `card:${MachineId}` | 'booster' | `book:${BookId}`
+/** Product ids used by the cart: `card:<machine>`, `booster`, `book:<book>`, `pioneer-10:<offer>`. */
+export type ProductId = `card:${MachineId}` | 'booster' | `book:${BookId}` | `${typeof PIONEER_BOOK.id}:${BookOfferId}`
+
+const PIONEER_PREFIX = `${PIONEER_BOOK.id}:`
+
+/** The Pioneer 10 offer a product id stands for, if it is one. */
+export const pioneerOfferOf = (id: string) =>
+  id.startsWith(PIONEER_PREFIX) ? PIONEER_OFFERS.find((o) => `${PIONEER_PREFIX}${o.id}` === id) : undefined
 
 export function priceOf(id: ProductId): number {
   if (id === 'booster') return BOOSTER.price
   if (id.startsWith('card:')) return CARD_PRICE[RARITY[id.slice(5) as MachineId]]
+  const offer = pioneerOfferOf(id)
+  if (offer) return offer.price
   return BOOKS.find((b) => `book:${b.id}` === id)!.price
 }
 
 export function isProductId(id: string): id is ProductId {
   if (id === 'booster') return true
   if (id.startsWith('card:')) return MACHINES.some((m) => `card:${m.id}` === id)
+  if (pioneerOfferOf(id)) return true
   return BOOKS.some((b) => `book:${b.id}` === id)
 }

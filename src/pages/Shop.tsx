@@ -1,12 +1,15 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
-import { MACHINES, WORLDS, type MachineId, type WorldId } from '../data/machines'
-import { BOOKS, RARITY, type ProductId } from '../data/shop'
-import { LANGS, useI18n } from '../i18n/context'
+import { useCallback, useEffect, useRef, useState } from 'react'
+import { MACHINES, WORLDS, type WorldId } from '../data/machines'
+import type { ProductId } from '../data/shop'
+import { useI18n } from '../i18n/context'
+import { BookTile } from '../book/BookTile'
 import { Booster } from '../shop/Booster'
 import { Books } from '../shop/Books'
 import { CartPanel } from '../shop/CartPanel'
 import { MemoryCard } from '../shop/MemoryCard'
 import { useCart } from '../shop/useCart'
+import { useEuros } from '../shop/useEuros'
+import { useProductName } from '../shop/useProductName'
 import { usePrefs } from '../state/prefs'
 
 const TOAST_MS = 2200
@@ -14,7 +17,7 @@ type Filter = 'all' | WorldId
 
 /** The shop: Memory cards, a booster, books and a cart. Young explorers see a collection, without prices. */
 export function Shop() {
-  const { t, fmt, lang } = useI18n()
+  const { t, fmt } = useI18n()
   const { profile } = usePrefs()
   const cart = useCart()
   const [filter, setFilter] = useState<Filter>('all')
@@ -24,24 +27,8 @@ export function Shop() {
   const cartButton = useRef<HTMLButtonElement>(null)
   const isKid = profile === 'kid'
 
-  const euros = useMemo(() => {
-    const locale = LANGS.find((l) => l.code === lang)?.locale ?? 'en-GB'
-    const format = new Intl.NumberFormat(locale, { style: 'currency', currency: 'EUR', maximumFractionDigits: 0, numberingSystem: 'latn' })
-    return (n: number) => format.format(n)
-  }, [lang])
-
-  const nameOf = useCallback(
-    (id: ProductId) => {
-      if (id === 'booster') return { name: t.shop.boosterName, kind: t.shop.boosterKind }
-      if (id.startsWith('card:')) {
-        const machine = id.slice(5) as MachineId
-        return { name: t.machines[machine].name, kind: fmt(t.shop.cardKind, { rarity: t.shop.rarity[RARITY[machine] - 1] }) }
-      }
-      const book = BOOKS.find((b) => `book:${b.id}` === id)!
-      return { name: t.shop.books[book.id].title, kind: t.shop.bookKind }
-    },
-    [t, fmt],
-  )
+  const euros = useEuros()
+  const nameOf = useProductName()
 
   const say = (message: string) => {
     setToast(message)
@@ -99,6 +86,8 @@ export function Shop() {
           ))}
         </ol>
       </section>
+
+      <BookTile price={isKid ? null : euros} />
 
       <section aria-labelledby="h-cards">
         <div className="shop-head">

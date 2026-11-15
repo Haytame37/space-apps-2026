@@ -1040,3 +1040,99 @@
     animation: none;
   }
 }
+
+/* ---------- Tile leading to the Pioneer 10 colouring book ---------- */
+
+.book-tile {
+  display: grid;
+  grid-template-columns: minmax(120px, 220px) minmax(0, 1fr);
+  align-items: center;
+  gap: 24px;
+  padding: 22px;
+  border: 2px solid #ff6a1a;
+  border-radius: 22px;
+  background:
+    radial-gradient(40rem 20rem at 90% 0%, rgba(255, 106, 26, 0.22), transparent 60%),
+    linear-gradient(140deg, #0b1140, #050824);
+  color: var(--text);
+  text-decoration: none;
+  transition:
+    transform 0.2s cubic-bezier(0.32, 0.72, 0, 1),
+    box-shadow 0.2s;
+}
+
+.book-tile:hover {
+  box-shadow: 0 18px 40px -16px rgba(255, 106, 26, 0.6);
+  transform: translateY(-3px);
+}
+
+.book-tile:active {
+  transform: scale(0.99);
+}
+
+.book-tile img {
+  width: 100%;
+  height: auto;
+  border-radius: 3px 8px 8px 3px;
+  box-shadow:
+    12px 14px 26px -14px #000,
+    inset 6px 0 0 rgba(0, 0, 0, 0.28);
+  transform: rotate(-4deg);
+}
+
+.book-tile-text {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.book-tile-title {
+  color: #ffd23f;
+  font: 700 clamp(1.4rem, 4vw, 2.2rem) / 1.1 var(--font-display);
+}
+
+.book-tile-desc {
+  max-width: 52ch;
+  color: var(--muted);
+}
+
+.book-tile-price {
+  font-weight: 700;
+}
+
+.book-tile-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  align-self: flex-start;
+  min-height: 44px;
+  margin-top: 6px;
+  padding: 10px 20px;
+  border-radius: 999px;
+  background: #ff6a1a;
+  box-shadow: 0 5px 0 #b7430a;
+  color: #fff;
+  font-weight: 700;
+}
+
+.book-loading {
+  display: grid;
+  place-items: center;
+  width: 100%;
+  min-height: 60vh;
+}
+
+@media (max-width: 560px) {
+  .book-tile {
+    grid-template-columns: 96px minmax(0, 1fr);
+    gap: 14px;
+    padding: 14px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .book-tile,
+  .book-tile:hover {
+    transform: none;
+  }
+}
