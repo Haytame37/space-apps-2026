@@ -1,5 +1,6 @@
 import { useRef } from 'react'
 import { Link, useOutletContext } from 'react-router'
+import { AyyurLogo } from '../components/AyyurLogo'
 import { Icon } from '../components/Icon'
 import { MACHINES } from '../data/machines'
 import { useI18n } from '../i18n/context'
@@ -16,7 +17,9 @@ export function Home() {
   return (
     <section className="home">
       <p ref={kicker} className="kicker">{t.home.kicker}</p>
-      <h1 className="home-title">{t.home.title}</h1>
+      <h1 className="home-brand">
+        <AyyurLogo variant="orbit" size="clamp(64px, 13vh, 132px)" withName />
+      </h1>
       <p className="home-tagline">
         <span>{t.home.line1}</span> <span className="accent">{t.home.line2}</span>
       </p>
@@ -32,7 +35,7 @@ export function Home() {
       </div>
       {found.length > 0 && <p className="progress-note">{fmt(t.home.progress, { n: found.length, total: MACHINES.length })}</p>}
       <p className="fine-print">
-        {t.common.notToScale} · Space Memory {t.common.brandBy}
+        {t.common.notToScale} · {t.common.brandBy}
       </p>
     </section>
   )

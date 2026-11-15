@@ -129,12 +129,12 @@
 }
 
 .panel-toggle {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  min-height: 44px;
+  display: inline-grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
   margin-inline-start: auto;
-  padding: 0 16px 0 12px;
+  padding: 0;
   color: var(--text);
   font-size: 0.9rem;
   font-weight: 600;
@@ -165,21 +165,6 @@
     font-size: 0.84rem;
   }
 
-  /* Phones: the switch is an icon; its name stays available to screen readers. */
-  .panel-toggle {
-    width: 44px;
-    padding: 0;
-    justify-content: center;
-  }
-
-  .panel-toggle-text {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    overflow: hidden;
-    clip-path: inset(50%);
-    white-space: nowrap;
-  }
 }
 
 /* ---------- 3D model and NASA live view, filling the large area ---------- */
@@ -221,10 +206,10 @@
 
 .view-status {
   position: absolute;
-  inset: 46% 0 auto;
-  margin: 0;
-  color: var(--muted);
-  text-align: center;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  pointer-events: none;
 }
 
 .live-view {

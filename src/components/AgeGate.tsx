@@ -1,6 +1,7 @@
 import { useEffect, useRef } from 'react'
 import { useI18n } from '../i18n/context'
 import type { Profile } from '../state/prefs'
+import { AyyurLogo } from './AyyurLogo'
 
 const PROFILES: Profile[] = ['kid', 'teen', 'adult']
 
@@ -37,6 +38,7 @@ export function AgeGate({ open, current, onChoose, onClose }: Props) {
         else onClose()
       }}
     >
+      <AyyurLogo variant="orbit" size={72} withName className="age-gate-logo" />
       <h2 id="age-title">{t.age.title}</h2>
       <p className="muted">{t.age.intro}</p>
       <ul className="age-options">

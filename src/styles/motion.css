@@ -55,10 +55,6 @@
   opacity: 1;
 }
 
-.stage-status {
-  animation: fade-in 0.4s 0.3s both;
-}
-
 /* Pages outside the 3D stage. */
 .page > * {
   animation: rise-in 0.5s var(--ease-out) both;
@@ -227,17 +223,10 @@
   animation: fade-in 0.3s ease both;
 }
 
-/* The loading pill sits in the part of the screen the story panel leaves free. */
-@media (min-width: 900px), (max-width: 899px) and (orientation: landscape) and (max-height: 520px) {
-  .view-world .stage-status {
-    inset-inline-end: var(--panel-w, min(500px, 50vw));
-  }
-}
-
-@media (max-width: 899px) and (orientation: portrait), (max-width: 899px) and (min-height: 521px) {
-  .view-world .stage-status {
-    top: calc(var(--header-h) + 14dvh);
-  }
+/* The loader sits in the part of the screen the story panel leaves free. */
+.view-world .stage-status {
+  bottom: var(--panel-b, 0px);
+  inset-inline-end: var(--panel-w, 0px);
 }
 
 @media (prefers-reduced-motion: reduce) {

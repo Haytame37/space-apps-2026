@@ -6,6 +6,7 @@ import { RoomEnvironment } from 'three/examples/jsm/environments/RoomEnvironment
 import { useI18n } from '../i18n/context'
 import { modelBounds } from '../lib/modelBounds'
 import { useReducedMotion } from '../lib/useReducedMotion'
+import { AyyurLoader } from './AyyurLoader'
 import { ErrorBoundary } from './ErrorBoundary'
 import { Icon } from './Icon'
 
@@ -60,9 +61,9 @@ export default function ModelViewer({ src, label, credit }: { src: string; label
           </ErrorBoundary>
         )}
         {state === 'loading' && (
-          <p className="model-status" role="status">
-            {t.panel.modelLoading}
-          </p>
+          <div className="model-loading">
+            <AyyurLoader label={t.panel.modelLoading} />
+          </div>
         )}
         {state === 'error' && (
           <p className="model-status" role="alert">

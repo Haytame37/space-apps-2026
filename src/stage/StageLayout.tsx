@@ -1,5 +1,6 @@
 import { lazy, Suspense, useCallback, useMemo, useRef, useState, useSyncExternalStore, type CSSProperties } from 'react'
 import { Outlet, useLocation, useNavigate, useSearchParams } from 'react-router'
+import { AyyurLoader } from '../components/AyyurLoader'
 import { ErrorBoundary } from '../components/ErrorBoundary'
 import { Icon } from '../components/Icon'
 import { machineById, placeById, storyView, WORLD_SLUG, worldFromSlug, type WorldId } from '../data/machines'
@@ -145,9 +146,9 @@ export function StageLayout() {
           <div className="stage-fallback" />
         )}
         {stageOk && !ready && (
-          <p className="stage-status" role="status">
-            {t.explore.loadingStage}
-          </p>
+          <div className="stage-status">
+            <AyyurLoader label={t.explore.loadingStage} />
+          </div>
         )}
       </div>
       {stageOk && world && mode === 'globe' && (

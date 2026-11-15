@@ -1,5 +1,5 @@
 {
-  "name": "space-memory",
+  "name": "ayyur",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -10,9 +10,12 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@fontsource-variable/fredoka": "^5.3.0",
     "@fontsource-variable/inter": "^5.3.0",
     "@fontsource-variable/noto-kufi-arabic": "^5.3.0",
+    "@fontsource-variable/nunito": "^5.3.0",
     "@fontsource-variable/space-grotesk": "^5.3.0",
+    "@fontsource/unbounded": "^5.3.0",
     "@react-three/drei": "^10.7.9",
     "@react-three/fiber": "^9.8.2",
     "react": "^19.3.1",

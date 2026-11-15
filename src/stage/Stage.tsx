@@ -53,6 +53,10 @@ interface SceneLayout {
   centre: THREE.Vector2
   halfWidth: number
   halfHeight: number
+  /** Air kept around the box (1 = the box touches the screen edges). */
+  margin: number
+  /** The page's text sits over the scene instead of below it: frame the whole screen. */
+  isBehindText?: boolean
 }
 
 const LANDSCAPE: SceneLayout = {
@@ -63,6 +67,23 @@ const LANDSCAPE: SceneLayout = {
   centre: new THREE.Vector2(0.15, 0.35),
   halfWidth: 4.05,
   halfHeight: 1.55,
+  margin: 1.12,
+}
+
+/**
+ * Home on a wide screen: the Moon on the left and Mars on the right, very large,
+ * frame the title; deep space floats at the top in the middle.
+ */
+const HOME_WIDE: SceneLayout = {
+  moon: new THREE.Vector3(-3.05, -0.1, 0),
+  mars: new THREE.Vector3(3.3, -0.05, -0.3),
+  deep: new THREE.Vector3(0.1, 3.35, -9),
+  deepScale: 0.82,
+  centre: new THREE.Vector2(0.12, 0.42),
+  halfWidth: 4.3,
+  halfHeight: 1.2,
+  margin: 1,
+  isBehindText: true,
 }
 
 const PORTRAIT: SceneLayout = {
@@ -73,18 +94,18 @@ const PORTRAIT: SceneLayout = {
   centre: new THREE.Vector2(0.03, 1.85),
   halfWidth: 2.3,
   halfHeight: 1.6,
+  margin: 1.12,
 }
 
 /** Smallest share of the screen height the overview may use, and the air kept around it. */
-const OVERLAP_HOME = 0.36
+const OVERLAP_HOME = 0.27
 const OVERLAP_CHOOSE = 0.3
-const OVERVIEW_MARGIN = 1.12
 /** Share of the free room a visited destination fills. */
 const FILL = 0.96
 /** Extra closeness when a site is selected; the whole globe still fits. */
 const SITE_ZOOM = 0.93
 
-const layoutFor = (aspect: number) => (aspect < 0.95 ? PORTRAIT : LANDSCAPE)
+const layoutFor = (aspect: number, view?: StageView) => (aspect < 0.95 ? PORTRAIT : view === 'home' ? HOME_WIDE : LANDSCAPE)
 
 interface Shared {
   anchors: Map<string, THREE.Object3D>
@@ -96,23 +117,51 @@ const clamp = (v: number, min: number, max: number) => Math.min(max, Math.max(mi
 /** Share of the remaining distance to cover this frame: frame-rate independent, always from the current value. */
 const easing = (dt: number, speed: number) => 1 - Math.exp(-Math.min(dt, 0.1) * speed)
 
-/** Grows a body into the scene or shrinks it away, so only the visited destination stays on stage. */
-function usePresence(present: boolean, size: number, reducedMotion: boolean) {
+/**
+ * Grows a body into the scene or shrinks it away, so only the visited destination stays on stage,
+ * and glides it to its place when the composition changes (home, destinations, a world).
+ */
+function useBody(present: boolean, size: number, position: THREE.Vector3, reducedMotion: boolean) {
   const ref = useRef<THREE.Group>(null)
   const started = useRef(false)
   useFrame((_, dt) => {
     const node = ref.current
     if (!node) return
     const goal = present ? size : 0
-    // The first frame starts at the right size: only later changes are animated.
+    // The first frame starts in place and at the right size: only later changes are animated.
     const instant = reducedMotion || !started.current
     started.current = true
     const next = instant ? goal : node.scale.x + (goal - node.scale.x) * easing(dt, 4.5)
     node.scale.setScalar(Math.abs(next - goal) < size * 0.002 ? goal : next)
     node.visible = node.scale.x > size * 0.002
+    if (instant) node.position.copy(position)
+    else node.position.lerp(position, easing(dt, 2.6))
   })
   return ref
 }
+
+/** Soft atmosphere around a planet: a camera-facing glow, brightest at the rim. */
+function useGlowTexture() {
+  return useMemo(() => {
+    const canvas = document.createElement('canvas')
+    canvas.width = canvas.height = 256
+    const g = canvas.getContext('2d')!
+    const grad = g.createRadialGradient(128, 128, 0, 128, 128, 128)
+    grad.addColorStop(0, 'rgba(255,255,255,0.9)')
+    grad.addColorStop(0.6, 'rgba(255,255,255,0.75)')
+    grad.addColorStop(0.68, 'rgba(255,255,255,0.32)')
+    grad.addColorStop(0.82, 'rgba(255,255,255,0.08)')
+    grad.addColorStop(1, 'rgba(255,255,255,0)')
+    g.fillStyle = grad
+    g.fillRect(0, 0, 256, 256)
+    const texture = new THREE.CanvasTexture(canvas)
+    texture.colorSpace = THREE.SRGBColorSpace
+    return texture
+  }, [])
+}
+
+const GLOW: Record<'moon' | 'mars', string> = { moon: '#7fa6ff', mars: '#ff6a2c' }
+const GLOW_SCALE = 3.1
 const shortest = (a: number) => Math.atan2(Math.sin(a), Math.cos(a))
 
 function setCursor(pointer: boolean) {
@@ -279,7 +328,9 @@ function Globe({ world, label, position, tilt, speed, present, view, machineId, 
   const radius = RADIUS[world]
   const model = useFittedModel(MODEL_FILES[world], radius)
   const spin = useRef<THREE.Group>(null)
-  const body = usePresence(present, 1, reducedMotion)
+  const body = useBody(present, 1, position, reducedMotion)
+  const glow = useGlowTexture()
+  useEffect(() => () => glow.dispose(), [glow])
   const places = useMemo(
     () =>
       PLACES.filter((p) => p.world === world).map((place) => {
@@ -298,7 +349,10 @@ function Globe({ world, label, position, tilt, speed, present, view, machineId, 
   })
 
   return (
-    <group ref={body} position={position} rotation={[0, 0, tilt]}>
+    <group ref={body} rotation={[0, 0, tilt]}>
+      <sprite scale={[radius * GLOW_SCALE, radius * GLOW_SCALE, 1]} renderOrder={-1}>
+        <spriteMaterial map={glow} color={GLOW[world]} transparent opacity={0.42} depthWrite={false} blending={THREE.AdditiveBlending} toneMapped={false} />
+      </sprite>
       {/* The prime meridian of NASA's globes faces -X; a quarter turn brings it toward the camera. */}
       <group ref={spin} rotation={[0, Math.PI / 2, 0]}>
         <primitive
@@ -391,7 +445,7 @@ interface DeepProps extends CommonProps {
 
 function DeepSpace({ label, position, scale, compact, present, view, machineId, placeId, reducedMotion, sharedRef, onPickWorld, onPickPlace }: DeepProps) {
   const here = view === 'deep'
-  const body = usePresence(present, scale, reducedMotion)
+  const body = useBody(present, scale, position, reducedMotion)
   const overview = view === 'home' || view === 'choose'
   const dawn = useRef<THREE.Group>(null)
   const erosModel = useFittedModel(MODEL_FILES.eros, 0.62)
@@ -425,7 +479,7 @@ function DeepSpace({ label, position, scale, compact, present, view, machineId, 
   const p11 = useMemo(() => [new THREE.Vector3(1.2, -1.1, 0.5), new THREE.Vector3(0, 0, 0)], [])
 
   return (
-    <group ref={body} position={position}>
+    <group ref={body}>
       {/* A wide, invisible target so the far-away cluster is easy to pick from the overview. */}
       {overview && (
         <mesh
@@ -592,16 +646,17 @@ function Rig({ view, insets, placeId, reducedMotion, dir, sharedRef, controlRef 
   useFrame(({ clock }, dt) => {
     const r = rig.current
     const aspect = size.width / size.height
-    const L = layoutFor(aspect)
+    const L = layoutFor(aspect, view)
     const ease = reducedMotion || !r.started ? 1 : 1 - Math.exp(-Math.min(dt, 0.1) * 2.6)
     const goalOff = scratchOff.set(0, 0)
 
     if (view === 'home' || view === 'choose') {
       // Fit the whole scene into the band of the screen that the page's text and cards leave free.
       // The home text sits on a scrim, so the scene may slip a little under it rather than shrink too far.
-      const room = Math.max(0, size.height - insets.top - insets.bottom) / size.height
+      const bottom = L.isBehindText ? 0 : insets.bottom
+      const room = Math.max(0, size.height - insets.top - bottom) / size.height
       const share = clamp(room, view === 'home' ? OVERLAP_HOME : OVERLAP_CHOOSE, 1)
-      const d = Math.max(L.halfWidth / (TAN * aspect), L.halfHeight / (TAN * share)) * OVERVIEW_MARGIN
+      const d = Math.max(L.halfWidth / (TAN * aspect), L.halfHeight / (TAN * share)) * L.margin
       const sway = reducedMotion ? 0 : Math.sin(clock.elapsedTime * 0.15) * 0.25
       goalOff.set(0, 1 - (2 * insets.top) / size.height - share)
       goalPos.set(L.centre.x + sway, L.centre.y + 0.6, d)
@@ -706,7 +761,7 @@ function Ready({ onReady }: { onReady: () => void }) {
 
 function Scene(props: Omit<StageProps, 'control' | 'dir' | 'onReady' | 'worldNames' | 'insets'> & { sharedRef: RefObject<Shared>; worldNames: Record<WorldId, string> }) {
   const { size } = useThree()
-  const L = layoutFor(size.width / size.height)
+  const L = layoutFor(size.width / size.height, props.view)
   const { worldNames, ...common } = props
   const portrait = L === PORTRAIT
   const overview = props.view === 'home' || props.view === 'choose'

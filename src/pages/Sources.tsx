@@ -3,7 +3,7 @@ import { ASTEROID_STORY_URL, MACHINES, SOURCES, WORLDS } from '../data/machines'
 import { useI18n } from '../i18n/context'
 
 export function Sources() {
-  const { t, fmt } = useI18n()
+  const { t } = useI18n()
   return (
     <section className="page sources-page">
       <h1>{t.sources.title}</h1>
@@ -85,7 +85,7 @@ export function Sources() {
       <h2>{t.sources.teamTitle}</h2>
       <p>{t.sources.team}</p>
       <p className="small muted">{t.sources.nasaNote}</p>
-      <p className="small muted">{fmt('{a} · {b}', { a: 'Space Memory', b: t.common.brandBy })}</p>
+      <p className="small muted">{t.common.brandBy}</p>
     </section>
   )
 }

@@ -11,18 +11,25 @@
     />
     <meta name="color-scheme" content="dark" />
     <meta property="og:type" content="website" />
-    <meta property="og:site_name" content="Space Memory" />
-    <meta property="og:title" content="Space Memory — the machines we left behind" />
+    <meta property="og:site_name" content="AYYUR" />
+    <meta property="og:title" content="AYYUR — the machines we left behind" />
     <meta
       property="og:description"
       content="Explore in 3D the machines NASA left on the Moon, on Mars and in deep space, and discover the science they made possible."
     />
     <meta name="twitter:card" content="summary" />
-    <title>Space Memory — the machines we left behind</title>
+    <title>AYYUR — the machines we left behind</title>
   </head>
   <body>
-    <div id="root"></div>
-    <noscript>Space Memory needs JavaScript to show its 3D map, stories and games.</noscript>
+    <div id="root">
+      <!-- Shown until React starts, then replaced by the app. -->
+      <div style="position: fixed; inset: 0; display: grid; place-items: center; background: #04060d">
+        <svg viewBox="-104 -104 208 208" width="64" height="64" role="img" aria-label="AYYUR">
+          <path fill="#5ee7ff" d="M7.28-99.73A100 100 0 1 0 99-14.1A85 85 0 1 1 7.28-99.73Z" />
+        </svg>
+      </div>
+    </div>
+    <noscript>AYYUR needs JavaScript to show its 3D map, stories and games.</noscript>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>

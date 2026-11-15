@@ -2,6 +2,7 @@ import { lazy, Suspense, useState } from 'react'
 import { ASTEROID_STORY_URL, eyesEmbedUrl, eyesPageUrl, type Machine, type Place, type WorldId } from '../data/machines'
 import { useI18n } from '../i18n/context'
 import { eyesPlaceOf, type ViewMode } from '../lib/viewMode'
+import { AyyurLoader } from './AyyurLoader'
 import { ExternalLink } from './ExternalLink'
 import { Icon } from './Icon'
 
@@ -36,10 +37,11 @@ export function ViewBar({ world, modes, mode, onMode, isPanelHidden, onTogglePan
         className="panel-toggle"
         aria-controls="story-panel"
         aria-expanded={!isPanelHidden}
+        aria-label={isPanelHidden ? t.explore.showPanel : t.explore.hidePanel}
+        title={isPanelHidden ? t.explore.showPanel : t.explore.hidePanel}
         onClick={onTogglePanel}
       >
         <Icon name={isPanelHidden ? 'panelOpen' : 'panelClose'} flip />
-        <span className="panel-toggle-text">{isPanelHidden ? t.explore.showPanel : t.explore.hidePanel}</span>
       </button>
     </div>
   )
@@ -58,7 +60,13 @@ export function StageView({ machine, place, mode }: StageViewProps) {
   return (
     <section className={`view-stage world-${machine.world}`} aria-label={mode === 'model' ? `${t.panel.model}: ${name}` : t.panel.live}>
       {mode === 'model' && machine.model && (
-        <Suspense fallback={<p className="view-status" role="status">{t.panel.modelLoading}</p>}>
+        <Suspense
+          fallback={
+            <div className="view-status">
+              <AyyurLoader label={t.panel.modelLoading} />
+            </div>
+          }
+        >
           <ModelViewer src={machine.model.src} label={`${t.panel.model}: ${name}`} credit={machine.model.credit} />
         </Suspense>
       )}
@@ -103,9 +111,9 @@ function LiveView({ machine, place }: { machine: Machine; place?: Place }) {
         {/* The view was asked for by choosing it in the selector: it loads straight away. */}
         <iframe key={source.embed} src={source.embed} title={source.title} allow="fullscreen" referrerPolicy="no-referrer" onLoad={() => setLoaded(source.embed)} />
         {loaded !== source.embed && (
-          <p className="view-status" role="status">
-            {t.common.loading}
-          </p>
+          <div className="view-status">
+            <AyyurLoader label={t.common.loading} />
+          </div>
         )}
       </div>
       <p className="small live-foot">

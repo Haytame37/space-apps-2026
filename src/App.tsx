@@ -13,6 +13,14 @@ import { Quiz } from './pages/Quiz'
 import { Sources } from './pages/Sources'
 import { World } from './pages/World'
 import { StageLayout } from './stage/StageLayout'
+import { ForKids } from './kids/ForKids'
+import { KidHome } from './kids/KidHome'
+import { KidMemory } from './kids/games/KidMemory'
+import { KidMystery } from './kids/games/KidMystery'
+import { KidPuzzle } from './kids/games/KidPuzzle'
+import { KidQuiz } from './kids/games/KidQuiz'
+import { KidRebuild } from './kids/games/KidRebuild'
+import { Shop } from './pages/Shop'
 import { PrefsProvider } from './state/PrefsProvider'
 
 export default function App() {
@@ -27,12 +35,13 @@ export default function App() {
                 <Route path="explore" element={<Explore />} />
                 <Route path="explore/:world/:machine?" element={<World />} />
               </Route>
-              <Route path="play" element={<Play />} />
-              <Route path="play/mystery" element={<Mystery />} />
-              <Route path="play/rebuild" element={<Rebuild />} />
-              <Route path="play/puzzle" element={<Puzzle />} />
-              <Route path="play/memory" element={<Memory />} />
-              <Route path="quiz" element={<Quiz />} />
+              <Route path="play" element={<ForKids kid={<KidHome />} other={<Play />} />} />
+              <Route path="play/mystery" element={<ForKids kid={<KidMystery />} other={<Mystery />} />} />
+              <Route path="play/rebuild" element={<ForKids kid={<KidRebuild />} other={<Rebuild />} />} />
+              <Route path="play/puzzle" element={<ForKids kid={<KidPuzzle />} other={<Puzzle />} />} />
+              <Route path="play/memory" element={<ForKids kid={<KidMemory />} other={<Memory />} />} />
+              <Route path="quiz" element={<ForKids kid={<KidQuiz />} other={<Quiz />} />} />
+              <Route path="shop" element={<Shop />} />
               <Route path="sources" element={<Sources />} />
               <Route path="*" element={<NotFound />} />
             </Route>

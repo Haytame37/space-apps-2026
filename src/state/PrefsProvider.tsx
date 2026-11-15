@@ -1,9 +1,19 @@
 import { useCallback, useEffect, useMemo, useState, type ReactNode } from 'react'
 import { MACHINES, WORLDS, type MachineId, type WorldId } from '../data/machines'
-import { PrefsContext, type Prefs, type PrefsState, type Profile } from './prefs'
+import { KID_GAMES, PrefsContext, type KidGame, type Prefs, type PrefsState, type Profile } from './prefs'
 
 const STORAGE_KEY = 'space-memory:prefs:v1'
-const EMPTY: PrefsState = { profile: null, found: [], badges: [] }
+const EMPTY: PrefsState = { profile: null, found: [], badges: [], stars: {} }
+
+function readStars(raw: unknown): PrefsState['stars'] {
+  if (!raw || typeof raw !== 'object') return {}
+  const out: PrefsState['stars'] = {}
+  for (const game of KID_GAMES) {
+    const n = (raw as Record<string, unknown>)[game]
+    if (typeof n === 'number' && Number.isInteger(n) && n >= 1 && n <= 3) out[game] = n
+  }
+  return out
+}
 
 function read(): PrefsState {
   try {
@@ -14,6 +24,7 @@ function read(): PrefsState {
       profile: data.profile === 'kid' || data.profile === 'teen' || data.profile === 'adult' ? data.profile : null,
       found: Array.isArray(data.found) ? data.found.filter((id) => MACHINES.some((m) => m.id === id)) : [],
       badges: Array.isArray(data.badges) ? data.badges.filter((w) => WORLDS.includes(w)) : [],
+      stars: readStars(data.stars),
     }
   } catch {
     return EMPTY
@@ -41,9 +52,15 @@ export function PrefsProvider({ children }: { children: ReactNode }) {
     [],
   )
 
+  const recordStars = useCallback(
+    (game: KidGame, stars: number) =>
+      setState((s) => ((s.stars[game] ?? 0) >= stars ? s : { ...s, stars: { ...s.stars, [game]: Math.min(3, Math.max(1, stars)) } })),
+    [],
+  )
+
   const value = useMemo<Prefs>(
-    () => ({ ...state, setProfile, markFound, awardBadge }),
-    [state, setProfile, markFound, awardBadge],
+    () => ({ ...state, setProfile, markFound, awardBadge, recordStars }),
+    [state, setProfile, markFound, awardBadge, recordStars],
   )
   return <PrefsContext.Provider value={value}>{children}</PrefsContext.Provider>
 }

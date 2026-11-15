@@ -1,14 +1,22 @@
 import { useEffect, useRef, useState } from 'react'
 import { Link, NavLink, Outlet, useLocation, useNavigate } from 'react-router'
 import { LANGS, useI18n, type Lang } from '../i18n/context'
+import { useReducedMotion } from '../lib/useReducedMotion'
 import { usePrefs, type Profile } from '../state/prefs'
 import { AgeGate } from './AgeGate'
+import { AyyurLogo } from './AyyurLogo'
 import { ErrorBoundary } from './ErrorBoundary'
+import { IntroSplash } from './IntroSplash'
+import { KidSky } from '../kids/KidSky'
 
 export function Shell() {
   const { t, lang, setLang, switching } = useI18n()
   const { profile, setProfile } = usePrefs()
   const [settingsOpen, setSettingsOpen] = useState(false)
+  // The intro plays on each load of the site (first visit or refresh), unless motion is reduced.
+  const reducedMotion = useReducedMotion()
+  const [isSplashDone, setSplashDone] = useState(false)
+  const isSplash = !isSplashDone && !reducedMotion
   const location = useLocation()
   const navigate = useNavigate()
   const main = useRef<HTMLElement>(null)
@@ -41,6 +49,13 @@ export function Shell() {
     nav.current?.querySelector('[aria-current="page"]')?.scrollIntoView({ block: 'nearest', inline: 'nearest' })
   }, [section, lang])
 
+  // The kids' theme applies to the whole page while the young explorer profile is chosen.
+  useEffect(() => {
+    const root = document.documentElement
+    if (profile === 'kid') root.dataset.profile = 'kid'
+    else delete root.dataset.profile
+  }, [profile])
+
   const choose = (next: Profile) => {
     const first = profile === null
     setProfile(next)
@@ -53,18 +68,20 @@ export function Shell() {
     { to: '/explore', label: t.nav.explore, end: false },
     { to: '/play', label: t.nav.play, end: false },
     { to: '/quiz', label: t.nav.quiz, end: false },
+    { to: '/shop', label: t.nav.shop, end: false },
     { to: '/sources', label: t.nav.sources, end: false },
   ]
 
   return (
     <div className="shell">
+      {profile === 'kid' && <KidSky />}
       <a className="skip-link" href="#main">
         {t.common.skip}
       </a>
-      <header className="site-header">
+      <header className="site-header" inert={isSplash}>
         <Link to="/" className="brand">
-          <span className="brand-mark" aria-hidden="true" />
-          <span className="brand-name">Space Memory</span>
+          <AyyurLogo variant="orbit" size={32} decorative />
+          <span className="brand-name">AYYUR</span>
         </Link>
         <nav ref={nav} className="site-nav" aria-label={t.nav.main}>
           <ul>
@@ -94,7 +111,7 @@ export function Shell() {
           </button>
         </div>
       </header>
-      <main id="main" ref={main} tabIndex={-1}>
+      <main id="main" ref={main} tabIndex={-1} inert={isSplash}>
         <ErrorBoundary
           key={boundaryKey}
           fallback={
@@ -111,11 +128,12 @@ export function Shell() {
         </ErrorBoundary>
       </main>
       <AgeGate
-        open={profile === null || settingsOpen}
+        open={(profile === null && !isSplash) || settingsOpen}
         current={profile}
         onChoose={choose}
         onClose={() => setSettingsOpen(false)}
       />
+      {isSplash && <IntroSplash onFinished={() => setSplashDone(true)} />}
     </div>
   )
 }

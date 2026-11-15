@@ -1,0 +1,214 @@
+/* ---------- AYYUR logo ---------- */
+
+.ayyur-logo {
+  --ayyur-size: 48px;
+  display: inline-flex;
+  flex: none;
+  flex-direction: column;
+  align-items: center;
+  gap: calc(var(--ayyur-size) * 0.12);
+  color: var(--accent);
+  line-height: 1;
+}
+
+.ayyur-mark {
+  display: block;
+  width: var(--ayyur-size);
+  height: var(--ayyur-size);
+  overflow: visible;
+}
+
+/* Crescent: white towards the site accent. */
+.ayyur-s1 {
+  stop-color: #fff;
+}
+
+.ayyur-s2 {
+  stop-color: color-mix(in srgb, #fff 62%, var(--accent));
+}
+
+.ayyur-s3,
+.ayyur-h {
+  stop-color: var(--accent);
+}
+
+.ayyur-flame {
+  fill: var(--mars);
+}
+
+.ayyur-fin,
+.ayyur-ghost,
+.ayyur-spark {
+  fill: var(--accent);
+}
+
+.ayyur-hull {
+  fill: var(--text);
+  stroke: var(--accent);
+  stroke-width: 0.6;
+}
+
+.ayyur-line {
+  fill: none;
+  stroke: var(--accent);
+}
+
+.ayyur-ray,
+.ayyur-spark.is-hot {
+  fill: #fff;
+}
+
+.ayyur-spark.is-warm {
+  fill: var(--mars);
+}
+
+.ayyur-name {
+  --ls: 0.22em;
+  padding-left: var(--ls); /* balances the trailing tracking so the name stays centred */
+  color: var(--text);
+  font-family: 'Unbounded', var(--font-display);
+  font-size: calc(var(--ayyur-size) * 0.3);
+  font-weight: 700;
+  letter-spacing: var(--ls);
+  white-space: nowrap;
+}
+
+.ayyur-name span {
+  display: inline-block;
+}
+
+/* ---------- Loaders ---------- */
+
+.ayyur-loader {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  color: var(--muted);
+  font-size: 0.9rem;
+  text-align: center;
+  animation: fade-in 0.4s 0.15s both;
+}
+
+.ayyur-loader p {
+  margin: 0;
+}
+
+/* ---------- Header ---------- */
+
+.brand .ayyur-logo {
+  /* The orbit reaches a little beyond the crescent: keep it off the name. */
+  margin-inline: 2px 4px;
+}
+
+/* ---------- Profile dialog ---------- */
+
+.age-gate-logo {
+  display: flex;
+  width: fit-content;
+  margin: 4px auto 18px;
+}
+
+/* ---------- Home: the logo is the page title ---------- */
+
+.home-brand {
+  display: flex;
+  justify-content: center;
+  margin: 0 auto clamp(10px, 2.4vh, 22px);
+  font-size: 1rem;
+}
+
+/* ---------- Header name ---------- */
+
+.brand-name {
+  font-family: 'Unbounded', var(--font-display);
+  font-weight: 700;
+  letter-spacing: 0.16em;
+}
+
+/* Phones: a smaller title logo leaves the planets their own room above it. */
+@media (max-width: 599px) {
+  .home-brand .ayyur-logo {
+    --ayyur-size: 66px !important;
+  }
+}
+
+/* ---------- Intro on a black screen, on each load of the site ---------- */
+
+.intro-splash {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  background: radial-gradient(120% 90% at 50% 38%, #0c1630 0%, #060a17 55%, #03050b 100%);
+  transition:
+    opacity 0.7s ease,
+    visibility 0s linear 0s;
+}
+
+.intro-splash.is-leaving {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition:
+    opacity 0.7s ease,
+    visibility 0s linear 0.7s;
+}
+
+.intro-splash-logo {
+  gap: clamp(14px, 3vmin, 30px);
+  transition: transform 0.7s cubic-bezier(0.32, 0.72, 0, 1);
+}
+
+/* Large lockup, as in the team's reference: the name a little bigger than in the small logos. */
+.intro-splash-logo .ayyur-name {
+  font-size: calc(var(--ayyur-size) * 0.29);
+}
+
+.intro-splash.is-leaving .intro-splash-logo {
+  transform: scale(0.94);
+}
+
+.intro-skip {
+  position: absolute;
+  bottom: max(20px, env(safe-area-inset-bottom));
+  inset-inline-end: 20px;
+  min-height: 44px;
+  padding: 0 20px;
+  border: 1px solid var(--line-strong);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--muted);
+  font-weight: 600;
+  cursor: pointer;
+  animation: fade-in 0.4s 1s both;
+  transition:
+    color 0.2s,
+    border-color 0.2s,
+    transform 0.2s cubic-bezier(0.32, 0.72, 0, 1);
+}
+
+.intro-skip:hover {
+  border-color: var(--text);
+  color: var(--text);
+}
+
+.intro-skip:active {
+  transform: scale(0.96);
+  transition-duration: 0.08s;
+}
+
+/* ---------- Home on a wide screen: the planets frame the title ---------- */
+
+@media (orientation: landscape) and (min-width: 900px) {
+  .home {
+    background: radial-gradient(42% 60% at 50% 60%, rgba(4, 6, 13, 0.86), rgba(4, 6, 13, 0.55) 55%, rgba(4, 6, 13, 0) 78%);
+  }
+}
+
+/* Home: the title logo already orbits while the planets load; the loader would sit on the title. */
+.view-home .stage-status {
+  display: none;
+}

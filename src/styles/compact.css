@@ -136,3 +136,10 @@
     font-size: 0.9rem;
   }
 }
+
+/* Phone held sideways: the title logo stays, smaller. */
+@media (max-width: 899px) and (orientation: landscape) and (max-height: 520px) {
+  .home-brand .ayyur-logo {
+    --ayyur-size: 44px !important;
+  }
+}

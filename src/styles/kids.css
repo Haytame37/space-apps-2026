@@ -1,0 +1,1081 @@
+/* ---------- Kids' corner: the young explorer profile (data-profile="kid" on <html>) ---------- */
+
+[data-profile='kid'] {
+  --k-sky-1: #2a1a7a;
+  --k-sky-2: #151050;
+  --k-sky-3: #080a26;
+  --k-ink: #1b1147;
+  --k-soft: #cfd0ff;
+  --k-sun: #ffd23f;
+  --k-sun-d: #c99a12;
+  --k-coral: #ff7a6b;
+  --k-coral-d: #c44a3d;
+  --k-mint: #3ddbb4;
+  --k-mint-d: #1f9c7d;
+  --k-aqua: #5ee7ff;
+  --k-lilac: #b79cff;
+  --k-lilac-d: #7a5fd0;
+  --font-display: 'Fredoka Variable', 'Nunito Variable', 'Noto Kufi Arabic Variable', system-ui, sans-serif;
+  --font-body: 'Nunito Variable', 'Noto Kufi Arabic Variable', system-ui, sans-serif;
+  background: var(--k-sky-3);
+}
+
+[data-profile='kid'] body {
+  background: radial-gradient(120% 80% at 50% 0%, var(--k-sky-1) 0%, var(--k-sky-2) 55%, var(--k-sky-3) 100%) fixed;
+  font-weight: 700;
+}
+
+[data-profile='kid'] .site-header {
+  background: rgba(21, 16, 80, 0.86);
+}
+
+[data-profile='kid'] main {
+  z-index: 1;
+}
+
+[data-profile='kid'] :focus-visible {
+  outline: 4px solid var(--k-aqua);
+  outline-offset: 3px;
+  border-radius: 14px;
+}
+
+/* Big friendly buttons with a solid shadow that sink when pressed. */
+[data-profile='kid'] .btn {
+  min-height: 48px;
+  padding: 12px 22px;
+  border: 0;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.16);
+  box-shadow: 0 6px 0 rgba(0, 0, 0, 0.25);
+  color: #fff;
+  font: 700 1.08rem var(--font-display);
+  transition:
+    transform 0.1s,
+    box-shadow 0.1s;
+}
+
+[data-profile='kid'] .btn.primary {
+  background: var(--k-sun);
+  box-shadow: 0 6px 0 var(--k-sun-d);
+  color: var(--k-ink);
+}
+
+[data-profile='kid'] .btn:hover {
+  transform: translateY(-2px);
+}
+
+[data-profile='kid'] .btn:active:not(:disabled) {
+  transform: translateY(4px);
+  box-shadow: 0 2px 0 rgba(0, 0, 0, 0.25);
+}
+
+/* ---------- Sky decor ---------- */
+
+.kid-sky {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.kid-sky-star {
+  position: absolute;
+  border-radius: 50%;
+  background: #fff;
+  animation: kid-twinkle 3s ease-in-out infinite;
+}
+
+.kid-planet {
+  position: absolute;
+  border-radius: 50%;
+  animation: kid-drift 16s ease-in-out infinite alternate;
+}
+
+.kid-planet-mars {
+  inset-inline-end: -50px;
+  top: 90px;
+  width: 190px;
+  height: 190px;
+  background: radial-gradient(circle at 32% 30%, #ffb07a, #d2542f 62%, #7a2413);
+}
+
+.kid-planet-moon {
+  inset-inline-start: -30px;
+  bottom: 60px;
+  width: 110px;
+  height: 110px;
+  background: radial-gradient(circle at 32% 30%, #f4f6ff, #aab4dd 62%, #5a6497);
+  animation-duration: 22s;
+}
+
+.kid-planet-moon::after {
+  content: '';
+  position: absolute;
+  left: 22%;
+  top: 46%;
+  width: 22%;
+  height: 22%;
+  border-radius: 50%;
+  background: rgba(60, 70, 120, 0.35);
+  box-shadow:
+    30px -18px 0 -4px rgba(60, 70, 120, 0.3),
+    18px 20px 0 -6px rgba(60, 70, 120, 0.3);
+}
+
+@keyframes kid-twinkle {
+  50% {
+    opacity: 0.2;
+    transform: scale(0.6);
+  }
+}
+
+@keyframes kid-drift {
+  to {
+    transform: translate(-18px, 26px) rotate(12deg);
+  }
+}
+
+/* ---------- Page frame ---------- */
+
+.kid-page {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  width: 100%;
+  max-width: 1040px;
+  margin: 0 auto;
+  padding: 14px 16px 60px;
+  color: #fff;
+  font: 700 1.05rem/1.5 var(--font-body);
+  animation: kid-slide 0.4s cubic-bezier(0.2, 0.9, 0.3, 1);
+}
+
+.kid-page h1,
+.kid-page h2,
+.kid-page h3 {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 700;
+  line-height: 1.12;
+}
+
+.kid-page p {
+  margin: 0;
+}
+
+.kid-title {
+  font-size: clamp(1.6rem, 5vw, 2.4rem);
+}
+
+.kid-top {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.kid-corner {
+  color: var(--k-soft);
+  font: 700 1rem var(--font-display);
+}
+
+.kid-chips {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.kid-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  padding: 6px 14px;
+  border: 2px solid rgba(255, 255, 255, 0.25);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.14);
+  color: #fff;
+  font: 700 1.05rem var(--font-display);
+  cursor: pointer;
+}
+
+.kid-stars {
+  cursor: default;
+}
+
+.kid-stars .kid-star {
+  width: 22px;
+  height: 22px;
+  color: var(--k-sun);
+}
+
+.kid-stars.is-bumping {
+  animation: kid-bump 0.5s;
+}
+
+@keyframes kid-bump {
+  40% {
+    transform: scale(1.28) rotate(-6deg);
+    background: var(--k-sun);
+    color: var(--k-ink);
+  }
+}
+
+@keyframes kid-slide {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+}
+
+/* ---------- Tiziri and her bubble ---------- */
+
+.kid-guide {
+  display: grid;
+  grid-template-columns: 96px minmax(0, 1fr);
+  gap: 14px;
+  align-items: center;
+}
+
+.kid-rocket {
+  width: 96px;
+  transform-origin: 50% 80%;
+  animation: kid-bob 2.6s ease-in-out infinite;
+}
+
+.kid-rocket.is-happy {
+  animation: kid-jump 0.7s;
+}
+
+.kid-flame {
+  transform-origin: 50% 0;
+  transform-box: fill-box;
+  animation: kid-flick 0.18s infinite alternate;
+}
+
+.kid-eye {
+  transform-origin: center;
+  transform-box: fill-box;
+  animation: kid-blink 4.2s infinite;
+}
+
+.kid-bubble {
+  position: relative;
+  display: flex;
+  align-items: center;
+  min-height: 62px;
+  padding: 14px 18px;
+  border-radius: 22px;
+  background: #fff;
+  box-shadow: 0 8px 0 rgba(0, 0, 0, 0.22);
+  color: var(--k-ink);
+  font-size: 1.08rem;
+  line-height: 1.4;
+}
+
+/* The tail points at Tiziri, on the reading side. */
+.kid-bubble::before {
+  content: '';
+  position: absolute;
+  inset-inline-start: -12px;
+  top: 50%;
+  width: 26px;
+  height: 26px;
+  border-radius: 5px;
+  background: #fff;
+  transform: translateY(-50%) rotate(45deg);
+}
+
+.kid-bubble span {
+  position: relative;
+  animation: kid-pop 0.35s cubic-bezier(0.2, 1.4, 0.4, 1);
+}
+
+@keyframes kid-bob {
+  50% {
+    transform: translateY(-8px) rotate(3deg);
+  }
+}
+
+@keyframes kid-jump {
+  30% {
+    transform: translateY(-26px) rotate(-10deg) scale(1.08);
+  }
+
+  60% {
+    transform: translateY(0) rotate(8deg);
+  }
+}
+
+@keyframes kid-flick {
+  to {
+    transform: scaleY(1.35);
+  }
+}
+
+@keyframes kid-blink {
+  0%,
+  93%,
+  100% {
+    transform: scaleY(1);
+  }
+
+  96% {
+    transform: scaleY(0.1);
+  }
+}
+
+@keyframes kid-pop {
+  from {
+    opacity: 0.4;
+    transform: scale(0.92);
+  }
+}
+
+/* ---------- Home: mission tiles ---------- */
+
+.kid-tiles {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr));
+  gap: 18px;
+}
+
+.kid-tile {
+  --c: var(--k-sun);
+  --d: var(--k-sun-d);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  height: 100%;
+  padding: 16px 16px 18px;
+  border-radius: 26px;
+  background: var(--c);
+  box-shadow: 0 9px 0 var(--d);
+  color: var(--k-ink);
+  text-decoration: none;
+  transition: transform 0.15s;
+  animation: kid-rise 0.5s both cubic-bezier(0.2, 1.3, 0.4, 1);
+}
+
+.kid-tile-memory {
+  --c: var(--k-coral);
+  --d: var(--k-coral-d);
+  animation-delay: 0.07s;
+}
+
+.kid-tile-puzzle {
+  --c: var(--k-mint);
+  --d: var(--k-mint-d);
+  animation-delay: 0.14s;
+}
+
+.kid-tile-rebuild {
+  --c: var(--k-aqua);
+  --d: #2a9bb5;
+  animation-delay: 0.21s;
+}
+
+.kid-tile-quiz {
+  --c: var(--k-lilac);
+  --d: var(--k-lilac-d);
+  animation-delay: 0.28s;
+}
+
+.kid-tile:hover {
+  transform: translateY(-5px) rotate(-1deg);
+}
+
+.kid-tile:hover .kid-snap {
+  transform: rotate(4deg) scale(1.05);
+}
+
+.kid-tile:active {
+  transform: translateY(5px);
+  box-shadow: 0 3px 0 var(--d);
+}
+
+.kid-snap {
+  align-self: center;
+  width: 78%;
+  aspect-ratio: 4 / 3;
+  border: 6px solid #fff;
+  border-radius: 12px;
+  background-position: center;
+  background-size: cover;
+  box-shadow: 0 8px 14px rgba(0, 0, 0, 0.28);
+  transform: rotate(-4deg);
+  transition: transform 0.25s cubic-bezier(0.2, 1.4, 0.4, 1);
+}
+
+.kid-tile-name {
+  font: 700 1.35rem/1.15 var(--font-display);
+}
+
+.kid-tile-desc {
+  font-size: 0.95rem;
+  line-height: 1.35;
+}
+
+.kid-go {
+  align-self: flex-start;
+  margin-top: auto;
+  padding: 6px 16px;
+  border-radius: 999px;
+  background: var(--k-ink);
+  color: #fff;
+  font: 700 0.95rem var(--font-display);
+}
+
+.kid-tile-won {
+  position: absolute;
+  inset-inline-end: 12px;
+  top: 10px;
+  display: flex;
+  gap: 2px;
+}
+
+.kid-tile-won .kid-star {
+  width: 20px;
+  height: 20px;
+  color: #fff;
+  filter: drop-shadow(0 2px 0 rgba(0, 0, 0, 0.25));
+}
+
+@keyframes kid-rise {
+  from {
+    opacity: 0;
+    transform: translateY(30px) scale(0.9);
+  }
+}
+
+/* ---------- Sticker album ---------- */
+
+.kid-album {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 16px;
+  border: 3px dashed rgba(255, 255, 255, 0.35);
+  border-radius: 26px;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.kid-album h2 {
+  font-size: 1.25rem;
+}
+
+.kid-album > p {
+  color: var(--k-soft);
+  font-size: 0.95rem;
+}
+
+.kid-stickers {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(96px, 1fr));
+  gap: 12px;
+}
+
+.kid-sticker {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  color: var(--k-soft);
+  font-size: 0.78rem;
+  line-height: 1.2;
+  text-align: center;
+}
+
+.kid-sticker i {
+  display: grid;
+  place-items: center;
+  width: 78px;
+  height: 78px;
+  border: 5px solid rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.1) center / cover;
+  color: rgba(255, 255, 255, 0.5);
+  font: 700 1.8rem var(--font-display);
+  font-style: normal;
+}
+
+.kid-sticker.is-won {
+  color: #fff;
+}
+
+.kid-sticker.is-won i {
+  border-color: #fff;
+  box-shadow: 0 5px 0 rgba(0, 0, 0, 0.25);
+  transform: rotate(-5deg);
+}
+
+.kid-sticker.is-won:nth-child(even) i {
+  transform: rotate(5deg);
+}
+
+.kid-sticker.is-new i {
+  animation: kid-stick 0.7s cubic-bezier(0.2, 1.5, 0.4, 1);
+}
+
+@keyframes kid-stick {
+  from {
+    opacity: 0;
+    transform: scale(2.2) rotate(40deg);
+  }
+}
+
+/* ---------- Games ---------- */
+
+.kid-back {
+  display: flex;
+}
+
+.kid-board {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  padding: 18px;
+  border-radius: 26px;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.kid-pips {
+  display: flex;
+  gap: 8px;
+}
+
+.kid-pips i {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.25);
+}
+
+.kid-pips i.is-on {
+  background: var(--k-sun);
+  box-shadow: 0 0 10px var(--k-sun);
+}
+
+.kid-status {
+  color: var(--k-soft);
+}
+
+.kid-clues {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
+  max-width: 620px;
+}
+
+.kid-clue {
+  padding: 10px 16px;
+  border: 3px solid var(--k-aqua);
+  border-radius: 18px;
+  background: var(--k-ink);
+  font-size: 1.1rem;
+  animation: kid-pop 0.35s cubic-bezier(0.2, 1.4, 0.4, 1);
+}
+
+.kid-clue b {
+  margin-inline-end: 6px;
+  color: var(--k-sun);
+  font-family: var(--font-display);
+}
+
+.kid-picks {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+  width: 100%;
+  max-width: 760px;
+}
+
+.kid-pick {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  width: 100%;
+  height: 100%;
+  padding: 8px 8px 10px;
+  border: 0;
+  border-radius: 20px;
+  background: #fff;
+  box-shadow: 0 7px 0 rgba(0, 0, 0, 0.25);
+  color: var(--k-ink);
+  font: 700 0.98rem/1.2 var(--font-display);
+  text-align: center;
+  cursor: pointer;
+  transition: transform 0.15s;
+}
+
+.kid-pick img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  border-radius: 14px;
+  object-fit: cover;
+}
+
+.kid-pick:hover:not(:disabled) {
+  transform: translateY(-4px) rotate(-1.5deg);
+}
+
+.kid-pick.is-wrong {
+  opacity: 0.45;
+  animation: kid-shake 0.45s;
+  cursor: default;
+}
+
+.kid-pick.is-right {
+  background: var(--k-mint);
+  animation: kid-yes 0.6s;
+  cursor: default;
+}
+
+@keyframes kid-shake {
+  20%,
+  60% {
+    transform: translateX(-9px) rotate(-3deg);
+  }
+
+  40%,
+  80% {
+    transform: translateX(9px) rotate(3deg);
+  }
+}
+
+@keyframes kid-yes {
+  40% {
+    transform: scale(1.12) rotate(3deg);
+  }
+}
+
+/* Pairs: cards flip in 3D; the back carries the AYYUR crescent. */
+.kid-memory {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+  width: 100%;
+  max-width: 620px;
+}
+
+.kid-mcard {
+  display: block;
+  width: 100%;
+  aspect-ratio: 1;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+  perspective: 700px;
+}
+
+.kid-mcard-inner {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  transition: transform 0.45s cubic-bezier(0.3, 1.3, 0.5, 1);
+}
+
+.kid-mcard.is-open .kid-mcard-inner {
+  transform: rotateY(180deg);
+}
+
+.kid-mcard:not(.is-open):hover .kid-mcard-inner {
+  transform: rotate(-4deg) scale(1.05);
+}
+
+.kid-mcard-back,
+.kid-mcard-front {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  border-radius: 18px;
+  box-shadow: 0 6px 0 rgba(0, 0, 0, 0.28);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+.kid-mcard-back {
+  display: grid;
+  place-items: center;
+  background: linear-gradient(140deg, var(--k-aqua), #4a6bff);
+  color: #fff;
+}
+
+.kid-mcard-back svg {
+  width: 46%;
+}
+
+.kid-mcard-front {
+  border: 5px solid #fff;
+  background: #fff center / cover;
+  transform: rotateY(180deg);
+}
+
+.kid-mcard.is-done {
+  cursor: default;
+}
+
+.kid-mcard.is-done .kid-mcard-front {
+  border-color: var(--k-mint);
+}
+
+/* Puzzle: pieces are laid out left to right like the photo, in every language. */
+.kid-puzzle {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(3, 1fr);
+  gap: 5px;
+  width: min(100%, 480px);
+  padding: 8px;
+  border-radius: 20px;
+  background: #fff;
+  box-shadow: 0 9px 0 rgba(0, 0, 0, 0.25);
+  direction: ltr;
+  transition: gap 0.5s;
+}
+
+.kid-puzzle button {
+  min-width: 0;
+  min-height: 44px;
+  padding: 0;
+  border: 0;
+  border-radius: 9px;
+  background-repeat: no-repeat;
+  background-size: 300% 300%;
+  cursor: pointer;
+  transition:
+    transform 0.15s,
+    box-shadow 0.15s,
+    border-radius 0.5s;
+}
+
+.kid-puzzle button:hover:not(:disabled) {
+  transform: scale(1.04);
+}
+
+.kid-puzzle button[aria-pressed='true'] {
+  z-index: 2;
+  box-shadow: 0 0 0 5px var(--k-sun);
+  transform: scale(1.1) rotate(-3deg);
+}
+
+.kid-puzzle.is-solved {
+  gap: 0;
+  animation: kid-yes 0.8s;
+}
+
+.kid-puzzle.is-solved button {
+  border-radius: 0;
+  cursor: default;
+}
+
+.kid-puzzle-model {
+  position: absolute;
+  inset: 8px;
+  z-index: 3;
+  border-radius: 12px;
+  background-size: cover;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s;
+}
+
+.kid-puzzle.is-peeking .kid-puzzle-model {
+  opacity: 1;
+}
+
+/* In order: three slots to fill, cards to touch. */
+.kid-slots,
+.kid-steps {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+  width: 100%;
+  max-width: 820px;
+}
+
+.kid-slot {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-height: 120px;
+  padding: 10px;
+  border: 3px dashed rgba(255, 255, 255, 0.4);
+  border-radius: 20px;
+  font-size: 0.92rem;
+  line-height: 1.3;
+}
+
+.kid-slot b {
+  color: var(--k-sun);
+  font: 700 1.1rem var(--font-display);
+}
+
+.kid-slot.is-filled {
+  border-style: solid;
+  border-color: var(--k-mint);
+  background: rgba(61, 219, 180, 0.16);
+  animation: kid-pop 0.35s cubic-bezier(0.2, 1.4, 0.4, 1);
+}
+
+.kid-step {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
+  height: 100%;
+  padding: 8px 8px 12px;
+  border: 0;
+  border-radius: 20px;
+  background: #fff;
+  box-shadow: 0 7px 0 rgba(0, 0, 0, 0.25);
+  color: var(--k-ink);
+  font-size: 0.92rem;
+  line-height: 1.3;
+  text-align: start;
+  cursor: pointer;
+  transition: transform 0.15s;
+}
+
+.kid-step:hover {
+  transform: translateY(-4px) rotate(-1deg);
+}
+
+.kid-step.is-wrong {
+  animation: kid-shake 0.45s;
+}
+
+.kid-step-photo {
+  display: block;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  border-radius: 14px;
+  background-size: 220%;
+}
+
+.kid-step-date {
+  color: var(--k-sun);
+  font: 700 0.95rem var(--font-display);
+}
+
+/* True or false */
+.kid-tf {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  width: 100%;
+  max-width: 560px;
+}
+
+.kid-tf img {
+  width: 100%;
+  max-width: 380px;
+  aspect-ratio: 4 / 3;
+  border: 7px solid #fff;
+  border-radius: 18px;
+  object-fit: cover;
+  box-shadow: 0 10px 18px rgba(0, 0, 0, 0.3);
+  transform: rotate(-2deg);
+}
+
+.kid-tf-q {
+  font: 700 clamp(1.2rem, 3.6vw, 1.6rem) / 1.25 var(--font-display);
+  text-align: center;
+  text-wrap: balance;
+}
+
+.kid-tf-answers {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  width: 100%;
+}
+
+[data-profile='kid'] .kid-tf-answers .btn {
+  padding: 16px;
+  color: var(--k-ink);
+  font-size: 1.3rem;
+}
+
+[data-profile='kid'] .kid-true {
+  background: var(--k-mint);
+  box-shadow: 0 6px 0 var(--k-mint-d);
+}
+
+[data-profile='kid'] .kid-false {
+  background: var(--k-coral);
+  box-shadow: 0 6px 0 var(--k-coral-d);
+}
+
+/* After the answer the right button stays bright; only the other one fades. */
+[data-profile='kid'] .kid-tf-answers .btn:disabled {
+  opacity: 1;
+  cursor: default;
+}
+
+[data-profile='kid'] .kid-tf-answers .btn[data-dim] {
+  opacity: 0.35;
+}
+
+.kid-why {
+  padding: 12px 16px;
+  border-radius: 18px;
+  background: #fff;
+  color: var(--k-ink);
+  text-align: center;
+  animation: kid-pop 0.35s;
+}
+
+.kid-why b {
+  font-family: var(--font-display);
+}
+
+/* ---------- End of a game ---------- */
+
+.kid-win {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  text-align: center;
+}
+
+.kid-win h2 {
+  font-size: clamp(1.3rem, 4vw, 1.8rem);
+}
+
+.kid-win h2:focus {
+  outline: none;
+}
+
+.kid-win-stars {
+  display: flex;
+  gap: 6px;
+}
+
+.kid-win-stars .kid-star {
+  width: 54px;
+  height: 54px;
+  color: var(--k-sun);
+  animation: kid-stick 0.6s both cubic-bezier(0.2, 1.5, 0.4, 1);
+}
+
+.kid-win-stars .kid-star:nth-child(2) {
+  animation-delay: 0.15s;
+}
+
+.kid-win-stars .kid-star:nth-child(3) {
+  animation-delay: 0.3s;
+}
+
+.kid-win-stars .kid-star.is-off {
+  color: rgba(255, 255, 255, 0.22);
+}
+
+.kid-fact {
+  max-width: 520px;
+  padding: 12px 16px;
+  border-radius: 18px;
+  background: var(--k-ink);
+  font-size: 1rem;
+}
+
+.kid-fact b {
+  color: var(--k-sun);
+  font-family: var(--font-display);
+}
+
+.kid-row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px;
+}
+
+.kid-confetti {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+/* ---------- Small screens ---------- */
+
+@media (max-width: 560px) {
+  /* Smaller decor planets: on a phone they would sit behind the games. */
+  .kid-planet-mars {
+    top: 150px;
+    width: 110px;
+    height: 110px;
+  }
+
+  .kid-planet-moon {
+    width: 72px;
+    height: 72px;
+  }
+
+  .kid-guide {
+    grid-template-columns: 70px minmax(0, 1fr);
+  }
+
+  .kid-rocket {
+    width: 70px;
+  }
+
+  .kid-bubble {
+    font-size: 1rem;
+  }
+
+  .kid-picks {
+    gap: 8px;
+  }
+
+  .kid-pick {
+    font-size: 0.82rem;
+  }
+
+  .kid-memory {
+    gap: 8px;
+  }
+
+  .kid-slots,
+  .kid-steps {
+    grid-template-columns: 1fr;
+  }
+
+  .kid-slot {
+    min-height: 0;
+  }
+}
+
+/* ---------- Motion off: nothing bobs, drifts, twinkles or shakes ---------- */
+
+@media (prefers-reduced-motion: reduce) {
+  .kid-sky-star,
+  .kid-planet,
+  .kid-rocket,
+  .kid-flame,
+  .kid-eye,
+  .kid-tile,
+  .kid-page {
+    animation: none;
+  }
+
+  .kid-mcard-inner {
+    transition: none;
+  }
+}
