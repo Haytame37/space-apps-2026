@@ -227,6 +227,7 @@ deployed, and works offline. Guide in French: [`pitch/README.md`](pitch/README.m
 | `pitch/presentation/` | Clicker version: open `index.html` in Chrome or Edge. Guide in French: `README.md` |
 | `pitch/presentation-video/` | Self-running version: `index.html?auto`, plus the cover with the crew in orbit |
 | `pitch/demo/AYYUR-pitch-5min.mp4` | The 5-minute video (1080p, 30 fps) |
+| `pitch/demo/AYYUR-demo-30s.mp4` | The 30-second demo for the submission form (source: `pitch/demo-30s/`) |
 
 Speaker texts in Darija: `pitch/presentation/docs/script-darija.md` and `pitch/presentation-video/docs/script-video-darija.md`.
 

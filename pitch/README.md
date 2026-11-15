@@ -2,6 +2,12 @@
 
 Ce dossier contient tout ce qu'il faut pour présenter AYYUR. Il est séparé du site : il n'est pas mis en ligne sur Vercel.
 
+## Démo de 30 secondes (formulaire de soumission)
+
+`demo/AYYUR-demo-30s.mp4` : film muet de 29,7 s en anglais, avec sous-titres, qui se termine sur **ayyuur.vercel.app**. Source : `demo-30s/`.
+
+Le règlement demande un **lien public, sans mot de passe ni connexion** : mettre la vidéo sur YouTube en « Non répertoriée » (ou sur Google Drive en « Tous les utilisateurs disposant du lien »), puis vérifier le lien dans une fenêtre de navigation privée.
+
 ## Que choisir le jour J ?
 
 | Situation | Ce qu'on ouvre | Comment |
