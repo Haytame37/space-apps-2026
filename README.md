@@ -190,7 +190,7 @@ The language menu sits at the top right; the choice of English, French, Spanish 
 | `public/media/` | NASA photos from the challenge's resource pages, resized to WebP |
 | `assets/books/` | Source PDFs of the colouring books |
 | `assets/brand/` | AYYUR logo pack (SVG, PNG, animated GIF/MP4) and posters (`ayyur-affiche.pdf`) |
-| `docs/` | Submission answers (`SUBMISSION.md`), business plan (`BUSINESS.md`) and README images |
+| `docs/` | Business plan (`BUSINESS.md`) and README images |
 | `demo/` | The 30-second demo video for the submission |
 | `pitch/` | The 5-minute pitch video for the jury |
 
