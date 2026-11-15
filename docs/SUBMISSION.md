@@ -32,10 +32,10 @@ It matters because these objects are humanity's first heritage beyond Earth. AYY
 ### Project Demonstration *(max 7 slides or a 30-second video, public link, no login)*
 
 ```
-<PUBLIC LINK TO THE DEMO — to add>
+https://github.com/user-attachments/assets/50ec1649-d517-41d8-97fc-9261c16edd15
 ```
 
-> Still to make: a 7-slide deck (Title, Problem, Solution, Demo screens, NASA data, Impact, Team) or a 30-second screen recording. Upload it to YouTube (unlisted is fine), Google Drive or GitHub and check the link opens in a private window.
+> 30-second video (29.7 s), public link with no login. Copy in the repo: `demo/AYYUR-demo-30s.mp4`.
 
 ### Project *(public link, no login)*
 
