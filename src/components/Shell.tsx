@@ -3,6 +3,7 @@ import { Link, NavLink, Outlet, useLocation, useNavigate } from 'react-router'
 import { LANGS, useI18n, type Lang } from '../i18n/context'
 import { usePrefs, type Profile } from '../state/prefs'
 import { AgeGate } from './AgeGate'
+import { ErrorBoundary } from './ErrorBoundary'
 
 export function Shell() {
   const { t, lang, setLang, switching } = useI18n()
@@ -11,7 +12,10 @@ export function Shell() {
   const location = useLocation()
   const navigate = useNavigate()
   const main = useRef<HTMLElement>(null)
+  const nav = useRef<HTMLElement>(null)
   const section = location.pathname.split('/')[1] ?? ''
+  // Home and Explore share one 3D scene: they must not be remounted when moving between them.
+  const boundaryKey = section === '' || section === 'explore' ? 'stage' : section
   const firstSection = useRef(section)
   const booted = useRef(false)
 
@@ -31,6 +35,11 @@ export function Shell() {
     window.scrollTo(0, 0)
     main.current?.focus({ preventScroll: true })
   }, [section])
+
+  // On narrow phones the navigation scrolls sideways: keep the current section in view.
+  useEffect(() => {
+    nav.current?.querySelector('[aria-current="page"]')?.scrollIntoView({ block: 'nearest', inline: 'nearest' })
+  }, [section, lang])
 
   const choose = (next: Profile) => {
     const first = profile === null
@@ -57,7 +66,7 @@ export function Shell() {
           <span className="brand-mark" aria-hidden="true" />
           <span className="brand-name">Space Memory</span>
         </Link>
-        <nav className="site-nav" aria-label={t.nav.main}>
+        <nav ref={nav} className="site-nav" aria-label={t.nav.main}>
           <ul>
             {links.map((link) => (
               <li key={link.to}>
@@ -86,7 +95,20 @@ export function Shell() {
         </div>
       </header>
       <main id="main" ref={main} tabIndex={-1}>
-        <Outlet />
+        <ErrorBoundary
+          key={boundaryKey}
+          fallback={
+            <section className="page" role="alert">
+              <h1>{t.common.crashTitle}</h1>
+              <p className="lead">{t.common.crashBody}</p>
+              <button type="button" className="btn primary" onClick={() => window.location.reload()}>
+                {t.common.reload}
+              </button>
+            </section>
+          }
+        >
+          <Outlet />
+        </ErrorBoundary>
       </main>
       <AgeGate
         open={profile === null || settingsOpen}

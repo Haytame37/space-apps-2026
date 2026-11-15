@@ -4,6 +4,7 @@ import { Icon } from '../components/Icon'
 import { machineById, SOURCES, WORLDS, type WorldId } from '../data/machines'
 import { QUIZ } from '../data/quiz'
 import { useI18n } from '../i18n/context'
+import { useReveal } from '../lib/useReveal'
 import { usePrefs } from '../state/prefs'
 
 const PASS = 3
@@ -17,6 +18,7 @@ function Round({ world, onExit }: { world: WorldId; onExit: () => void }) {
   const [right, setRight] = useState(0)
   const [attempt, setAttempt] = useState(0)
   const total = questions.length
+  const feedback = useReveal<HTMLDivElement>(picked !== null)
 
   if (index >= total) {
     const won = right >= PASS
@@ -76,7 +78,7 @@ function Round({ world, onExit }: { world: WorldId; onExit: () => void }) {
       </fieldset>
       <div aria-live="polite">
         {picked !== null && (
-          <div className={`feedback ${picked === q.answer ? 'good' : 'bad'}`}>
+          <div ref={feedback} className={`feedback ${picked === q.answer ? 'good' : 'bad'}`}>
             <p className="feedback-title">{picked === q.answer ? t.quiz.right : t.quiz.wrong}</p>
             <p>{q.text.explain}</p>
             <p className="small">

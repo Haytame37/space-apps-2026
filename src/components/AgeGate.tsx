@@ -31,7 +31,11 @@ export function AgeGate({ open, current, onChoose, onClose }: Props) {
         // A first-time visitor has to pick a profile; later it is only a setting.
         if (current === null) e.preventDefault()
       }}
-      onClose={onClose}
+      onClose={() => {
+        // Browsers let a second Escape close a dialog anyway: reopen until a profile exists.
+        if (current === null && open) dialog.current?.showModal()
+        else onClose()
+      }}
     >
       <h2 id="age-title">{t.age.title}</h2>
       <p className="muted">{t.age.intro}</p>

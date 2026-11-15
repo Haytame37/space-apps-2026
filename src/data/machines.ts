@@ -520,6 +520,30 @@ export const MACHINES: Machine[] = [
   },
 ]
 
+/**
+ * Where each timeline event happened, in the same order as the machine's timeline.
+ * `null` is an event away from every site on the map (a launch from Earth, a flyby
+ * on the way, a decision taken on Earth): the view then shows the whole destination.
+ */
+const TIMELINE_PLACES: Record<MachineId, (string | null)[]> = {
+  'apollo-lm': ['apollo-11', 'apollo-11', 'apollo-12', 'apollo-14', 'apollo-15', 'apollo-16', 'apollo-17'],
+  lrv: ['apollo-15', 'apollo-15', 'apollo-15', 'apollo-16', 'apollo-17'],
+  alsep: ['apollo-11', 'apollo-11', 'apollo-12', 'apollo-12', 'apollo-15', 'apollo-17', null],
+  surveyor: ['surveyor-1', 'apollo-12', 'surveyor-5', 'surveyor-6', 'surveyor-7', 'apollo-12'],
+  pathfinder: [null, 'pathfinder', 'pathfinder', 'pathfinder'],
+  mer: ['spirit', 'opportunity', 'spirit', 'spirit', 'opportunity', null],
+  viking: [null, 'viking-1', 'viking-1', 'viking-2', 'viking-2', 'viking-1'],
+  'phoenix-insight': ['phoenix', 'phoenix', null, 'insight', 'insight', 'insight'],
+  ingenuity: [null, 'jezero', 'jezero', 'jezero', 'jezero', 'jezero'],
+  dawn: [null, null, null, null, 'ceres', 'ceres'],
+  near: [null, null, 'eros', 'eros', 'eros', 'eros'],
+  pioneer: [null, 'pioneer-10', 'pioneer-10', 'pioneer-11', 'pioneer-10', 'pioneer-11', 'pioneer-10'],
+  kepler: [null, 'kepler', 'kepler', 'kepler', 'kepler'],
+}
+
+/** Id of the place where event `step` of a machine's timeline happened, if it is on the map. */
+export const timelinePlace = (id: MachineId, step: number): string | undefined => TIMELINE_PLACES[id][step] ?? undefined
+
 export const WORLDS: WorldId[] = ['moon', 'mars', 'deep']
 
 export const WORLD_SLUG: Record<WorldId, string> = { moon: 'moon', mars: 'mars', deep: 'deep-space' }
@@ -550,3 +574,44 @@ export const MODEL_FILES = {
   eros: '/models/eros.glb',
   vesta: '/models/vesta.glb',
 } as const
+
+export interface StoryView {
+  /** The machine's site named in the address, or its first one. */
+  place: Place
+  /** False when the address has to be completed with a site. */
+  isPlaceGiven: boolean
+  /** Selected timeline event, if any. */
+  step: number | null
+  /** Place the 3D view turns to: where the selected event happened, else the site. Absent for an event off the map. */
+  focus: string | undefined
+}
+
+/**
+ * Reads a story's address (`?at=site&step=n`). Site and timeline stay in step:
+ * a chosen event decides what the globe shows; a chosen site alone selects the
+ * first event that happened there; a story opened with neither starts at its
+ * first event.
+ */
+export function storyView(machine: Machine, at: string | null, stepParam: string | null): StoryView {
+  const asked = placeById(at)
+  const isPlaceGiven = Boolean(asked?.machines.includes(machine.id))
+  const parsed = stepParam === null || stepParam.trim() === '' ? NaN : Number(stepParam)
+  const isStepGiven = Number.isInteger(parsed) && parsed >= 0 && parsed < machine.timeline.length
+  if (isStepGiven || !isPlaceGiven) {
+    const step = isStepGiven ? parsed : 0
+    const where = placeById(timelinePlace(machine.id, step))
+    // Without a site in the address, the story stands at the event's own site when it has one.
+    const place = isPlaceGiven ? asked! : where?.machines.includes(machine.id) ? where : placesOfMachine(machine.id)[0]
+    return { place, isPlaceGiven, step, focus: where?.id }
+  }
+  const place = asked!
+  const first = machine.timeline.findIndex((_, i) => timelinePlace(machine.id, i) === place.id)
+  return { place, isPlaceGiven, step: first >= 0 ? first : null, focus: place.id }
+}
+
+/** Address of a story with event `step` selected; the site follows when the event happened at one of the machine's sites. */
+export function storyStepPath(machine: Machine, current: Place, step: number): string {
+  const where = placeById(timelinePlace(machine.id, step))
+  const site = where?.machines.includes(machine.id) ? where : current
+  return `/explore/${WORLD_SLUG[machine.world]}/${machine.id}?at=${site.id}&step=${step}`
+}

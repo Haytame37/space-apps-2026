@@ -1,0 +1,136 @@
+/* ---------- Narrow phones ---------- */
+
+@media (max-width: 599px) {
+  .profile-btn {
+    max-width: 6.4rem;
+  }
+
+  .site-nav {
+    /* Fades the edge where more destinations can be scrolled into view. */
+    mask-image: linear-gradient(to right, transparent 0, #000 10px, #000 calc(100% - 10px), transparent 100%);
+  }
+
+  .site-nav a {
+    padding: 0 8px;
+  }
+}
+
+@media (max-width: 720px) {
+  /* The cards right below already name each destination. */
+  .world-label {
+    display: none;
+  }
+}
+
+/* ---------- Touch feedback: every control answers the press itself ---------- */
+
+.world-card,
+.game-card,
+.machine-card,
+.quiz-world,
+.choice,
+.chip,
+.age-option,
+.icon-btn,
+.tab,
+.tl-stop,
+.memory-card,
+.profile-btn,
+.site-nav a {
+  -webkit-tap-highlight-color: transparent;
+}
+
+.world-card:active,
+.game-card:active,
+.machine-card:active,
+.quiz-world:active,
+.age-option:active,
+.memory-card:active {
+  transform: scale(0.975);
+  transition-duration: 0.08s;
+}
+
+.choice:active:not(:disabled),
+.chip:active,
+.icon-btn:active:not(:disabled),
+.profile-btn:active,
+.tl-stop:active .tl-num {
+  transform: scale(0.95);
+  transition-duration: 0.08s;
+}
+
+.choice,
+.chip,
+.icon-btn,
+.profile-btn {
+  transition:
+    transform 0.2s cubic-bezier(0.32, 0.72, 0, 1),
+    border-color 0.18s,
+    background-color 0.18s;
+}
+
+.tab:active,
+.site-nav a:active {
+  opacity: 0.6;
+}
+
+@media (hover: none) {
+  /* No hover on touch screens: a lifted card would stay lifted after the tap. */
+  .world-card:hover,
+  .game-card:hover,
+  .quiz-world:hover,
+  .machine-card:hover {
+    transform: none;
+  }
+}
+
+/* ---------- User preferences ---------- */
+
+@media (prefers-reduced-transparency: reduce) {
+  :root {
+    --surface: var(--surface-solid);
+    --panel: var(--surface-solid);
+  }
+
+  .site-header {
+    background: var(--bg);
+  }
+
+  .site-header,
+  .age-gate::backdrop {
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+}
+
+@media (prefers-contrast: more) {
+  :root {
+    --surface: #0a0f1e;
+    --panel: #0a0f1e;
+    --surface-2: #131b33;
+    --line: rgba(220, 230, 255, 0.55);
+    --line-strong: rgba(235, 240, 255, 0.85);
+    --muted: #d5dcf0;
+  }
+
+  .site-header {
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+    background: var(--bg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .world-card:active,
+  .game-card:active,
+  .machine-card:active,
+  .quiz-world:active,
+  .age-option:active,
+  .memory-card:active,
+  .choice:active,
+  .chip:active,
+  .icon-btn:active,
+  .profile-btn:active {
+    transform: none;
+  }
+}

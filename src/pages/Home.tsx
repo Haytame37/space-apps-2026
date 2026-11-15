@@ -1,15 +1,21 @@
-import { Link } from 'react-router'
+import { useRef } from 'react'
+import { Link, useOutletContext } from 'react-router'
 import { Icon } from '../components/Icon'
 import { MACHINES } from '../data/machines'
 import { useI18n } from '../i18n/context'
+import { useStageRoom } from '../lib/useStageRoom'
+import type { StageOutlet } from '../stage/StageLayout'
 import { usePrefs } from '../state/prefs'
 
 export function Home() {
   const { t, fmt } = useI18n()
   const { found } = usePrefs()
+  const { reportRoom } = useOutletContext<StageOutlet>()
+  const kicker = useRef<HTMLParagraphElement>(null)
+  useStageRoom(reportRoom, kicker)
   return (
     <section className="home">
-      <p className="kicker">{t.home.kicker}</p>
+      <p ref={kicker} className="kicker">{t.home.kicker}</p>
       <h1 className="home-title">{t.home.title}</h1>
       <p className="home-tagline">
         <span>{t.home.line1}</span> <span className="accent">{t.home.line2}</span>

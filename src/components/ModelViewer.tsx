@@ -4,6 +4,7 @@ import { Suspense, useEffect, useMemo, useState } from 'react'
 import * as THREE from 'three'
 import { RoomEnvironment } from 'three/examples/jsm/environments/RoomEnvironment.js'
 import { useI18n } from '../i18n/context'
+import { modelBounds } from '../lib/modelBounds'
 import { useReducedMotion } from '../lib/useReducedMotion'
 import { ErrorBoundary } from './ErrorBoundary'
 import { Icon } from './Icon'
@@ -24,10 +25,9 @@ function Studio() {
 function Model({ src, yaw, onReady }: { src: string; yaw: number; onReady: () => void }) {
   const { scene } = useGLTF(src, false, true)
   const fit = useMemo(() => {
-    const box = new THREE.Box3().setFromObject(scene)
-    const size = box.getSize(new THREE.Vector3())
+    const { size, center } = modelBounds(scene)
     const scale = 2.4 / Math.max(size.x, size.y, size.z)
-    return { scale, offset: box.getCenter(new THREE.Vector3()).multiplyScalar(-scale) }
+    return { scale, offset: center.clone().multiplyScalar(-scale) }
   }, [scene])
   useEffect(onReady, [onReady])
   return (

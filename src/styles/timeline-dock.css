@@ -1,0 +1,183 @@
+/* ---------- Timeline under the 3D view ---------- */
+
+.tl-dock {
+  pointer-events: auto;
+  padding: 8px clamp(14px, 2vw, 24px) 10px;
+}
+
+.tl-dock-head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.tl-dock-head h2 {
+  margin: 0;
+  color: var(--w);
+  font: 700 0.78rem/1.2 var(--font-body);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+:lang(ar) .tl-dock-head h2 {
+  font-size: 0.9rem;
+  letter-spacing: 0;
+}
+
+.tl-count {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.82rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.tl-dock-nav {
+  display: flex;
+  gap: 6px;
+  margin-inline-start: auto;
+}
+
+.tl-dock-nav .icon-btn {
+  width: 36px;
+  height: 36px;
+}
+
+.tl-dock .tl-index {
+  margin-block: 2px 4px;
+  padding: 6px 4px 2px;
+  scrollbar-width: none;
+}
+
+/* A dot under the year marks the events that have a place on the globe. */
+.tl-stop.has-place .tl-year::after {
+  content: '';
+  display: block;
+  width: 5px;
+  height: 5px;
+  margin: 3px auto 0;
+  border-radius: 50%;
+  background: var(--w);
+  opacity: 0.55;
+}
+
+.tl-stop[aria-current='step'].has-place .tl-year::after {
+  opacity: 1;
+}
+
+.tl-now {
+  min-height: 3.1em;
+}
+
+.tl-now > * {
+  animation: fade-in 0.28s ease both;
+}
+
+.tl-when {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 4px 12px;
+  margin: 0 0 2px;
+}
+
+.tl-dock .tl-date {
+  margin: 0;
+  font-size: 1.05rem;
+}
+
+.tl-place {
+  padding: 1px 10px;
+  border: 1px solid var(--line-strong);
+  border-radius: 999px;
+  color: var(--text);
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.tl-dock .tl-text {
+  margin: 0;
+  font-size: 0.95rem;
+  line-height: 1.5;
+  text-wrap: pretty;
+}
+
+/* Wide screens: docked under the globe, in the part of the screen the story panel leaves free. */
+@media (min-width: 900px) {
+  .tl-dock.is-docked {
+    position: fixed;
+    inset-inline: 0 var(--panel-w, min(500px, 50vw));
+    transition: inset-inline-end var(--panel-motion);
+    bottom: 0;
+    z-index: 3;
+    border-top: 1px solid var(--line);
+    background: var(--panel);
+    box-shadow: 0 -18px 40px rgba(0, 0, 0, 0.35);
+    animation: rise-in 0.5s var(--ease-out) both;
+  }
+
+  .tl-dock.is-docked .tl-now {
+    max-width: 62rem;
+  }
+
+  /* The view controls ride on top of the dock. */
+  .stage-controls {
+    transform: translate3d(0, calc(-1 * var(--dock-h, 0px)), 0);
+    transition: transform 0.42s cubic-bezier(0.32, 0.72, 0, 1);
+  }
+}
+
+/* Phones: first thing in the panel, right under the globe, and it stays put while the story scrolls. */
+@media (max-width: 899px) {
+  .tl-dock {
+    flex: none;
+    padding: 0 16px 10px;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .tl-dock .tl-index {
+    margin-inline: -16px;
+    padding-inline: 16px;
+  }
+
+  .tl-dock .tl-text {
+    font-size: 0.9rem;
+  }
+
+  .tl-now {
+    min-height: 0;
+  }
+}
+
+/* Phone held sideways: little height to spare, so the event text stays on two lines. */
+@media (max-width: 899px) and (orientation: landscape) and (max-height: 520px) {
+  .tl-dock {
+    padding-block: 8px 6px;
+  }
+
+  .tl-dock .tl-index {
+    padding-block: 4px 2px;
+  }
+
+  .tl-dock .tl-num {
+    width: 30px;
+    height: 30px;
+    font-size: 0.85rem;
+  }
+
+  .tl-dock .tl-index li + li::before {
+    top: 17px;
+  }
+
+  .tl-now {
+    min-height: 0;
+  }
+
+  .tl-dock .tl-text {
+    display: -webkit-box;
+    overflow: hidden;
+    font-size: 0.85rem;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+  }
+}

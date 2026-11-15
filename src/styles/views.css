@@ -1,0 +1,276 @@
+/* ---------- Large view of a story: selector, hidden panel, 3D model and NASA live view ---------- */
+
+.stage-layout {
+  /* A panel slid off screen must not make the page scroll sideways (in Arabic the page would shift by its width). */
+  overflow-x: clip;
+  /* Room the side panel (wide screens) or the sheet (phones) takes from the large view. */
+  --panel-w: 0px;
+  --panel-b: 0px;
+  --panel-motion: 0.5s cubic-bezier(0.32, 0.72, 0, 1);
+}
+
+@media (min-width: 900px), (max-width: 899px) and (orientation: landscape) and (max-height: 520px) {
+  .stage-layout.view-world {
+    --panel-w: min(500px, 50vw);
+  }
+}
+
+@media (max-width: 899px) and (orientation: portrait), (max-width: 899px) and (min-height: 521px) {
+  .stage-layout.view-world {
+    --panel-b: var(--sheet-h);
+  }
+}
+
+.stage-layout[data-panel='hidden'] {
+  --panel-w: 0px;
+  --panel-b: 0px;
+}
+
+/* The panel slides out along the edge it is attached to, and comes back the same way. */
+.world-panel {
+  transition:
+    translate var(--panel-motion),
+    visibility 0s;
+}
+
+.world-panel[data-hidden] {
+  visibility: hidden;
+  transition:
+    translate var(--panel-motion),
+    visibility 0s linear 0.5s;
+}
+
+@media (min-width: 900px), (max-width: 899px) and (orientation: landscape) and (max-height: 520px) {
+  .world-panel[data-hidden] {
+    translate: 100% 0;
+  }
+
+  [dir='rtl'] .world-panel[data-hidden] {
+    translate: -100% 0;
+  }
+}
+
+@media (max-width: 899px) and (orientation: portrait), (max-width: 899px) and (min-height: 521px) {
+  .world-panel[data-hidden] {
+    translate: 0 100%;
+  }
+}
+
+.stage-controls {
+  transition: transform var(--panel-motion);
+}
+
+/* ---------- Selector and panel switch, floating at the top of the large view ---------- */
+
+.view-bar {
+  position: fixed;
+  top: calc(var(--header-h) + 12px);
+  inset-inline: clamp(12px, 2vw, 24px) calc(var(--panel-w) + clamp(12px, 2vw, 24px));
+  z-index: 4;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  pointer-events: none;
+  transition: inset-inline-end var(--panel-motion);
+  animation: fade-in 0.4s ease both;
+}
+
+.view-bar > * {
+  pointer-events: auto;
+}
+
+.view-switch,
+.panel-toggle {
+  border: 1px solid var(--line-strong);
+  border-radius: 999px;
+  background: rgba(6, 10, 22, 0.74);
+  -webkit-backdrop-filter: blur(16px) saturate(160%);
+  backdrop-filter: blur(16px) saturate(160%);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+}
+
+.view-switch {
+  display: inline-flex;
+  gap: 2px;
+  min-width: 0;
+  padding: 4px;
+}
+
+.view-switch button {
+  min-height: 36px;
+  padding: 0 14px;
+  border: 0;
+  border-radius: 999px;
+  background: none;
+  color: var(--muted);
+  font-size: 0.9rem;
+  font-weight: 600;
+  white-space: nowrap;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition:
+    background-color 0.2s,
+    color 0.2s,
+    transform 0.2s cubic-bezier(0.32, 0.72, 0, 1);
+}
+
+.view-switch button:hover {
+  color: var(--text);
+}
+
+.view-switch button[aria-pressed='true'] {
+  background: var(--w);
+  color: #0a0f1c;
+}
+
+.view-switch button:active {
+  transform: scale(0.95);
+  transition-duration: 0.08s;
+}
+
+.panel-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  margin-inline-start: auto;
+  padding: 0 16px 0 12px;
+  color: var(--text);
+  font-size: 0.9rem;
+  font-weight: 600;
+  white-space: nowrap;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition:
+    border-color 0.2s,
+    transform 0.2s cubic-bezier(0.32, 0.72, 0, 1);
+}
+
+.panel-toggle:hover {
+  border-color: var(--text);
+}
+
+.panel-toggle:active {
+  transform: scale(0.96);
+  transition-duration: 0.08s;
+}
+
+@media (max-width: 599px) {
+  .view-bar {
+    top: calc(var(--header-h) + 8px);
+  }
+
+  .view-switch button {
+    padding: 0 10px;
+    font-size: 0.84rem;
+  }
+
+  /* Phones: the switch is an icon; its name stays available to screen readers. */
+  .panel-toggle {
+    width: 44px;
+    padding: 0;
+    justify-content: center;
+  }
+
+  .panel-toggle-text {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+}
+
+/* ---------- 3D model and NASA live view, filling the large area ---------- */
+
+.view-stage {
+  position: fixed;
+  top: var(--header-h);
+  bottom: var(--panel-b);
+  inset-inline: 0 var(--panel-w);
+  z-index: 3;
+  display: flex;
+  flex-direction: column;
+  padding: calc(var(--view-bar-h, 64px) + 8px) clamp(12px, 2vw, 24px) clamp(10px, 2vh, 18px);
+  background: radial-gradient(70% 60% at 50% 45%, #141d38, var(--bg) 75%);
+  pointer-events: auto;
+  transition:
+    inset-inline-end var(--panel-motion),
+    bottom var(--panel-motion);
+  animation: fade-in 0.35s ease both;
+}
+
+.view-stage .model-viewer {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.view-stage .model-frame {
+  flex: 1;
+  min-height: 0;
+  aspect-ratio: auto;
+  background: transparent;
+}
+
+.view-stage .model-viewer > p {
+  margin: 0;
+}
+
+.view-status {
+  position: absolute;
+  inset: 46% 0 auto;
+  margin: 0;
+  color: var(--muted);
+  text-align: center;
+}
+
+.live-view {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 8px;
+  min-height: 0;
+}
+
+.live-sources {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.live-sources .chip {
+  background: none;
+  color: var(--text);
+  cursor: pointer;
+}
+
+.live-sources .chip[aria-pressed='true'] {
+  border-color: var(--w);
+  background: var(--w);
+  color: #0a0f1c;
+}
+
+.live-frame {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: #000;
+}
+
+.live-frame iframe {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
+.live-foot {
+  margin: 0;
+}

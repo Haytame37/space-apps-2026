@@ -1,0 +1,247 @@
+/* ---------- Motion: things arrive, they do not pop ---------- */
+
+@keyframes rise-in {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 14px, 0);
+  }
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+}
+
+@keyframes panel-in {
+  from {
+    opacity: 0;
+    transform: translate3d(var(--panel-from, 28px), 0, 0);
+  }
+}
+
+@keyframes pop-in {
+  from {
+    opacity: 0;
+    transform: scale(0.96);
+  }
+}
+
+@keyframes flip-in {
+  from {
+    transform: perspective(600px) rotateY(88deg);
+  }
+}
+
+@keyframes flip-back {
+  from {
+    transform: perspective(600px) rotateY(-88deg);
+  }
+}
+
+@keyframes solved-glow {
+  50% {
+    box-shadow: 0 0 0 6px rgba(122, 232, 174, 0.35);
+  }
+}
+
+/* The 3D view fades in once its models are ready. */
+.stage-canvas {
+  opacity: 0;
+  transition: opacity 0.9s ease;
+}
+
+.stage.is-ready .stage-canvas {
+  opacity: 1;
+}
+
+.stage-status {
+  animation: fade-in 0.4s 0.3s both;
+}
+
+/* Pages outside the 3D stage. */
+.page > * {
+  animation: rise-in 0.5s var(--ease-out) both;
+}
+
+.page > :nth-child(2) {
+  animation-delay: 40ms;
+}
+
+.page > :nth-child(3) {
+  animation-delay: 80ms;
+}
+
+.page > :nth-child(n + 4) {
+  animation-delay: 120ms;
+}
+
+/* Home: the title leads, the rest follows. */
+.home > * {
+  animation: rise-in 0.7s var(--ease-out) both;
+}
+
+.home > :nth-child(2) {
+  animation-delay: 60ms;
+}
+
+.home > :nth-child(3) {
+  animation-delay: 140ms;
+}
+
+.home > :nth-child(4) {
+  animation-delay: 200ms;
+}
+
+.home > :nth-child(n + 5) {
+  animation-delay: 260ms;
+}
+
+/* Destination chooser: heading, then the three cards one after the other. */
+.chooser-head,
+.chooser .fine-print {
+  animation: fade-in 0.6s ease both;
+}
+
+.world-cards > li {
+  animation: rise-in 0.55s var(--ease-out) both;
+}
+
+.world-cards > li:nth-child(2) {
+  animation-delay: 70ms;
+}
+
+.world-cards > li:nth-child(3) {
+  animation-delay: 140ms;
+}
+
+.world-label,
+.marker-label {
+  animation: fade-in 0.35s ease both;
+}
+
+/* Story panel: slides in from its edge, then each story rises into place. */
+@media (min-width: 900px), (max-width: 899px) and (orientation: landscape) and (max-height: 520px) {
+  .world-panel {
+    animation: panel-in 0.5s var(--ease-out) both;
+  }
+
+  [dir='rtl'] .world-panel {
+    --panel-from: -28px;
+  }
+}
+
+.world-index > *,
+.machine > * {
+  animation: rise-in 0.45s var(--ease-out) both;
+}
+
+.world-index > :nth-child(n + 4),
+.machine > :nth-child(n + 4) {
+  animation-delay: 60ms;
+}
+
+.machine-list > li {
+  animation: rise-in 0.45s var(--ease-out) both;
+}
+
+.machine-list > li:nth-child(2) {
+  animation-delay: 40ms;
+}
+
+.machine-list > li:nth-child(3) {
+  animation-delay: 80ms;
+}
+
+.machine-list > li:nth-child(n + 4) {
+  animation-delay: 120ms;
+}
+
+.tabpanel > * {
+  animation: fade-in 0.28s ease both;
+}
+
+.tl-card > * {
+  animation: fade-in 0.25s ease both;
+}
+
+/* Games. */
+.game-cards > li,
+.quiz-worlds > li {
+  animation: rise-in 0.5s var(--ease-out) both;
+}
+
+.game-cards > li:nth-child(2),
+.quiz-worlds > li:nth-child(2) {
+  animation-delay: 50ms;
+}
+
+.game-cards > li:nth-child(3),
+.quiz-worlds > li:nth-child(3) {
+  animation-delay: 100ms;
+}
+
+.game-cards > li:nth-child(n + 4) {
+  animation-delay: 150ms;
+}
+
+.feedback,
+.result-card,
+.clues li {
+  animation: pop-in 0.32s var(--ease-out) both;
+}
+
+.memory-card.shown {
+  animation: flip-in 0.28s var(--ease-out) both;
+}
+
+.memory-card:not(.shown) {
+  animation: flip-back 0.28s var(--ease-out) both;
+}
+
+.memory-card.matched {
+  animation: flip-in 0.28s var(--ease-out) both, solved-glow 0.7s ease 0.2s;
+}
+
+.puzzle.solved {
+  border-radius: var(--radius-sm);
+  animation: solved-glow 0.9s ease;
+}
+
+.puzzle-tile {
+  transition:
+    transform 0.2s var(--ease-out),
+    border-color 0.15s;
+}
+
+.sortable li {
+  transition: border-color 0.2s;
+}
+
+/* Profile dialog: the material arrives, it is not switched on. */
+.age-gate[open] {
+  animation: pop-in 0.3s var(--ease-out) both;
+}
+
+.age-gate[open]::backdrop {
+  animation: fade-in 0.3s ease both;
+}
+
+/* The loading pill sits in the part of the screen the story panel leaves free. */
+@media (min-width: 900px), (max-width: 899px) and (orientation: landscape) and (max-height: 520px) {
+  .view-world .stage-status {
+    inset-inline-end: var(--panel-w, min(500px, 50vw));
+  }
+}
+
+@media (max-width: 899px) and (orientation: portrait), (max-width: 899px) and (min-height: 521px) {
+  .view-world .stage-status {
+    top: calc(var(--header-h) + 14dvh);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .stage-canvas {
+    transition: none;
+  }
+}

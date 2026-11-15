@@ -1,9 +1,6 @@
-import { lazy, Suspense, useEffect, useRef, useState } from 'react'
+import { useEffect, useRef } from 'react'
 import { Link } from 'react-router'
 import {
-  ASTEROID_STORY_URL,
-  eyesEmbedUrl,
-  eyesPageUrl,
   placesOfMachine,
   SOURCES,
   WORLD_SLUG,
@@ -15,11 +12,6 @@ import { useI18n } from '../i18n/context'
 import { usePrefs } from '../state/prefs'
 import { ExternalLink } from './ExternalLink'
 import { Icon } from './Icon'
-import { NasaEmbed } from './NasaEmbed'
-import { Tabs, type TabItem } from './Tabs'
-import { Timeline } from './Timeline'
-
-const ModelViewer = lazy(() => import('./ModelViewer'))
 
 function useCoords() {
   const { t, num } = useI18n()
@@ -52,7 +44,6 @@ interface Props {
 export function MachinePanel({ machine, place }: Props) {
   const { t, fmt } = useI18n()
   const { profile, markFound } = usePrefs()
-  const [tab, setTab] = useState('story')
   const heading = useRef<HTMLHeadingElement>(null)
   const coords = useCoords()
   const text = t.machines[machine.id]
@@ -60,7 +51,6 @@ export function MachinePanel({ machine, place }: Props) {
   const slug = WORLD_SLUG[machine.world]
   const kid = profile === 'kid'
   const neighbours = place ? place.machines.filter((id) => id !== machine.id) : []
-  const eyesPlace = place?.eyes ? place : places.find((p) => p.eyes)
 
   useEffect(() => {
     markFound(machine.id)
@@ -116,49 +106,6 @@ export function MachinePanel({ machine, place }: Props) {
       </details>
     </div>
   )
-
-  const items: TabItem[] = [
-    { id: 'story', label: t.panel.story, content: story },
-    { id: 'timeline', label: t.panel.timeline, content: <Timeline key={machine.id} machine={machine} /> },
-  ]
-  if (machine.model) {
-    items.push({
-      id: 'model',
-      label: t.panel.model,
-      content: (
-        <Suspense fallback={<p role="status">{t.panel.modelLoading}</p>}>
-          <ModelViewer src={machine.model.src} label={`${t.panel.model}: ${text.name}`} credit={machine.model.credit} />
-        </Suspense>
-      ),
-    })
-  }
-  if (eyesPlace?.eyes) {
-    items.push({
-      id: 'live',
-      label: t.panel.live,
-      content: (
-        <div className="live">
-          <NasaEmbed
-            key={eyesPlace.id}
-            title={fmt(t.panel.liveFrame, { name: eyesPlace.name })}
-            lead={fmt(t.panel.liveLead, { name: eyesPlace.name })}
-            loadLabel={t.panel.liveLoad}
-            embedUrl={eyesEmbedUrl(eyesPlace.eyes)}
-            pageUrl={eyesPageUrl(eyesPlace.eyes)}
-          />
-          {(machine.id === 'near' || machine.id === 'dawn') && (
-            <NasaEmbed
-              title={t.panel.storyFrame}
-              lead={t.panel.storyLead}
-              loadLabel={t.panel.storyLoad}
-              embedUrl={ASTEROID_STORY_URL}
-              pageUrl={ASTEROID_STORY_URL}
-            />
-          )}
-        </div>
-      ),
-    })
-  }
 
   return (
     <article className={`machine world-${machine.world}`}>
@@ -216,7 +163,7 @@ export function MachinePanel({ machine, place }: Props) {
         )}
       </section>
 
-      <Tabs key={machine.id} label={t.panel.tabs} items={items} active={items.some((i) => i.id === tab) ? tab : 'story'} onChange={setTab} />
+      {story}
     </article>
   )
 }

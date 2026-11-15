@@ -4,6 +4,7 @@ import { Suspense, useEffect, useImperativeHandle, useLayoutEffect, useMemo, use
 import * as THREE from 'three'
 import { MODEL_FILES, PLACES, type MachineId, type Place, type WorldId } from '../data/machines'
 import { dirFromLatLon } from '../lib/geo'
+import { modelBounds } from '../lib/modelBounds'
 
 export type StageView = 'home' | 'choose' | WorldId
 
@@ -32,6 +33,8 @@ export interface StageProps {
   onPickWorld: (world: WorldId) => void
   onPickPlace: (placeId: string) => void
   onReady: () => void
+  /** True while another view covers the whole scene: nothing is drawn. */
+  paused?: boolean
 }
 
 const FOV = 40
@@ -39,18 +42,17 @@ const TAN = Math.tan((FOV / 2) * (Math.PI / 180))
 const ACCENT: Record<WorldId, string> = { moon: '#dfe8ff', mars: '#ffb07a', deep: '#c4b0ff' }
 const RADIUS = { moon: 1, mars: 1.3 }
 /** Radius of the sphere the camera frames when it visits a destination. */
-const FIT: Record<WorldId, number> = { moon: 1.3, mars: 1.7, deep: 3.2 }
+const FIT: Record<WorldId, number> = { moon: 1.1, mars: 1.42, deep: 3.2 }
 
 interface SceneLayout {
   moon: THREE.Vector3
   mars: THREE.Vector3
   deep: THREE.Vector3
   deepScale: number
-  /** Half-width of the scene that must stay visible on the home view. */
-  span: number
-  /** Height the camera looks at on the home page and on the destination chooser. */
-  lookY: number
-  lookChoose: number
+  /** Centre and half-extents of the box the overview has to keep on screen. */
+  centre: THREE.Vector2
+  halfWidth: number
+  halfHeight: number
 }
 
 const LANDSCAPE: SceneLayout = {
@@ -58,20 +60,29 @@ const LANDSCAPE: SceneLayout = {
   mars: new THREE.Vector3(2.6, 0.3, -0.5),
   deep: new THREE.Vector3(0.1, 1.9, -11),
   deepScale: 1,
-  span: 4.5,
-  lookY: -0.95,
-  lookChoose: -0.05,
+  centre: new THREE.Vector2(0.15, 0.35),
+  halfWidth: 4.05,
+  halfHeight: 1.55,
 }
 
 const PORTRAIT: SceneLayout = {
-  moon: new THREE.Vector3(-1.05, 2.55, 0),
-  mars: new THREE.Vector3(0.95, 1.6, -0.6),
-  deep: new THREE.Vector3(-1.9, -0.9, -9),
+  moon: new THREE.Vector3(-1.25, 2.2, 0),
+  mars: new THREE.Vector3(1, 1.75, -0.6),
+  deep: new THREE.Vector3(2.3, 4.2, -9),
   deepScale: 0.5,
-  span: 2.6,
-  lookY: 0.2,
-  lookChoose: 0.9,
+  centre: new THREE.Vector2(0.03, 1.85),
+  halfWidth: 2.3,
+  halfHeight: 1.6,
 }
+
+/** Smallest share of the screen height the overview may use, and the air kept around it. */
+const OVERLAP_HOME = 0.36
+const OVERLAP_CHOOSE = 0.3
+const OVERVIEW_MARGIN = 1.12
+/** Share of the free room a visited destination fills. */
+const FILL = 0.96
+/** Extra closeness when a site is selected; the whole globe still fits. */
+const SITE_ZOOM = 0.93
 
 const layoutFor = (aspect: number) => (aspect < 0.95 ? PORTRAIT : LANDSCAPE)
 
@@ -82,6 +93,26 @@ interface Shared {
 }
 
 const clamp = (v: number, min: number, max: number) => Math.min(max, Math.max(min, v))
+/** Share of the remaining distance to cover this frame: frame-rate independent, always from the current value. */
+const easing = (dt: number, speed: number) => 1 - Math.exp(-Math.min(dt, 0.1) * speed)
+
+/** Grows a body into the scene or shrinks it away, so only the visited destination stays on stage. */
+function usePresence(present: boolean, size: number, reducedMotion: boolean) {
+  const ref = useRef<THREE.Group>(null)
+  const started = useRef(false)
+  useFrame((_, dt) => {
+    const node = ref.current
+    if (!node) return
+    const goal = present ? size : 0
+    // The first frame starts at the right size: only later changes are animated.
+    const instant = reducedMotion || !started.current
+    started.current = true
+    const next = instant ? goal : node.scale.x + (goal - node.scale.x) * easing(dt, 4.5)
+    node.scale.setScalar(Math.abs(next - goal) < size * 0.002 ? goal : next)
+    node.visible = node.scale.x > size * 0.002
+  })
+  return ref
+}
 const shortest = (a: number) => Math.atan2(Math.sin(a), Math.cos(a))
 
 function setCursor(pointer: boolean) {
@@ -99,6 +130,8 @@ interface MarkerProps {
   interactive: boolean
   /** Show the name without waiting for a hover. */
   named?: boolean
+  /** On a globe: the name hides when the marker turns to the far side. */
+  occludable?: boolean
   reducedMotion: boolean
   sharedRef: RefObject<Shared>
   onPick: (placeId: string) => void
@@ -106,9 +139,10 @@ interface MarkerProps {
 
 const Z_AXIS = new THREE.Vector3(0, 0, 1)
 
-function Marker({ place, position, normal, size, color, state, interactive, named = false, reducedMotion, sharedRef, onPick }: MarkerProps) {
+function Marker({ place, position, normal, size, color, state, interactive, named = false, occludable = false, reducedMotion, sharedRef, onPick }: MarkerProps) {
   const group = useRef<THREE.Group>(null)
   const ring = useRef<THREE.Mesh>(null)
+  const dot = useRef<THREE.Mesh>(null)
   const label = useRef<HTMLDivElement>(null)
   const [hovered, setHovered] = useState(false)
   const phase = useMemo(() => (place.id.length * 0.37) % 1, [place.id])
@@ -129,9 +163,17 @@ function Marker({ place, position, normal, size, color, state, interactive, name
 
   useEffect(() => () => setCursor(false), [])
 
-  useFrame(({ clock, camera }) => {
+  useFrame(({ clock, camera }, dt) => {
     const node = group.current
     if (!node) return
+    // Nothing to orient or fade while the body this marker sits on is shrunk away.
+    if (node.getWorldScale(scratchC).x < 1e-4) return
+    if (dot.current) {
+      // The dot grows and shrinks instead of jumping when it is selected.
+      const goal = state === 'active' ? 1.5 : state === 'related' ? 1.15 : 0.85
+      const current = dot.current.scale.x
+      dot.current.scale.setScalar(reducedMotion ? goal : current + (goal - current) * easing(dt, 9))
+    }
     if (!normal && node.parent) {
       node.quaternion.copy(node.parent.getWorldQuaternion(scratchQ).invert()).multiply(camera.quaternion)
     }
@@ -141,7 +183,7 @@ function Marker({ place, position, normal, size, color, state, interactive, name
       const material = ring.current.material as THREE.MeshBasicMaterial
       material.opacity = state === 'idle' ? 0.35 : (1 - pulse) * 0.9
     }
-    if (label.current && normal) {
+    if (label.current && normal && occludable) {
       const world = node.getWorldPosition(scratchA)
       const facing = node.getWorldDirection(scratchB).dot(scratchC.copy(camera.position).sub(world).normalize())
       label.current.style.opacity = facing > 0.15 ? '1' : '0'
@@ -149,12 +191,11 @@ function Marker({ place, position, normal, size, color, state, interactive, name
   })
 
   const core = state === 'active' ? '#ffffff' : color
-  const scale = state === 'active' ? 1.5 : state === 'related' ? 1.15 : 0.85
   const showLabel = interactive && (named || state === 'active' || hovered)
 
   return (
     <group ref={group} position={position} quaternion={quaternion}>
-      <mesh scale={scale}>
+      <mesh ref={dot} scale={0.85}>
         <sphereGeometry args={[size, 16, 16]} />
         <meshBasicMaterial color={core} toneMapped={false} />
       </mesh>
@@ -203,11 +244,9 @@ const scratchQ = new THREE.Quaternion()
 function useFittedModel(url: string, radius: number) {
   const { scene } = useGLTF(url, false, true)
   return useMemo(() => {
-    const box = new THREE.Box3().setFromObject(scene)
-    const size = box.getSize(new THREE.Vector3())
-    const center = box.getCenter(new THREE.Vector3())
+    const { size, center } = modelBounds(scene)
     const scale = (2 * radius) / Math.max(size.x, size.y, size.z)
-    return { scene, scale, offset: center.multiplyScalar(-scale) }
+    return { scene, scale, offset: center.clone().multiplyScalar(-scale) }
   }, [scene, radius])
 }
 
@@ -232,12 +271,15 @@ interface GlobeProps extends CommonProps {
   position: THREE.Vector3
   tilt: number
   speed: number
+  /** False while another destination is being visited. */
+  present: boolean
 }
 
-function Globe({ world, label, position, tilt, speed, view, machineId, placeId, reducedMotion, sharedRef, onPickWorld, onPickPlace }: GlobeProps) {
+function Globe({ world, label, position, tilt, speed, present, view, machineId, placeId, reducedMotion, sharedRef, onPickWorld, onPickPlace }: GlobeProps) {
   const radius = RADIUS[world]
   const model = useFittedModel(MODEL_FILES[world], radius)
   const spin = useRef<THREE.Group>(null)
+  const body = usePresence(present, 1, reducedMotion)
   const places = useMemo(
     () =>
       PLACES.filter((p) => p.world === world).map((place) => {
@@ -256,7 +298,7 @@ function Globe({ world, label, position, tilt, speed, view, machineId, placeId, 
   })
 
   return (
-    <group position={position} rotation={[0, 0, tilt]}>
+    <group ref={body} position={position} rotation={[0, 0, tilt]}>
       {/* The prime meridian of NASA's globes faces -X; a quarter turn brings it toward the camera. */}
       <group ref={spin} rotation={[0, Math.PI / 2, 0]}>
         <primitive
@@ -281,6 +323,7 @@ function Globe({ world, label, position, tilt, speed, view, machineId, placeId, 
             color={ACCENT[world]}
             state={here ? markerState(place, machineId, placeId) : 'idle'}
             interactive={here}
+            occludable
             reducedMotion={reducedMotion}
             sharedRef={sharedRef}
             onPick={onPickPlace}
@@ -341,10 +384,14 @@ interface DeepProps extends CommonProps {
   label: string
   position: THREE.Vector3
   scale: number
+  /** Narrow screens: names appear on the selected or hovered machine only. */
+  compact: boolean
+  present: boolean
 }
 
-function DeepSpace({ label, position, scale, view, machineId, placeId, reducedMotion, sharedRef, onPickWorld, onPickPlace }: DeepProps) {
+function DeepSpace({ label, position, scale, compact, present, view, machineId, placeId, reducedMotion, sharedRef, onPickWorld, onPickPlace }: DeepProps) {
   const here = view === 'deep'
+  const body = usePresence(present, scale, reducedMotion)
   const overview = view === 'home' || view === 'choose'
   const dawn = useRef<THREE.Group>(null)
   const erosModel = useFittedModel(MODEL_FILES.eros, 0.62)
@@ -369,7 +416,7 @@ function DeepSpace({ label, position, scale, view, machineId, placeId, reducedMo
     dawn.current.position.set(Math.cos(a) * DAWN_ORBIT, 0, Math.sin(a) * DAWN_ORBIT)
   })
 
-  const common = { interactive: here, named: true, reducedMotion, sharedRef, onPick: onPickPlace, color: ACCENT.deep }
+  const common = { interactive: here, named: !compact, reducedMotion, sharedRef, onPick: onPickPlace, color: ACCENT.deep }
   const state = (id: string) => (here ? markerState(place(id), machineId, placeId) : 'idle')
   const origin = useMemo(() => new THREE.Vector3(), [])
   const orbit = useMemo(() => circle(DAWN_ORBIT), [])
@@ -378,7 +425,7 @@ function DeepSpace({ label, position, scale, view, machineId, placeId, reducedMo
   const p11 = useMemo(() => [new THREE.Vector3(1.2, -1.1, 0.5), new THREE.Vector3(0, 0, 0)], [])
 
   return (
-    <group position={position} scale={scale}>
+    <group ref={body} position={position}>
       {/* A wide, invisible target so the far-away cluster is easy to pick from the overview. */}
       {overview && (
         <mesh
@@ -550,12 +597,15 @@ function Rig({ view, insets, placeId, reducedMotion, dir, sharedRef, controlRef 
     const goalOff = scratchOff.set(0, 0)
 
     if (view === 'home' || view === 'choose') {
-      const d = Math.max(7.2, L.span / (TAN * aspect))
+      // Fit the whole scene into the band of the screen that the page's text and cards leave free.
+      // The home text sits on a scrim, so the scene may slip a little under it rather than shrink too far.
+      const room = Math.max(0, size.height - insets.top - insets.bottom) / size.height
+      const share = clamp(room, view === 'home' ? OVERLAP_HOME : OVERLAP_CHOOSE, 1)
+      const d = Math.max(L.halfWidth / (TAN * aspect), L.halfHeight / (TAN * share)) * OVERVIEW_MARGIN
       const sway = reducedMotion ? 0 : Math.sin(clock.elapsedTime * 0.15) * 0.25
-      const closer = view === 'choose' ? 0.94 : 1
-      const look = view === 'choose' ? L.lookChoose : L.lookY
-      goalPos.set(sway, look + 0.75, d * closer)
-      goalTgt.set(0, look, -0.5)
+      goalOff.set(0, 1 - (2 * insets.top) / size.height - share)
+      goalPos.set(L.centre.x + sway, L.centre.y + 0.6, d)
+      goalTgt.set(L.centre.x, L.centre.y, -0.5)
       r.mode = 'free'
       r.pos.lerp(goalPos, ease)
       r.tgt.lerp(goalTgt, ease)
@@ -565,14 +615,16 @@ function Rig({ view, insets, placeId, reducedMotion, dir, sharedRef, controlRef 
       const right = dir === 'rtl' ? insets.start : insets.end
       const freeW = Math.max(120, size.width - left - right)
       const freeH = Math.max(120, size.height - insets.top - insets.bottom)
-      const fitFrac = (Math.min(freeW, freeH) * 0.86) / size.height
+      // The visited destination fills nearly all the free room: it is the star of the page.
+      const fitFrac = (Math.min(freeW, freeH) * FILL) / size.height
       goalOff.set((2 * (left + freeW / 2)) / size.width - 1, 1 - (2 * (insets.top + freeH / 2)) / size.height)
 
       const anchor = r.focus ? sharedRef.current.anchors.get(r.focus) : undefined
       const bodyCenter = L[view]
       const deepFocus = view === 'deep' && anchor
-      const center = deepFocus ? anchor.getWorldPosition(scratchA) : bodyCenter
-      const fit = (deepFocus ? FIT.deep * 0.5 * L.deepScale : FIT[view] * (view === 'deep' ? L.deepScale : 1) * (anchor ? 0.82 : 1)) * r.zoom
+      // A selected deep-space machine is framed with its neighbours, not alone in the dark.
+      const center = deepFocus ? anchor.getWorldPosition(scratchA).lerp(bodyCenter, 0.4) : bodyCenter
+      const fit = (deepFocus ? FIT.deep * 0.72 * L.deepScale : FIT[view] * (view === 'deep' ? L.deepScale : 1) * (anchor ? SITE_ZOOM : 1)) * r.zoom
       const d = fit / (TAN * fitFrac)
 
       if (r.view !== view) {
@@ -584,10 +636,14 @@ function Rig({ view, insets, placeId, reducedMotion, dir, sharedRef, controlRef 
         sharedRef.current.touched = false
       }
       if (anchor && view !== 'deep' && r.focus !== focused.current) {
-        const v = anchor.getWorldPosition(scratchB).sub(bodyCenter).normalize()
-        r.azGoal = Math.atan2(v.x, v.z)
-        r.polGoal = clamp(Math.asin(clamp(v.y, -1, 1)), -1.25, 1.25)
-        focused.current = r.focus
+        const v = anchor.getWorldPosition(scratchB).sub(bodyCenter)
+        // Wait for the globe to have a size again before aiming at one of its markers.
+        if (v.lengthSq() > 1e-6) {
+          v.normalize()
+          r.azGoal = Math.atan2(v.x, v.z)
+          r.polGoal = clamp(Math.asin(clamp(v.y, -1, 1)), -1.25, 1.25)
+          focused.current = r.focus
+        }
       }
       if (!r.focus) focused.current = undefined
 
@@ -652,22 +708,25 @@ function Scene(props: Omit<StageProps, 'control' | 'dir' | 'onReady' | 'worldNam
   const { size } = useThree()
   const L = layoutFor(size.width / size.height)
   const { worldNames, ...common } = props
+  const portrait = L === PORTRAIT
+  const overview = props.view === 'home' || props.view === 'choose'
   return (
     <>
-      <Globe world="moon" label={worldNames.moon} position={L.moon} tilt={0.1} speed={0.05} {...common} />
-      <Globe world="mars" label={worldNames.mars} position={L.mars} tilt={-0.42} speed={0.07} {...common} />
-      <DeepSpace label={worldNames.deep} position={L.deep} scale={L.deepScale} {...common} />
+      <Globe world="moon" label={worldNames.moon} position={L.moon} tilt={0.1} speed={0.05} present={overview || props.view === 'moon'} {...common} />
+      <Globe world="mars" label={worldNames.mars} position={L.mars} tilt={-0.42} speed={0.07} present={overview || props.view === 'mars'} {...common} />
+      <DeepSpace label={worldNames.deep} position={L.deep} scale={L.deepScale} compact={portrait} present={overview || props.view === 'deep'} {...common} />
     </>
   )
 }
 
-export default function Stage({ control, dir, insets, onReady, ...props }: StageProps) {
+export default function Stage({ control, dir, insets, onReady, paused = false, ...props }: StageProps) {
   const sharedRef = useRef<Shared>({ anchors: new Map(), touched: false })
   const inWorld = props.view !== 'home' && props.view !== 'choose'
 
   return (
     <Canvas
       className="stage-canvas"
+      frameloop={paused ? 'never' : 'always'}
       style={{ touchAction: inWorld ? 'none' : 'auto' }}
       camera={{ fov: FOV, near: 0.1, far: 400, position: [0, 0, 14] }}
       dpr={[1, 1.75]}

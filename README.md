@@ -39,9 +39,19 @@ npx vercel --prod   # production URL
 | `src/i18n/{en,fr,es,ar}.ts` | All texts, one file per language |
 | `src/stage/Stage.tsx` | The 3D scene: globes, markers, camera flights |
 | `src/components/MachinePanel.tsx` | Story, timeline, 3D model and NASA live view tabs |
+| `src/styles/` | `index.css` (base and components), `interaction.css` (press feedback, user preferences), `motion.css` (entrances), `compact.css` (phone held sideways, short screens) |
+| `src/components/TimelineDock.tsx` | Mission timeline under the 3D view; each event turns the globe to where it happened (`TIMELINE_PLACES` in `machines.ts`) |
+| `src/components/StageViews.tsx` | Selector above the large view (globe, 3D model, NASA live view) and the switch that hides the side panel |
+| `src/components/SheetPanel.tsx` | Side panel on wide screens; draggable bottom sheet on phones |
 | `src/games/` | Mystery machine, Rebuild the mission, Photo puzzle, Memory match |
 | `public/models/` | NASA glTF models, compressed with gltf-transform (meshopt + WebP) |
 | `public/media/` | NASA photos from the challenge's resource pages, resized to WebP |
+
+## Security headers
+
+`vercel.json` sends a Content-Security-Policy with every page. The only outside origin allowed is
+`https://eyes.nasa.gov`, for the embedded NASA Eyes views. If you embed another NASA interactive,
+add its origin to `frame-src` there, or the browser will block the frame.
 
 ## Sources and AI disclosure
 

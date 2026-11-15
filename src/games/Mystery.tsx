@@ -1,7 +1,8 @@
-import { useMemo, useState } from 'react'
+import { useState } from 'react'
 import { MACHINES, type Machine } from '../data/machines'
 import { useI18n } from '../i18n/context'
 import { shuffle } from '../lib/shuffle'
+import { useReveal } from '../lib/useReveal'
 import { GameFrame } from './GameFrame'
 import { StoryLink } from './StoryLink'
 
@@ -33,7 +34,8 @@ export function Mystery() {
   const text = t.machines[round.target.id]
   const gain = 4 - clues
   const correct = picked === round.target.id
-  const total = useMemo(() => ROUNDS * 3, [])
+  const total = ROUNDS * 3
+  const feedback = useReveal<HTMLDivElement>(picked !== null)
 
   const restart = () => {
     setRounds(deal())
@@ -98,7 +100,7 @@ export function Mystery() {
       </fieldset>
       <div aria-live="polite">
         {picked && (
-          <div className={`feedback ${correct ? 'good' : 'bad'}`}>
+          <div ref={feedback} className={`feedback ${correct ? 'good' : 'bad'}`}>
             <p className="feedback-title">
               {fmt(correct ? t.mystery.correct : t.mystery.wrong, { name: text.name })}
               {correct && <span className="points"> {fmt(t.mystery.points, { n: gain })}</span>}

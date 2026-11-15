@@ -10,6 +10,8 @@ const PATHS = {
   check: 'M5 12.5l4.5 4.5L19 7.5',
   external: 'M14 5h5v5M19 5l-8 8M11 7H6v11h11v-5',
   play: 'M8 5.5v13l10.5-6.5z',
+  panelClose: 'M4 5h16v14H4zM15 5v14M10 10l2 2-2 2',
+  panelOpen: 'M4 5h16v14H4zM15 5v14M12 10l-2 2 2 2',
   star: 'M12 3.5l2.6 5.4 5.9.8-4.3 4.1 1 5.8L12 16.9l-5.2 2.7 1-5.8L3.5 9.7l5.9-.8z',
 }
 
