@@ -33,6 +33,7 @@ export const es: Dict = {
     sources: 'Fuentes',
     language: 'Idioma',
     shop: "Tienda",
+    about: "Nosotros",
     profile: 'Perfil de explorador',
   },
   age: {
@@ -238,7 +239,65 @@ export const es: Dict = {
     ],
     teamTitle: 'Equipo',
     team: 'Este sitio fue creado por el equipo AYYUR para el NASA Space Apps Challenge 2026, reto «Abandoned but not Forgotten».',
+    meetTeam: "Conoce al equipo AYYUR",
     nasaNote: 'La NASA no respalda este proyecto. Las imágenes y modelos de la NASA se usan según sus normas de uso de medios.',
+  },
+  about: {
+    title: "Nosotros",
+    eyebrow: "El equipo AYYUR",
+    heading: "Cinco estudiantes de ingeniería, una sola misión",
+    lead: "Somos cinco estudiantes de ingeniería de la ENSA Béni Mellal. Para el NASA Space Apps Challenge 2026 creamos AYYUR: un sitio para recordar las máquinas que se quedaron en la Luna, en Marte y en el espacio profundo.",
+    constellation: "Nuestro equipo, dibujado como una constelación. Elige una estrella para conocer a un miembro.",
+    valuesTitle: "Lo que nos guía",
+    values: [{
+      title: "Datos comprobados",
+      body: "Cada historia, fecha y foto viene de la NASA. Todas las fuentes están en la lista.",
+    }, {
+      title: "Para jóvenes exploradores",
+      body: "Juegos, cartas y un libro para colorear para aprender jugando.",
+    }, {
+      title: "Para todo el mundo",
+      body: "En cuatro idiomas, con teclado, en el móvil y con menos animaciones si lo prefieres.",
+    }],
+    teamTitle: "La tripulación",
+    school: "ENSA Béni Mellal",
+    tracks: {
+      cyberAi: "Ciberseguridad e inteligencia artificial",
+      tdi: "Transformación digital industrial",
+    },
+    skills: "Habilidades",
+    highlights: "Logros",
+    portfolio: "Portafolio",
+    photoAlt: "Retrato de {name}",
+    linksOf: "Enlaces de {name}",
+    sourcesLink: "Ver todas nuestras fuentes",
+    members: {
+      youssef: {
+        role: "Ingeniería de IA y ciberseguridad",
+        bio: "Construir sistemas de inteligencia artificial y luego buscar cómo protegerlos. Pruebas de intrusión, CTF, procesamiento del lenguaje y visión por computadora: dos mundos unidos.",
+        highlights: ["PicLearn: una app que convierte fotos de apuntes en resúmenes, cuestionarios y fichas.", "PhotoEvent-AI: una plataforma de fotos con reconocimiento facial, creada en prácticas en BEYONDCOM."],
+      },
+      imad: {
+        role: "Full-stack, DevOps e Industria 4.0",
+        bio: "Unir la fábrica y el software: aplicaciones de producción, cadenas CI/CD con Docker y canalizaciones de datos.",
+        highlights: ["1.er premio nacional en el Morocco TSP Challenge 2026.", "Solar Advisor: cinco modelos de aprendizaje automático alimentados por la API NASA POWER."],
+      },
+      othmane: {
+        role: "IA y ciberseguridad defensiva",
+        bio: "Donde la ciberseguridad se encuentra con la IA: vigilancia de un SOC, caza de amenazas, respuesta a incidentes y laboratorios ofensivos.",
+        highlights: ["SOC agéntico: varios agentes de IA que ayudan a analizar alertas (prototipo).", "Lectura de matrículas con OpenCV y OCR, en prácticas en SOTREG."],
+      },
+      haytame: {
+        role: "Software, datos y nube para la industria",
+        bio: "Conectar el software con la realidad de la planta: sistemas empresariales, API, nube, datos y riesgos cibernéticos, puestos a prueba en Safran, COSUMAR y Zenithsoft.",
+        highlights: ["RIFQA: una app de navegación y seguridad en grupo, en tiempo real.", "FocusCore: un clasificador de tareas con aprendizaje automático."],
+      },
+      salah: {
+        role: "Industria 4.0, IIoT y sistemas inteligentes",
+        bio: "Pasión por la Industria 4.0: soluciones concretas en optimización, objetos conectados, cartografía y ayuda a la decisión.",
+        highlights: ["1.er premio, sesión oral del MTSPC 2026: simulación de inundaciones aguas abajo de dos presas.", "OptiStock: ubicación de almacenes, rutas de reparto y sensores IoT."],
+      },
+    },
   },
   notFound: {
     title: 'Perdido en el espacio',

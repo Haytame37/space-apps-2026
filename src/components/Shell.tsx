@@ -61,6 +61,7 @@ export function Shell() {
     { to: '/quiz', label: t.nav.quiz, end: false },
     { to: '/shop', label: t.nav.shop, end: false },
     { to: '/sources', label: t.nav.sources, end: false },
+    { to: '/about', label: t.nav.about, end: false },
   ]
 
   return (

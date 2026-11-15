@@ -11,6 +11,7 @@ import { NotFound } from './pages/NotFound'
 import { Play } from './pages/Play'
 import { Quiz } from './pages/Quiz'
 import { Sources } from './pages/Sources'
+import { About } from './pages/About'
 import { World } from './pages/World'
 import { StageLayout } from './stage/StageLayout'
 import { ForKids } from './kids/ForKids'
@@ -45,6 +46,7 @@ export default function App() {
               <Route path="shop" element={<Shop />} />
               <Route path="shop/pioneer-10" element={<BookRoute />} />
               <Route path="sources" element={<Sources />} />
+              <Route path="about" element={<About />} />
               <Route path="*" element={<NotFound />} />
             </Route>
           </Routes>

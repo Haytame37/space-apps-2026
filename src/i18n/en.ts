@@ -53,6 +53,7 @@ export const en = {
     sources: 'Sources',
     language: 'Language',
     shop: "Shop",
+    about: "About",
     profile: 'Explorer profile',
   },
   age: {
@@ -258,7 +259,65 @@ export const en = {
     ],
     teamTitle: 'Team',
     team: 'This site was created by team AYYUR for the 2026 NASA Space Apps Challenge, “Abandoned but not Forgotten”.',
+    meetTeam: "Meet team AYYUR",
     nasaNote: 'NASA does not endorse this project. NASA imagery and models are used following NASA’s media usage guidelines.',
+  },
+  about: {
+    title: "About",
+    eyebrow: "Team AYYUR",
+    heading: "Five engineering students, one mission",
+    lead: "We are five engineering students from ENSA Béni Mellal. For the 2026 NASA Space Apps Challenge, we built AYYUR: a site to remember the machines left on the Moon, on Mars and in deep space.",
+    constellation: "Our team, drawn as a constellation. Pick a star to meet a member.",
+    valuesTitle: "What guides us",
+    values: [{
+      title: "Checked facts",
+      body: "Every story, date and photo comes from NASA. All the sources are listed.",
+    }, {
+      title: "For young explorers",
+      body: "Games, cards and a colouring book to learn while having fun.",
+    }, {
+      title: "For everyone",
+      body: "In four languages, with a keyboard, on a phone, and with less motion if you prefer.",
+    }],
+    teamTitle: "The crew",
+    school: "ENSA Béni Mellal",
+    tracks: {
+      cyberAi: "Cybersecurity & artificial intelligence",
+      tdi: "Industrial digital transformation",
+    },
+    skills: "Skills",
+    highlights: "Highlights",
+    portfolio: "Portfolio",
+    photoAlt: "Portrait of {name}",
+    linksOf: "Links for {name}",
+    sourcesLink: "See all our sources",
+    members: {
+      youssef: {
+        role: "AI & cybersecurity engineering",
+        bio: "Building artificial intelligence systems, then finding out how to protect them. Penetration testing, CTFs, language processing and computer vision: two worlds brought together.",
+        highlights: ["PicLearn: an app that turns photos of course notes into summaries, quizzes and flashcards.", "PhotoEvent-AI: a face-recognition photo platform, built during an internship at BEYONDCOM."],
+      },
+      imad: {
+        role: "Full-stack, DevOps & Industry 4.0",
+        bio: "Bridging the factory and software: production applications, CI/CD pipelines with Docker, and data pipelines.",
+        highlights: ["1st national prize at the Morocco TSP Challenge 2026.", "Solar Advisor: five machine-learning models fed by the NASA POWER API."],
+      },
+      othmane: {
+        role: "AI & defensive cybersecurity",
+        bio: "Where cybersecurity meets AI: SOC monitoring, threat hunting, incident response and offensive labs.",
+        highlights: ["Agentic SOC: several AI agents that help analyse alerts (prototype).", "Licence-plate reading with OpenCV and OCR, during an internship at SOTREG."],
+      },
+      haytame: {
+        role: "Software, data & cloud for industry",
+        bio: "Connecting software with the factory floor: enterprise systems, APIs, cloud, data and cyber risk, tested at Safran, COSUMAR and Zenithsoft.",
+        highlights: ["RIFQA: a real-time group navigation and safety app.", "FocusCore: a machine-learning task classifier."],
+      },
+      salah: {
+        role: "Industry 4.0, IIoT & intelligent systems",
+        bio: "A passion for Industry 4.0: practical solutions in optimisation, connected devices, mapping and decision support.",
+        highlights: ["1st prize, oral session of MTSPC 2026: simulating floods downstream of two dams.", "OptiStock: warehouse placement, delivery routes and IoT sensors."],
+      },
+    },
   },
   notFound: {
     title: 'Lost in space',

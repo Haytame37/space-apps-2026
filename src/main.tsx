@@ -19,6 +19,7 @@ import './styles/ayyur.css'
 import './styles/kids.css'
 import './styles/shop.css'
 import './styles/cards.css'
+import './styles/about.css'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>

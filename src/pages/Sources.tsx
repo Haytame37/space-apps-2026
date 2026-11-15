@@ -1,3 +1,4 @@
+import { Link } from 'react-router'
 import { ExternalLink } from '../components/ExternalLink'
 import { ASTEROID_STORY_URL, MACHINES, SOURCES, WORLDS } from '../data/machines'
 import { useI18n } from '../i18n/context'
@@ -84,6 +85,11 @@ export function Sources() {
 
       <h2>{t.sources.teamTitle}</h2>
       <p>{t.sources.team}</p>
+      <p>
+        <Link to="/about" className="link">
+          {t.sources.meetTeam}
+        </Link>
+      </p>
       <p className="small muted">{t.sources.nasaNote}</p>
       <p className="small muted">{t.common.brandBy}</p>
     </section>

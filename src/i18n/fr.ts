@@ -33,6 +33,7 @@ export const fr: Dict = {
     sources: 'Sources',
     language: 'Langue',
     shop: "Boutique",
+    about: "À propos",
     profile: 'Profil d’explorateur',
   },
   age: {
@@ -238,7 +239,65 @@ export const fr: Dict = {
     ],
     teamTitle: 'Équipe',
     team: 'Ce site a été créé par l’équipe AYYUR pour le NASA Space Apps Challenge 2026, défi « Abandoned but not Forgotten ».',
+    meetTeam: "Rencontrer l’équipe AYYUR",
     nasaNote: 'La NASA ne cautionne pas ce projet. Les images et les modèles de la NASA sont utilisés selon ses règles d’utilisation des médias.',
+  },
+  about: {
+    title: "À propos",
+    eyebrow: "L’équipe AYYUR",
+    heading: "Cinq élèves ingénieurs, une seule mission",
+    lead: "Nous sommes cinq élèves ingénieurs de l’ENSA Béni Mellal. Pour le NASA Space Apps Challenge 2026, nous avons créé AYYUR : un site pour se souvenir des machines laissées sur la Lune, sur Mars et dans l’espace lointain.",
+    constellation: "Notre équipe, dessinée comme une constellation. Choisis une étoile pour rencontrer un membre.",
+    valuesTitle: "Ce qui nous guide",
+    values: [{
+      title: "Des faits vérifiés",
+      body: "Chaque histoire, date et photo vient de la NASA. Toutes les sources sont listées.",
+    }, {
+      title: "Pour les jeunes explorateurs",
+      body: "Des jeux, des cartes et un livre de coloriage pour apprendre en s’amusant.",
+    }, {
+      title: "Pour tout le monde",
+      body: "En quatre langues, au clavier, sur téléphone, et avec moins d’animations si on le souhaite.",
+    }],
+    teamTitle: "L’équipage",
+    school: "ENSA Béni Mellal",
+    tracks: {
+      cyberAi: "Cybersécurité & intelligence artificielle",
+      tdi: "Transformation digitale industrielle",
+    },
+    skills: "Compétences",
+    highlights: "Réalisations",
+    portfolio: "Portfolio",
+    photoAlt: "Portrait de {name}",
+    linksOf: "Liens de {name}",
+    sourcesLink: "Voir toutes nos sources",
+    members: {
+      youssef: {
+        role: "Ingénierie IA & cybersécurité",
+        bio: "Construire des systèmes d’intelligence artificielle, puis chercher comment les protéger. Tests d’intrusion, CTF, traitement du langage et vision par ordinateur : deux mondes réunis.",
+        highlights: ["PicLearn : une appli qui transforme des photos de cours en résumés, quiz et fiches.", "PhotoEvent-AI : une plateforme de photos par reconnaissance faciale, créée en stage chez BEYONDCOM."],
+      },
+      imad: {
+        role: "Full-stack, DevOps & Industrie 4.0",
+        bio: "Faire le pont entre l’usine et le logiciel : applications de production, chaînes CI/CD avec Docker et pipelines de données.",
+        highlights: ["1er prix national au Morocco TSP Challenge 2026.", "Solar Advisor : cinq modèles d’apprentissage automatique nourris par l’API NASA POWER."],
+      },
+      othmane: {
+        role: "IA & cybersécurité défensive",
+        bio: "Là où la cybersécurité rencontre l’IA : surveillance d’un SOC, chasse aux menaces, réponse aux incidents et laboratoires offensifs.",
+        highlights: ["SOC agentique : plusieurs agents IA qui aident à analyser les alertes (prototype).", "Lecture de plaques d’immatriculation avec OpenCV et OCR, en stage chez SOTREG."],
+      },
+      haytame: {
+        role: "Logiciel, données & cloud pour l’industrie",
+        bio: "Relier le logiciel à la réalité du terrain : systèmes d’entreprise, API, cloud, données et risques cyber, mis à l’épreuve chez Safran, COSUMAR et Zenithsoft.",
+        highlights: ["RIFQA : une appli de navigation et de sécurité en groupe, en temps réel.", "FocusCore : un classifieur de tâches par apprentissage automatique."],
+      },
+      salah: {
+        role: "Industrie 4.0, IIoT & systèmes intelligents",
+        bio: "La passion de l’Industrie 4.0 : des solutions concrètes en optimisation, objets connectés, cartographie et aide à la décision.",
+        highlights: ["1er prix, session orale du MTSPC 2026 : simulation des inondations en aval de deux barrages.", "OptiStock : implantation d’entrepôts, tournées de livraison et capteurs IoT."],
+      },
+    },
   },
   notFound: {
     title: 'Perdu dans l’espace',

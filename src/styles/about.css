@@ -1,0 +1,515 @@
+/* ---------- About: team AYYUR ---------- */
+
+.about-page {
+  max-width: 1120px;
+}
+
+.ab-hero {
+  position: relative;
+  padding: 28px 0 8px;
+  text-align: center;
+}
+
+.ab-hero h1 {
+  max-width: 18ch;
+  margin: 6px auto 12px;
+  font-size: clamp(2rem, 1.3rem + 3vw, 3.2rem);
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  text-wrap: balance;
+}
+
+.ab-hero .lead {
+  max-width: 62ch;
+  margin-inline: auto;
+  text-wrap: pretty;
+}
+
+.ab-eyebrow {
+  margin: 0;
+  color: var(--accent);
+  font-size: 0.8rem;
+  font-weight: 800;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+
+:lang(ar) .ab-eyebrow,
+:lang(ar) .ab-label,
+:lang(ar) .ab-track {
+  letter-spacing: 0;
+}
+
+.ab-crescent {
+  position: absolute;
+  inset-inline-start: 50%;
+  top: -10px;
+  width: 280px;
+  color: var(--accent);
+  opacity: 0.07;
+  translate: -50% 0;
+  pointer-events: none;
+}
+
+[dir='rtl'] .ab-crescent {
+  translate: 50% 0;
+}
+
+/* ---------- The constellation ---------- */
+
+.ab-sky {
+  position: relative;
+  margin: 28px 0 8px;
+  padding: 0 0 14px;
+  border: 1px solid var(--line);
+  border-radius: 24px;
+  background:
+    radial-gradient(1px 1px at 12% 30%, rgba(255, 255, 255, 0.7), transparent),
+    radial-gradient(1px 1px at 34% 80%, rgba(255, 255, 255, 0.5), transparent),
+    radial-gradient(1px 1px at 58% 18%, rgba(255, 255, 255, 0.6), transparent),
+    radial-gradient(1px 1px at 76% 70%, rgba(255, 255, 255, 0.5), transparent),
+    radial-gradient(1px 1px at 92% 24%, rgba(255, 255, 255, 0.7), transparent),
+    radial-gradient(60% 90% at 50% 100%, rgba(43, 77, 255, 0.22), transparent 70%),
+    rgba(9, 14, 34, 0.6);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+}
+
+/* The lines and the stars share one box, so the stars sit on the lines' corners. */
+.ab-lines,
+.ab-stars {
+  display: block;
+  width: 100%;
+  aspect-ratio: 600 / 220;
+}
+
+.ab-lines polyline {
+  fill: none;
+  stroke: rgba(180, 200, 255, 0.4);
+  stroke-dasharray: 3 7;
+  stroke-linecap: round;
+  stroke-width: 1.5;
+}
+
+/* The constellation always reads left to right, like a sky chart. */
+.ab-stars {
+  position: absolute;
+  inset: 0 0 auto;
+  margin: 0;
+  padding: 0;
+  direction: ltr;
+  list-style: none;
+}
+
+.ab-stars li {
+  position: absolute;
+  translate: -50% -50%;
+}
+
+.ab-star {
+  display: grid;
+  justify-items: center;
+  gap: 6px;
+  min-width: 48px;
+  min-height: 48px;
+  padding: 6px;
+  border-radius: 14px;
+  color: #fff;
+  text-decoration: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.ab-star-dot {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: radial-gradient(circle, #fff 0 30%, var(--hue) 60%);
+  box-shadow:
+    0 0 10px 2px var(--hue),
+    0 0 30px 6px color-mix(in srgb, var(--hue) 45%, transparent);
+  transition: scale 0.35s cubic-bezier(0.32, 0.72, 0, 1);
+  animation: ab-twinkle 3.2s ease-in-out infinite;
+}
+
+.ab-stars li:nth-child(2) .ab-star-dot {
+  animation-delay: -0.8s;
+}
+
+.ab-stars li:nth-child(3) .ab-star-dot {
+  animation-delay: -1.6s;
+}
+
+.ab-stars li:nth-child(4) .ab-star-dot {
+  animation-delay: -2.2s;
+}
+
+.ab-stars li:nth-child(5) .ab-star-dot {
+  animation-delay: -2.9s;
+}
+
+@keyframes ab-twinkle {
+  50% {
+    opacity: 0.65;
+  }
+}
+
+.ab-star-name {
+  padding: 2px 9px;
+  border-radius: 999px;
+  background: rgba(4, 6, 13, 0.6);
+  font-size: 0.8rem;
+  font-weight: 700;
+  white-space: nowrap;
+  transition: background-color 0.25s, color 0.25s;
+}
+
+.ab-star:hover .ab-star-dot,
+.ab-star.is-on .ab-star-dot {
+  scale: 1.6;
+}
+
+.ab-star:hover .ab-star-name,
+.ab-star.is-on .ab-star-name {
+  background: var(--hue);
+  color: #04060d;
+}
+
+.ab-star:active .ab-star-dot {
+  scale: 1.3;
+  transition-duration: 0.08s;
+}
+
+.ab-sky figcaption {
+  margin-top: 6px;
+  padding-inline: 16px;
+  color: var(--muted, rgba(220, 228, 255, 0.7));
+  font-size: 0.88rem;
+  text-align: center;
+}
+
+/* ---------- Crew badges ---------- */
+
+.ab-h2 {
+  margin: 48px 0 18px;
+  font-size: clamp(1.4rem, 1.1rem + 1.2vw, 2rem);
+  text-align: center;
+}
+
+.ab-crew {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
+}
+
+.ab-badge {
+  --hue: var(--accent);
+  position: relative;
+  display: flex;
+  flex: 0 1 320px;
+  flex-direction: column;
+  min-width: 0;
+  overflow: hidden;
+  border: 1px solid color-mix(in srgb, var(--hue) 30%, transparent);
+  border-radius: 24px;
+  background:
+    radial-gradient(120% 60% at 50% 0%, color-mix(in srgb, var(--hue) 20%, transparent), transparent 60%),
+    rgba(10, 15, 34, 0.72);
+  box-shadow: 0 20px 40px -28px rgba(0, 0, 0, 0.9);
+  scroll-margin-top: 96px;
+  -webkit-backdrop-filter: blur(14px);
+  backdrop-filter: blur(14px);
+  transition:
+    translate 0.45s cubic-bezier(0.32, 0.72, 0, 1),
+    border-color 0.3s,
+    box-shadow 0.45s cubic-bezier(0.32, 0.72, 0, 1);
+}
+
+.ab-badge.is-lit,
+.ab-badge:target {
+  border-color: color-mix(in srgb, var(--hue) 70%, transparent);
+  box-shadow:
+    0 26px 50px -28px rgba(0, 0, 0, 0.9),
+    0 0 0 1px color-mix(in srgb, var(--hue) 40%, transparent),
+    0 0 40px -10px color-mix(in srgb, var(--hue) 55%, transparent);
+  translate: 0 -4px;
+}
+
+.ab-portrait {
+  position: relative;
+  display: grid;
+  place-items: center;
+  height: 210px;
+  margin: 18px 18px 0;
+  overflow: hidden;
+  border-radius: 18px;
+  background:
+    radial-gradient(circle at 50% 120%, color-mix(in srgb, var(--hue) 35%, transparent), transparent 70%),
+    #070b1a;
+}
+
+.ab-portrait img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 18%;
+}
+
+/* No photo yet: initials on a small planet. */
+.ab-monogram {
+  display: grid;
+  place-items: center;
+  width: 112px;
+  height: 112px;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 32% 28%, rgba(255, 255, 255, 0.55), transparent 42%),
+    radial-gradient(circle at 50% 50%, var(--hue), color-mix(in srgb, var(--hue) 35%, #04060d) 75%);
+  box-shadow:
+    inset -14px -16px 26px rgba(0, 0, 0, 0.45),
+    0 0 40px -6px var(--hue);
+  color: #04060d;
+  font: 800 2.1rem/1 var(--font-display);
+  letter-spacing: 0.02em;
+}
+
+/* An orbit around the portrait. */
+.ab-orbit {
+  position: absolute;
+  inset: 50% auto auto 50%;
+  width: 190px;
+  height: 64px;
+  border: 1.5px solid color-mix(in srgb, var(--hue) 55%, transparent);
+  border-radius: 50%;
+  translate: -50% 32px;
+  rotate: -12deg;
+  pointer-events: none;
+}
+
+.ab-portrait:has(img) .ab-orbit {
+  display: none;
+}
+
+.ab-body {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 8px;
+  padding: 16px 20px 20px;
+}
+
+.ab-track {
+  margin: 0;
+  color: var(--hue);
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.ab-badge h3 {
+  margin: 0;
+  font-size: 1.35rem;
+  line-height: 1.15;
+}
+
+.ab-role {
+  margin: 0;
+  font-weight: 700;
+}
+
+.ab-bio {
+  margin: 0;
+  color: rgba(220, 228, 255, 0.82);
+  font-size: 0.92rem;
+  line-height: 1.5;
+  text-wrap: pretty;
+}
+
+.ab-label {
+  margin: 8px 0 0;
+  color: rgba(220, 228, 255, 0.6);
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.ab-skills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.ab-skills li {
+  padding: 4px 10px;
+  border: 1px solid color-mix(in srgb, var(--hue) 35%, transparent);
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--hue) 10%, transparent);
+  font-size: 0.78rem;
+  font-weight: 600;
+}
+
+.ab-highlights {
+  display: grid;
+  gap: 6px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.ab-highlights li {
+  position: relative;
+  padding-inline-start: 20px;
+  font-size: 0.88rem;
+  line-height: 1.45;
+}
+
+.ab-highlights li::before {
+  content: '✦';
+  position: absolute;
+  inset-inline-start: 0;
+  color: var(--hue);
+}
+
+.ab-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: auto 0 0;
+  padding: 12px 0 0;
+  list-style: none;
+}
+
+.ab-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 44px;
+  padding: 8px 14px;
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.07);
+  color: #fff;
+  font-size: 0.88rem;
+  font-weight: 700;
+  text-decoration: none;
+  transition:
+    scale 0.2s cubic-bezier(0.32, 0.72, 0, 1),
+    background-color 0.2s,
+    border-color 0.2s;
+}
+
+.ab-link:hover {
+  border-color: var(--hue);
+  background: color-mix(in srgb, var(--hue) 16%, transparent);
+}
+
+.ab-link:active {
+  scale: 0.96;
+  transition-duration: 0.08s;
+}
+
+.ab-link svg {
+  width: 14px;
+  height: 14px;
+}
+
+/* ---------- Values ---------- */
+
+.ab-values {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap: 16px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.ab-values li {
+  padding: 20px;
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  background: rgba(10, 15, 34, 0.6);
+}
+
+.ab-values svg {
+  width: 30px;
+  height: 30px;
+  color: var(--accent);
+}
+
+.ab-values h3 {
+  margin: 10px 0 6px;
+  font-size: 1.1rem;
+}
+
+.ab-values p {
+  margin: 0;
+  color: rgba(220, 228, 255, 0.8);
+  font-size: 0.92rem;
+  line-height: 1.5;
+}
+
+.ab-sources {
+  margin-top: 20px;
+  text-align: center;
+}
+
+/* ---------- Phones ---------- */
+
+@media (max-width: 560px) {
+  .ab-star-name {
+    font-size: 0.68rem;
+  }
+
+  .ab-star {
+    padding: 4px;
+  }
+
+  .ab-portrait {
+    height: 190px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ab-star-dot {
+    animation: none;
+  }
+
+  .ab-badge,
+  .ab-star-dot,
+  .ab-link {
+    transition: none;
+  }
+
+  .ab-badge.is-lit,
+  .ab-badge:target {
+    translate: none;
+  }
+}
+
+@media (prefers-reduced-transparency: reduce) {
+  .ab-sky,
+  .ab-badge {
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+    background-color: #0a0f22;
+  }
+}
+
+@media (prefers-contrast: more) {
+  .ab-badge,
+  .ab-values li,
+  .ab-sky {
+    border-color: rgba(255, 255, 255, 0.7);
+  }
+
+  .ab-bio,
+  .ab-values p {
+    color: #fff;
+  }
+}
