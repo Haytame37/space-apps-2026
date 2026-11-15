@@ -1,0 +1,1240 @@
+/* ---------- Memory cards: collectible trading cards ---------- */
+
+/* Angle of the turning gold edge of legendary cards. */
+@property --mc-spin {
+  syntax: '<angle>';
+  inherits: false;
+  initial-value: 0deg;
+}
+
+.mc-slot {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+}
+
+.mc {
+  /* World colours: metallic frame (a → b → c) and accent (w). */
+  --w: #dfe8ff;
+  --fa: #f6f8ff;
+  --fb: #b5c1dd;
+  --fc: #69779f;
+  position: relative;
+  width: 100%;
+  max-width: 300px;
+  aspect-ratio: 63 / 88;
+  perspective: 1100px;
+  touch-action: pan-y;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.mc[data-world='mars'] {
+  --w: #ffb07a;
+  --fa: #ffd9bb;
+  --fb: #e3763c;
+  --fc: #8a3214;
+}
+
+.mc[data-world='deep'] {
+  --w: #c4b0ff;
+  --fa: #ece4ff;
+  --fb: #9a7cf2;
+  --fc: #4a2fa8;
+}
+
+.mc-slot.is-away .mc {
+  visibility: hidden;
+}
+
+/* The shadow on the table: it slides away from the tilt and spreads as the card rises. */
+.mc-shadow {
+  position: absolute;
+  inset: 8% 10% 0;
+  border-radius: 20px;
+  background: rgba(0, 0, 0, 0.6);
+  filter: blur(18px);
+  transform: translate(var(--sx, 0px), var(--sy, 18px)) scale(calc(var(--lift) * 0.95));
+}
+
+.mc[data-r='3'] .mc-shadow {
+  background: radial-gradient(closest-side, rgba(255, 196, 80, 0.55), rgba(0, 0, 0, 0.55));
+}
+
+.mc-inner {
+  position: absolute;
+  inset: 0;
+  transform: rotateX(var(--rx)) rotateY(calc(var(--ry) + var(--flip))) scale(var(--lift));
+  transform-style: preserve-3d;
+  cursor: pointer;
+}
+
+/* Each face: a metal frame around the card itself. */
+.mc-face {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  padding: 7px;
+  border-radius: 16px;
+  background: linear-gradient(135deg, var(--fa), var(--fb) 28%, var(--fc) 50%, var(--fb) 72%, var(--fa));
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.45),
+    inset 0 2px 1px rgba(255, 255, 255, 0.6),
+    inset 0 -2px 2px rgba(0, 0, 0, 0.35);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+.mc-back {
+  transform: rotateY(180deg);
+}
+
+/* Legendary: a gold edge that keeps turning. */
+.mc[data-r='3'] .mc-face {
+  background: conic-gradient(from var(--mc-spin), #fff3c4, #ffd77a, #b8860b, #ffe9a6, #a0700a, #ffd77a, #fff3c4);
+  animation: mc-spin 6s linear infinite;
+}
+
+@keyframes mc-spin {
+  to {
+    --mc-spin: 360deg;
+  }
+}
+
+.mc-body {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  height: 100%;
+  overflow: hidden;
+  padding: 9px 10px 8px;
+  border-radius: 11px;
+  /* Moon: soft craters on night blue. */
+  background:
+    radial-gradient(circle at 18% 26%, rgba(255, 255, 255, 0.06) 0 7%, transparent 7.5%),
+    radial-gradient(circle at 84% 64%, rgba(255, 255, 255, 0.05) 0 11%, transparent 11.5%),
+    radial-gradient(circle at 70% 12%, rgba(255, 255, 255, 0.04) 0 5%, transparent 5.5%),
+    radial-gradient(circle at 30% 86%, rgba(255, 255, 255, 0.05) 0 8%, transparent 8.5%),
+    linear-gradient(170deg, #28324f, #141b33 58%, #0b1022);
+  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.5);
+  color: #f4f6ff;
+}
+
+/* Mars: wind-swept dunes on rust. */
+.mc[data-world='mars'] .mc-body {
+  background:
+    repeating-linear-gradient(165deg, rgba(255, 170, 120, 0.06) 0 2px, transparent 2px 15px),
+    radial-gradient(120% 60% at 50% 110%, rgba(255, 120, 60, 0.25), transparent 60%),
+    linear-gradient(170deg, #4d2416, #26120c 58%, #140906);
+}
+
+/* Deep space: stars and a violet nebula. */
+.mc[data-world='deep'] .mc-body {
+  background:
+    radial-gradient(1px 1px at 14% 22%, #fff, transparent),
+    radial-gradient(1px 1px at 72% 12%, rgba(255, 255, 255, 0.8), transparent),
+    radial-gradient(1.5px 1.5px at 86% 48%, #fff, transparent),
+    radial-gradient(1px 1px at 36% 74%, rgba(255, 255, 255, 0.7), transparent),
+    radial-gradient(1px 1px at 58% 90%, #fff, transparent),
+    radial-gradient(70% 50% at 80% 80%, rgba(176, 107, 255, 0.28), transparent 70%),
+    linear-gradient(170deg, #261b52, #120d2c 58%, #08061a);
+}
+
+.mc-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.mc h3 {
+  display: -webkit-box;
+  margin: 0;
+  overflow: hidden;
+  font: 700 1rem/1.15 var(--font-display);
+  text-shadow: 0 1px 0 rgba(0, 0, 0, 0.5);
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+}
+
+.mc-num {
+  flex: none;
+  padding: 2px 7px;
+  border: 1px solid color-mix(in srgb, var(--w) 60%, transparent);
+  border-radius: 999px;
+  background: rgba(0, 0, 0, 0.35);
+  color: var(--w);
+  font-size: 0.62rem;
+  font-variant-numeric: tabular-nums;
+  font-weight: 700;
+  direction: ltr;
+  white-space: nowrap;
+}
+
+.mc-photo {
+  position: relative;
+  flex: 1 1 0;
+  min-height: 72px;
+  margin: 0;
+  overflow: hidden;
+  border-radius: 9px;
+  background: #000;
+  box-shadow:
+    0 0 0 2px color-mix(in srgb, var(--w) 45%, transparent),
+    0 6px 14px rgba(0, 0, 0, 0.45);
+}
+
+/* The photo sits deeper than the frame: it moves a little against the tilt. */
+.mc-photo img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transform: scale(1.14) translate(calc((var(--mx) - 50%) * -0.08), calc((var(--my) - 50%) * -0.08));
+  user-select: none;
+}
+
+.mc-photo figcaption {
+  position: absolute;
+  inset-inline-end: 6px;
+  bottom: 4px;
+  max-width: 70%;
+  color: rgba(255, 255, 255, 0.85);
+  font-size: 0.5rem;
+  text-align: end;
+  text-shadow: 0 1px 3px #000;
+}
+
+.mc-rarity {
+  position: absolute;
+  inset-inline-start: 6px;
+  top: 6px;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 8px;
+  border: 1px solid currentColor;
+  border-radius: 999px;
+  background: rgba(4, 6, 13, 0.78);
+  font-size: 0.58rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  -webkit-backdrop-filter: blur(4px);
+  backdrop-filter: blur(4px);
+}
+
+.r-1 {
+  color: #c9d1e8;
+}
+
+.r-2 {
+  color: #5ee7ff;
+}
+
+.r-3 {
+  color: #ffd77a;
+}
+
+/* Found in the games: a stamp on the photo. */
+.mc-collected {
+  position: absolute;
+  inset-inline-end: 6px;
+  top: 6px;
+  padding: 2px 8px;
+  border-radius: 6px;
+  background: #3ddbb4;
+  box-shadow: 0 2px 0 #1f9c7d;
+  color: #08261d;
+  font-size: 0.6rem;
+  font-weight: 800;
+  transform: rotate(4deg);
+}
+
+.mc-flavor {
+  margin: 0;
+  color: color-mix(in srgb, var(--w) 70%, #fff);
+  font-size: 0.78rem;
+  font-style: italic;
+  line-height: 1.3;
+  text-align: center;
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+}
+
+.mc-stats {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 5px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.mc-stats li {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  min-width: 0;
+  padding: 6px 4px 5px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 9px;
+  background: rgba(255, 255, 255, 0.06);
+  text-align: center;
+}
+
+.mc-icon {
+  width: 18px;
+  height: 18px;
+  color: var(--w);
+  filter: drop-shadow(0 0 4px color-mix(in srgb, var(--w) 60%, transparent));
+}
+
+.mc-stats b {
+  font-size: 0.7rem;
+  font-variant-numeric: tabular-nums;
+  line-height: 1.2;
+  overflow-wrap: anywhere;
+}
+
+.mc-stats small {
+  color: rgba(244, 246, 255, 0.65);
+  font-size: 0.52rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  line-height: 1.2;
+  text-transform: uppercase;
+}
+
+:lang(ar) .mc-stats small,
+:lang(ar) .mc-rarity,
+:lang(ar) .mc-label,
+:lang(ar) .mc-foot {
+  letter-spacing: 0;
+}
+
+.mc-foot {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  margin-top: auto;
+  padding-top: 4px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  color: rgba(244, 246, 255, 0.6);
+  font-size: 0.52rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.mc-foot svg {
+  flex: none;
+  width: 11px;
+  height: 11px;
+  color: var(--w);
+}
+
+.mc-foot .mc-world {
+  margin-inline-start: auto;
+  color: var(--w);
+}
+
+/* ---------- Foil and glare ---------- */
+
+.mc-foil,
+.mc-glare {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+}
+
+/* Rare: rainbow film with glitter, shifting with the angle. */
+.mc[data-r='2'] .mc-foil,
+.bst-card[data-r='2'] .mc-foil {
+  background:
+    radial-gradient(circle, rgba(255, 255, 255, 0.35) 0 0.6px, transparent 1.1px),
+    repeating-linear-gradient(115deg, #ff5f6d 0%, #ffc371 6%, #47f5a4 12%, #36d1ff 18%, #b06bff 24%, #ff5f6d 30%);
+  background-position:
+    0 0,
+    var(--mx, 50%) var(--my, 50%);
+  background-size:
+    7px 7px,
+    320% 320%;
+  mix-blend-mode: color-dodge;
+  opacity: calc(0.08 + var(--glare, 0) * 0.3);
+}
+
+/* Legendary: gold leaf. */
+.mc[data-r='3'] .mc-foil,
+.bst-card[data-r='3'] .mc-foil {
+  background:
+    radial-gradient(circle, rgba(255, 236, 170, 0.4) 0 0.7px, transparent 1.2px),
+    linear-gradient(115deg, transparent 22%, rgba(255, 210, 110, 0.5) 40%, rgba(255, 255, 255, 0.7) 50%, rgba(255, 186, 70, 0.5) 60%, transparent 78%);
+  background-position:
+    0 0,
+    var(--mx, 50%) var(--my, 50%);
+  background-size:
+    6px 6px,
+    260% 260%;
+  mix-blend-mode: color-dodge;
+  opacity: calc(0.1 + var(--glare, 0) * 0.3);
+}
+
+/* At rest, a ray of light still crosses legendary cards now and then. */
+.mc[data-r='3'] .mc-front::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(105deg, transparent 38%, rgba(255, 245, 210, 0.45) 48%, transparent 58%);
+  background-size: 260% 100%;
+  mix-blend-mode: overlay;
+  pointer-events: none;
+  animation: mc-ray 4.8s ease-in-out infinite;
+}
+
+@keyframes mc-ray {
+  0%,
+  55% {
+    background-position: 130% 0;
+  }
+
+  100% {
+    background-position: -60% 0;
+  }
+}
+
+.mc-glare {
+  background: radial-gradient(circle at var(--mx) var(--my), rgba(255, 255, 255, 0.6), rgba(255, 255, 255, 0.14) 32%, transparent 62%);
+  mix-blend-mode: overlay;
+  opacity: var(--glare);
+}
+
+.mc-sparkle {
+  position: absolute;
+  background: #fff;
+  clip-path: polygon(50% 0, 61% 39%, 100% 50%, 61% 61%, 50% 100%, 39% 61%, 0 50%, 39% 39%);
+  filter: drop-shadow(0 0 4px #ffd77a);
+  pointer-events: none;
+  animation: mc-twinkle 2.4s ease-in-out infinite;
+}
+
+@keyframes mc-twinkle {
+  0%,
+  100% {
+    opacity: 0;
+    transform: scale(0.2) rotate(0deg);
+  }
+
+  50% {
+    opacity: 1;
+    transform: scale(1) rotate(45deg);
+  }
+}
+
+/* ---------- Back: the mission's file, on blueprint paper ---------- */
+
+.mc-file {
+  --grid: color-mix(in srgb, var(--w) 12%, transparent);
+  gap: 6px;
+  background:
+    linear-gradient(var(--grid) 1px, transparent 1px) 0 0 / 14px 14px,
+    linear-gradient(90deg, var(--grid) 1px, transparent 1px) 0 0 / 14px 14px,
+    linear-gradient(170deg, #1a2342, #0c1226 70%) !important;
+}
+
+.mc[data-world='mars'] .mc-file {
+  background:
+    linear-gradient(var(--grid) 1px, transparent 1px) 0 0 / 14px 14px,
+    linear-gradient(90deg, var(--grid) 1px, transparent 1px) 0 0 / 14px 14px,
+    linear-gradient(170deg, #3a1c12, #1c0d08 70%) !important;
+}
+
+.mc[data-world='deep'] .mc-file {
+  background:
+    linear-gradient(var(--grid) 1px, transparent 1px) 0 0 / 14px 14px,
+    linear-gradient(90deg, var(--grid) 1px, transparent 1px) 0 0 / 14px 14px,
+    linear-gradient(170deg, #211843, #0e0a24 70%) !important;
+}
+
+.mc-file-head {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  gap: 3px;
+  padding-bottom: 6px;
+  border-bottom: 1px dashed color-mix(in srgb, var(--w) 45%, transparent);
+}
+
+.mc-file-head .mc-num {
+  justify-self: start;
+}
+
+.mc-where {
+  margin: 0;
+  color: var(--w);
+  font-size: 0.64rem;
+  font-weight: 700;
+}
+
+/* Long stories scroll inside the card, fading out at the bottom edge. */
+.mc-scroll {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  flex: 1;
+  align-content: start;
+  gap: 5px;
+  min-height: 0;
+  overflow-y: auto;
+  padding-bottom: 10px;
+  mask-image: linear-gradient(#000 88%, transparent);
+  scrollbar-width: thin;
+}
+
+.mc-label {
+  margin: 4px 0 0;
+  color: var(--w);
+  font-size: 0.56rem;
+  font-weight: 800;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.mc-story,
+.mc-quiet {
+  margin: 0;
+  color: #dfe5f7;
+  font-size: 0.72rem;
+  line-height: 1.4;
+}
+
+.mc-quiet {
+  padding: 6px 8px;
+  border-inline-start: 3px solid var(--w);
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.06);
+}
+
+/* Key dates on a dotted line, like stars of a constellation. */
+.mc-tl {
+  display: grid;
+  gap: 6px;
+  margin: 0;
+  padding: 0;
+  padding-inline-start: 14px;
+  border-inline-start: 1px dashed color-mix(in srgb, var(--w) 60%, transparent);
+  list-style: none;
+}
+
+.mc-tl li {
+  position: relative;
+  color: #dfe5f7;
+  font-size: 0.68rem;
+  line-height: 1.32;
+}
+
+.mc-tl li::before {
+  content: '✦';
+  position: absolute;
+  inset-inline-start: -20px;
+  top: -1px;
+  color: var(--w);
+  font-size: 0.75rem;
+  text-shadow: 0 0 6px var(--w);
+}
+
+.mc-tl time {
+  display: block;
+  color: var(--w);
+  font-size: 0.66rem;
+  font-variant-numeric: tabular-nums;
+  font-weight: 800;
+}
+
+.mc-source {
+  margin: 4px 0 0;
+  color: rgba(244, 246, 255, 0.55);
+  font-size: 0.58rem;
+}
+
+.mc-watermark {
+  position: absolute;
+  inset-inline-end: -14%;
+  bottom: -10%;
+  width: 70%;
+  color: var(--w);
+  opacity: 0.07;
+  pointer-events: none;
+}
+
+/* ---------- Buttons under a card ---------- */
+
+.mc-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+}
+
+.mc-btn,
+.mc-buy {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 44px;
+  padding: 8px 15px;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+  font: 700 0.9rem var(--font-display);
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition:
+    transform 0.2s cubic-bezier(0.32, 0.72, 0, 1),
+    background-color 0.2s,
+    border-color 0.2s;
+}
+
+.mc-btn svg {
+  width: 17px;
+  height: 17px;
+}
+
+.mc-btn:hover {
+  border-color: #fff;
+  background: rgba(255, 255, 255, 0.18);
+}
+
+.mc-btn:active,
+.mc-buy:active {
+  transform: scale(0.95);
+  transition-duration: 0.08s;
+}
+
+.mc-btn[aria-pressed='true'] {
+  border-color: #5ee7ff;
+}
+
+.mc-buy {
+  border: 0;
+  background: var(--accent);
+  color: var(--accent-ink);
+}
+
+/* ---------- The grid deals its cards ---------- */
+
+.shop-grid > li {
+  animation: mc-deal 0.7s both cubic-bezier(0.2, 0.9, 0.3, 1.12);
+}
+
+@keyframes mc-deal {
+  from {
+    opacity: 0;
+    transform: translateY(46px) rotate(-7deg) scale(0.9);
+  }
+}
+
+.shop-collection {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  margin: 12px 0 0;
+  color: #3ddbb4;
+  font-size: 0.92rem;
+  font-weight: 700;
+}
+
+.shop-collection-bar {
+  position: relative;
+  flex: none;
+  width: 120px;
+  height: 10px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.14);
+}
+
+.shop-collection-bar span {
+  position: absolute;
+  inset-block: 0;
+  inset-inline-start: 0;
+  border-radius: inherit;
+  background: linear-gradient(90deg, #3ddbb4, #ffd23f);
+}
+
+/* ---------- Enlarged card ---------- */
+
+dialog.cf {
+  --focus: 0;
+  width: 100%;
+  max-width: none;
+  height: 100%;
+  max-height: none;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: #fff;
+  overflow: hidden;
+}
+
+dialog.cf::backdrop {
+  background: transparent;
+}
+
+dialog.cf[open] {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  padding: 16px;
+}
+
+/* The darkened, blurred room around the card, fading in as the card arrives. */
+dialog.cf::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background: radial-gradient(60% 60% at 50% 45%, rgba(20, 28, 70, 0.75), rgba(3, 4, 14, 0.94));
+  opacity: var(--focus);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+}
+
+.cf-stage {
+  position: relative;
+  z-index: 1;
+  transform-origin: center;
+}
+
+.mc-large .mc {
+  width: min(380px, 84vw, calc((100dvh - 230px) * 63 / 88));
+  max-width: none;
+  touch-action: none;
+  cursor: grab;
+}
+
+.mc-large .mc:active {
+  cursor: grabbing;
+}
+
+.mc-large .mc h3 {
+  font-size: 1.25rem;
+}
+
+.mc-large .mc-flavor {
+  font-size: 0.92rem;
+}
+
+.mc-large .mc-stats b {
+  font-size: 0.86rem;
+}
+
+.mc-large .mc-stats small {
+  font-size: 0.6rem;
+}
+
+.mc-large .mc-story,
+.mc-large .mc-quiet {
+  font-size: 0.84rem;
+}
+
+.mc-large .mc-tl li {
+  font-size: 0.8rem;
+}
+
+.cf-card.is-next {
+  animation: cf-from-end 0.45s cubic-bezier(0.2, 0.9, 0.3, 1);
+}
+
+.cf-card.is-prev {
+  animation: cf-from-start 0.45s cubic-bezier(0.2, 0.9, 0.3, 1);
+}
+
+@keyframes cf-from-end {
+  from {
+    opacity: 0;
+    transform: translateX(60px) rotate(6deg);
+  }
+}
+
+@keyframes cf-from-start {
+  from {
+    opacity: 0;
+    transform: translateX(-60px) rotate(-6deg);
+  }
+}
+
+[dir='rtl'] .cf-card.is-next {
+  animation-name: cf-from-start;
+}
+
+[dir='rtl'] .cf-card.is-prev {
+  animation-name: cf-from-end;
+}
+
+.cf-close,
+.cf-nav,
+.cf-hint {
+  position: relative;
+  z-index: 1;
+  opacity: var(--focus);
+}
+
+.cf-close {
+  position: fixed;
+  top: max(16px, env(safe-area-inset-top));
+  inset-inline-end: 16px;
+  display: grid;
+  place-items: center;
+  width: 48px;
+  height: 48px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.12);
+  color: #fff;
+  cursor: pointer;
+}
+
+.cf-close svg,
+.cf-arrow svg {
+  width: 22px;
+  height: 22px;
+}
+
+.cf-nav {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.cf-arrow {
+  display: grid;
+  place-items: center;
+  width: 48px;
+  height: 48px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.12);
+  color: #fff;
+  cursor: pointer;
+  transition: transform 0.2s cubic-bezier(0.32, 0.72, 0, 1);
+}
+
+.cf-arrow:active,
+.cf-close:active {
+  transform: scale(0.92);
+  transition-duration: 0.08s;
+}
+
+.cf-count {
+  min-width: 7em;
+  color: rgba(255, 255, 255, 0.8);
+  font-variant-numeric: tabular-nums;
+  font-weight: 700;
+  text-align: center;
+}
+
+.cf-hint {
+  margin: 0;
+  color: rgba(255, 255, 255, 0.65);
+  font-size: 0.85rem;
+  text-align: center;
+}
+
+/* ---------- Booster: the pack shakes, tears, and deals five cards ---------- */
+
+.bst {
+  display: flex;
+  flex-direction: column;
+  gap: 26px;
+  padding: 24px;
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  background:
+    radial-gradient(50rem 20rem at 15% 0%, rgba(43, 77, 255, 0.25), transparent 60%),
+    linear-gradient(120deg, #0d1426, #0a0f1f);
+}
+
+.bst-intro {
+  display: grid;
+  grid-template-columns: 210px minmax(0, 1fr);
+  align-items: center;
+  gap: 26px;
+}
+
+.bst .muted {
+  max-width: 58ch;
+  margin: 8px 0 0;
+}
+
+.bst-pack {
+  position: relative;
+  display: grid;
+  place-items: center;
+  justify-self: center;
+  width: 190px;
+  aspect-ratio: 5 / 7;
+  border-radius: 12px;
+  background: linear-gradient(150deg, #5ee7ff 0%, #2b4dff 38%, #1a0f52 70%, #04060d 100%);
+  box-shadow: 0 22px 44px -20px #2b4dff;
+  transform: rotate(-5deg);
+  transition:
+    transform 0.5s cubic-bezier(0.32, 0.72, 0, 1),
+    opacity 0.5s;
+}
+
+.bst-pack::after {
+  content: '';
+  position: absolute;
+  inset: auto 0 0;
+  height: 14px;
+  border-radius: 0 0 12px 12px;
+  background: repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.35) 0 3px, transparent 3px 6px);
+}
+
+.bst-pack svg {
+  width: 82px;
+  height: 82px;
+  color: #fff;
+  filter: drop-shadow(0 0 12px rgba(94, 231, 255, 0.8));
+}
+
+.bst-pack-name {
+  position: absolute;
+  bottom: 30px;
+  font: 700 0.7rem var(--font-display);
+  letter-spacing: 0.2em;
+}
+
+/* The strip that tears off, with a zigzag edge. */
+.bst-pack-top {
+  position: absolute;
+  inset: 0 0 auto;
+  height: 17%;
+  border-radius: 12px 12px 0 0;
+  background:
+    repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.35) 0 3px, transparent 3px 6px),
+    linear-gradient(150deg, #8ff1ff, #4a6bff);
+  clip-path: polygon(0 0, 100% 0, 100% 80%, 92% 100%, 84% 80%, 76% 100%, 68% 80%, 60% 100%, 52% 80%, 44% 100%, 36% 80%, 28% 100%, 20% 80%, 12% 100%, 4% 80%, 0 100%);
+  transition:
+    transform 0.45s cubic-bezier(0.3, 0.7, 0.4, 1),
+    opacity 0.45s;
+}
+
+.bst-pack.is-shaking {
+  animation: bst-shake 0.65s;
+}
+
+@keyframes bst-shake {
+  15% {
+    transform: rotate(-12deg) scale(1.05);
+  }
+
+  35% {
+    transform: rotate(4deg) scale(1.08);
+  }
+
+  55% {
+    transform: rotate(-10deg) scale(1.06);
+  }
+
+  75% {
+    transform: rotate(2deg) scale(1.07);
+  }
+}
+
+.bst-pack.is-torn .bst-pack-top,
+.bst-pack.is-dealt .bst-pack-top {
+  opacity: 0;
+  transform: translate(40px, -70px) rotate(28deg);
+}
+
+.bst-pack.is-dealt {
+  opacity: 0.55;
+  transform: rotate(-5deg) scale(0.92);
+}
+
+.bst-burst {
+  position: absolute;
+  inset: -40%;
+  border-radius: 50%;
+  background:
+    repeating-conic-gradient(rgba(255, 255, 255, 0.5) 0 4deg, transparent 4deg 18deg),
+    radial-gradient(closest-side, rgba(255, 255, 255, 0.95), rgba(94, 231, 255, 0.5) 40%, transparent 70%);
+  -webkit-mask: radial-gradient(closest-side, #000 30%, transparent 100%);
+  mask: radial-gradient(closest-side, #000 30%, transparent 100%);
+  opacity: 0;
+  pointer-events: none;
+}
+
+.bst-pack.is-torn .bst-burst {
+  animation: bst-burst 0.7s ease-out;
+}
+
+@keyframes bst-burst {
+  0% {
+    opacity: 0;
+    transform: scale(0.3) rotate(0deg);
+  }
+
+  30% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
+    transform: scale(1.3) rotate(40deg);
+  }
+}
+
+.bst-hand {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 14px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.bst-hand:empty {
+  display: none;
+}
+
+.bst-slot {
+  position: relative;
+  width: clamp(104px, 16vw, 150px);
+  animation: bst-deal 0.65s both cubic-bezier(0.2, 0.9, 0.3, 1.15);
+}
+
+/* Each card flies out of the pack to its place, spinning a little. */
+@keyframes bst-deal {
+  from {
+    opacity: 0;
+    transform: translate(var(--fx, 0px), var(--fy, 0px)) rotate(calc(-24deg + var(--i) * 10deg)) scale(0.45);
+  }
+
+  25% {
+    opacity: 1;
+  }
+}
+
+.bst-card {
+  position: relative;
+  display: block;
+  width: 100%;
+  aspect-ratio: 63 / 88;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: #fff;
+  perspective: 900px;
+  cursor: default;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.bst-card.is-shown {
+  cursor: zoom-in;
+}
+
+.bst-card-inner {
+  position: absolute;
+  inset: 0;
+  transform-style: preserve-3d;
+  transition: transform 0.75s cubic-bezier(0.3, 1.35, 0.45, 1);
+}
+
+.bst-card.is-shown .bst-card-inner {
+  transform: rotateY(180deg);
+}
+
+.bst-card.is-shown:hover .bst-card-inner {
+  transform: rotateY(180deg) translateY(-6px) scale(1.04);
+}
+
+.bst-reverse,
+.bst-front {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  border-radius: 11px;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  box-shadow: 0 12px 24px -10px rgba(0, 0, 0, 0.8);
+}
+
+/* The back of every card: the AYYUR crescent in a burst of light. */
+.bst-reverse {
+  display: grid;
+  place-items: center;
+  align-content: center;
+  gap: 8px;
+  border: 4px solid #8ff1ff;
+  background:
+    repeating-conic-gradient(from 0deg, rgba(255, 255, 255, 0.07) 0 6deg, transparent 6deg 18deg),
+    radial-gradient(circle, #2b4dff, #1a0f52 60%, #04060d);
+}
+
+.bst-reverse svg {
+  width: 42%;
+  color: #fff;
+  filter: drop-shadow(0 0 10px #5ee7ff);
+}
+
+.bst-reverse span {
+  font: 700 0.58rem var(--font-display);
+  letter-spacing: 0.2em;
+}
+
+.bst-front {
+  --w: #dfe8ff;
+  --fa: #f6f8ff;
+  --fb: #b5c1dd;
+  --fc: #69779f;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 5px 5px 7px;
+  background: linear-gradient(135deg, var(--fa), var(--fb) 28%, var(--fc) 50%, var(--fb) 72%, var(--fa));
+  transform: rotateY(180deg);
+}
+
+.bst-card[data-world='mars'] .bst-front {
+  --w: #ffb07a;
+  --fa: #ffd9bb;
+  --fb: #e3763c;
+  --fc: #8a3214;
+}
+
+.bst-card[data-world='deep'] .bst-front {
+  --w: #c4b0ff;
+  --fa: #ece4ff;
+  --fb: #9a7cf2;
+  --fc: #4a2fa8;
+}
+
+.bst-card[data-r='3'] .bst-front {
+  background: conic-gradient(from var(--mc-spin), #fff3c4, #ffd77a, #b8860b, #ffe9a6, #a0700a, #ffd77a, #fff3c4);
+  animation: mc-spin 6s linear infinite;
+}
+
+.bst-front img {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 4 / 3;
+  border-radius: 7px;
+  object-fit: cover;
+}
+
+.bst-rarity {
+  align-self: center;
+  padding: 1px 6px;
+  border-radius: 999px;
+  background: rgba(4, 6, 13, 0.82);
+  font-size: 0.52rem;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.bst-name {
+  display: grid;
+  flex: 1;
+  place-items: center;
+  padding: 3px;
+  border-radius: 6px;
+  background: rgba(4, 6, 13, 0.82);
+  font: 700 0.68rem/1.15 var(--font-display);
+  text-align: center;
+}
+
+/* Rare and legendary cards arrive with a flash of light. */
+.bst-flash {
+  position: absolute;
+  inset: -45%;
+  z-index: -1;
+  border-radius: 50%;
+  background:
+    repeating-conic-gradient(rgba(94, 231, 255, 0.55) 0 5deg, transparent 5deg 20deg),
+    radial-gradient(closest-side, rgba(94, 231, 255, 0.7), transparent 70%);
+  -webkit-mask: radial-gradient(closest-side, #000 25%, transparent 100%);
+  mask: radial-gradient(closest-side, #000 25%, transparent 100%);
+  pointer-events: none;
+  animation: bst-flash 1.4s 0.3s ease-out both;
+}
+
+.bst-card[data-r='3'] .bst-flash {
+  background:
+    repeating-conic-gradient(rgba(255, 215, 122, 0.7) 0 5deg, transparent 5deg 20deg),
+    radial-gradient(closest-side, rgba(255, 215, 122, 0.85), transparent 70%);
+}
+
+@keyframes bst-flash {
+  0% {
+    opacity: 0;
+    transform: scale(0.3) rotate(0deg);
+  }
+
+  35% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
+    transform: scale(1.25) rotate(45deg);
+  }
+}
+
+@media (max-width: 720px) {
+  .bst-intro {
+    grid-template-columns: 1fr;
+  }
+
+  .bst-pack {
+    width: 150px;
+  }
+
+  .bst-slot {
+    width: calc((100% - 28px) / 3);
+  }
+}
+
+/* ---------- Motion off: still cards, instant turns, no shine moving ---------- */
+
+@media (prefers-reduced-motion: reduce) {
+  .shop-grid > li,
+  .bst-slot,
+  .bst-pack,
+  .bst-flash,
+  .bst-burst,
+  .cf-card,
+  .mc-sparkle,
+  .mc[data-r='3'] .mc-face,
+  .bst-card[data-r='3'] .bst-front,
+  .mc[data-r='3'] .mc-front::after {
+    animation: none !important;
+  }
+
+  .mc-sparkle {
+    opacity: 0.7;
+  }
+
+  .bst-card-inner,
+  .bst-pack,
+  .bst-pack-top {
+    transition: none;
+  }
+}
