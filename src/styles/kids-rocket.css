@@ -1,0 +1,337 @@
+/* ---------- Asteroid Run ---------- */
+
+.kid-tile-rocket {
+  --c: #ff9a3d;
+  --d: #c4621c;
+  animation-delay: 0s;
+}
+
+.rk-board {
+  gap: 12px;
+  width: 100%;
+}
+
+/* Score, zone and shields above the sky. */
+.rk-hud {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 8px 14px;
+  width: 100%;
+}
+
+.rk-hud p {
+  margin: 0;
+}
+
+.rk-score {
+  padding: 6px 14px;
+  border-radius: 999px;
+  background: rgba(0, 0, 0, 0.35);
+  font-weight: 700;
+}
+
+.rk-score b {
+  display: inline-block;
+  min-width: 4ch;
+  color: var(--k-sun);
+  font-size: 1.25rem;
+  font-variant-numeric: tabular-nums;
+  text-align: end;
+}
+
+.rk-zone {
+  padding: 6px 14px;
+  border-radius: 999px;
+  background: rgba(94, 231, 255, 0.16);
+  color: var(--k-aqua);
+  font-weight: 800;
+}
+
+.rk-zone[data-zone='belt'] {
+  background: rgba(201, 162, 122, 0.2);
+  color: #e8c79a;
+}
+
+.rk-zone[data-zone='jupiter'] {
+  background: rgba(255, 154, 61, 0.18);
+  color: #ffb87a;
+}
+
+.rk-zone[data-zone='deep'] {
+  background: rgba(183, 156, 255, 0.2);
+  color: var(--k-lilac);
+}
+
+.rk-shields {
+  display: flex;
+  gap: 6px;
+}
+
+/* One small shield per life left. */
+.rk-shields i {
+  width: 22px;
+  height: 26px;
+  background: rgba(255, 255, 255, 0.18);
+  clip-path: path('M11 0 L22 4 V12 C22 19 17 24 11 26 C5 24 0 19 0 12 V4 Z');
+  transition: background-color 0.3s;
+}
+
+.rk-shields i.is-on {
+  background: var(--k-aqua);
+}
+
+.rk-pause {
+  min-width: 44px;
+  min-height: 44px;
+  padding: 8px 16px;
+  border: 2px solid rgba(255, 255, 255, 0.35);
+  border-radius: 999px;
+  background: rgba(0, 0, 0, 0.3);
+  color: #fff;
+  font: inherit;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.rk-pause:active {
+  transform: scale(0.95);
+}
+
+.rk-stage {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+.rk-canvas {
+  display: block;
+  border: 4px solid rgba(255, 255, 255, 0.85);
+  border-radius: 22px;
+  background: #04060d;
+  box-shadow: 0 18px 40px -18px rgba(0, 0, 0, 0.9);
+  cursor: grab;
+  touch-action: none;
+  user-select: none;
+}
+
+.rk-canvas:active {
+  cursor: grabbing;
+}
+
+/* Start, pause: a panel over the sky. */
+.rk-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  max-width: 100%;
+  margin: auto;
+  padding: 24px;
+  color: #fff;
+  font-weight: 700;
+  text-align: center;
+  text-shadow: 0 2px 6px rgba(0, 0, 0, 0.8);
+}
+
+.rk-overlay p {
+  max-width: 28ch;
+  margin: 0;
+  line-height: 1.4;
+}
+
+.rk-best {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  border-radius: 999px;
+  background: rgba(0, 0, 0, 0.45);
+  color: var(--k-sun);
+}
+
+.rk-best svg {
+  width: 20px;
+  height: 20px;
+}
+
+.rk-go {
+  min-height: 56px;
+  padding: 12px 32px;
+  font-size: 1.3rem;
+}
+
+.rk-paused {
+  font-size: 1.6rem;
+}
+
+/* 3, 2, 1: each number grows in and fades, one after the other. */
+.rk-count span {
+  position: absolute;
+  color: var(--k-sun);
+  font: 800 6rem/1 var(--font-display);
+  opacity: 0;
+  animation: rk-count 0.8s both cubic-bezier(0.2, 1.3, 0.4, 1);
+}
+
+.rk-count span:nth-child(2) {
+  animation-delay: 0.8s;
+}
+
+.rk-count span:nth-child(3) {
+  animation-delay: 1.6s;
+}
+
+@keyframes rk-count {
+  0% {
+    opacity: 0;
+    transform: scale(0.3);
+  }
+
+  30% {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  100% {
+    opacity: 0;
+    transform: scale(1.4);
+  }
+}
+
+.rk-help {
+  margin: 0;
+  color: var(--k-soft);
+  font-size: 0.85rem;
+  text-align: center;
+}
+
+/* ---------- End of the mission ---------- */
+
+.rk-end {
+  width: min(100%, 520px);
+}
+
+.rk-end h3 {
+  margin: 14px 0 8px;
+  font-size: 1.05rem;
+}
+
+.rk-final {
+  display: grid;
+  justify-items: center;
+  gap: 2px;
+  margin: 4px 0;
+}
+
+.rk-final b {
+  color: var(--k-sun);
+  font: 800 3.2rem/1 var(--font-display);
+  font-variant-numeric: tabular-nums;
+}
+
+.rk-final small {
+  font-size: 0.9rem;
+  opacity: 0.85;
+}
+
+.rk-next {
+  margin: 0;
+  font-weight: 700;
+}
+
+.rk-met {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.rk-met li {
+  display: grid;
+  justify-items: center;
+  gap: 4px;
+  width: 88px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-align: center;
+}
+
+.rk-met img {
+  width: 64px;
+  height: 64px;
+  border: 3px solid #ffd77a;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.rk-board-list {
+  display: grid;
+  gap: 6px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.rk-board-list li {
+  display: grid;
+  grid-template-columns: 32px 1fr auto auto;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 12px;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.08);
+  font-variant-numeric: tabular-nums;
+}
+
+.rk-board-list li.is-new {
+  background: rgba(255, 210, 63, 0.22);
+  box-shadow: inset 0 0 0 2px var(--k-sun);
+}
+
+.rk-rank {
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.3);
+  font-weight: 800;
+}
+
+.rk-board-list b {
+  font-size: 1.1rem;
+}
+
+.rk-board-list time {
+  font-size: 0.8rem;
+  opacity: 0.8;
+}
+
+@media (max-width: 420px) {
+  .rk-board-list li {
+    grid-template-columns: 28px 1fr auto;
+  }
+
+  .rk-board-list time {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rk-count span {
+    animation: none;
+  }
+
+  .rk-shields i {
+    transition: none;
+  }
+}

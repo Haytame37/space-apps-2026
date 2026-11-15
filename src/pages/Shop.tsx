@@ -6,7 +6,6 @@ import { BookTile } from '../book/BookTile'
 import { PriceCharter } from '../shop/PriceCharter'
 import { COLOURING_BOOKS } from '../data/books'
 import { Booster } from '../shop/Booster'
-import { Books } from '../shop/Books'
 import { CardFocus } from '../shop/CardFocus'
 import { CartPanel } from '../shop/CartPanel'
 import { MemoryCard } from '../shop/MemoryCard'
@@ -161,8 +160,6 @@ export function Shop() {
         onIndex={browse}
         onClose={closeFocus}
       />
-
-      <Books price={euros} onAdd={(id) => add(`book:${id}`)} />
 
       <PriceCharter price={euros} />
 

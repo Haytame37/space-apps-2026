@@ -173,6 +173,6 @@ Tick both boxes **only after** the checks below are done:
 
 - [ ] Demo link added, public, ≤ 7 slides or ≤ 30 s.
 - [ ] https://ayyuur.vercel.app opens without login (test in a private window) and shows the latest version.
-- [ ] AI-generated drawings carry a visible "AI-generated" mark (rule for SI images).
-- [ ] No flag, NASA logo or mission insignia inside AI-generated drawings (Apollo 11 book: cover, pages 11 and 16 show flags — redraw or remove them).
-- [ ] Apollo 11 book, last page: remove the leftover placeholder "[Noto Color Emoji (open source), if used]".
+- [x] AI-generated drawings carry a visible "AI-generated" mark (rule for SI images).
+- [x] No flag, NASA logo or mission insignia inside AI-generated drawings (Apollo 11 book: flags removed from the cover, pages 11 and 16, and the back cover).
+- [x] Apollo 11 book: leftover placeholder "[Noto Color Emoji (open source), if used]" removed.

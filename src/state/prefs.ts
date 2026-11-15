@@ -4,7 +4,7 @@ import type { MachineId, WorldId } from '../data/machines'
 export type Profile = 'kid' | 'teen' | 'adult'
 
 /** The games of the kids' corner; each keeps its best score, from 1 to 3 stars. */
-export const KID_GAMES = ['mystery', 'memory', 'puzzle', 'rebuild', 'quiz'] as const
+export const KID_GAMES = ['rocket', 'mystery', 'memory', 'puzzle', 'rebuild', 'quiz'] as const
 export type KidGame = (typeof KID_GAMES)[number]
 
 export interface PrefsState {

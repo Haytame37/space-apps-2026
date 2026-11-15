@@ -21,6 +21,8 @@ import { KidMystery } from './kids/games/KidMystery'
 import { KidPuzzle } from './kids/games/KidPuzzle'
 import { KidQuiz } from './kids/games/KidQuiz'
 import { KidRebuild } from './kids/games/KidRebuild'
+import { KidRocket } from './kids/games/KidRocket'
+import { KidLayout } from './kids/KidLayout'
 import { Shop } from './pages/Shop'
 import { BookRoute } from './book/BookRoute'
 import { PrefsProvider } from './state/PrefsProvider'
@@ -41,6 +43,7 @@ export default function App() {
               <Route path="play/mystery" element={<ForKids kid={<KidMystery />} other={<Mystery />} />} />
               <Route path="play/rebuild" element={<ForKids kid={<KidRebuild />} other={<Rebuild />} />} />
               <Route path="play/puzzle" element={<ForKids kid={<KidPuzzle />} other={<Puzzle />} />} />
+              <Route path="play/rocket" element={<ForKids kid={<KidRocket />} other={<KidLayout><KidRocket /></KidLayout>} />} />
               <Route path="play/memory" element={<ForKids kid={<KidMemory />} other={<Memory />} />} />
               <Route path="quiz" element={<ForKids kid={<KidQuiz />} other={<Quiz />} />} />
               <Route path="shop" element={<Shop />} />

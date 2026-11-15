@@ -8,6 +8,7 @@ import { StarIcon } from './StarIcon'
 import { StickerAlbum } from './StickerAlbum'
 
 const TILES: Record<KidGame, { to: string; photo: MachineId }> = {
+  rocket: { to: '/play/rocket', photo: 'pioneer' },
   mystery: { to: '/play/mystery', photo: 'pathfinder' },
   memory: { to: '/play/memory', photo: 'mer' },
   puzzle: { to: '/play/puzzle', photo: 'apollo-lm' },

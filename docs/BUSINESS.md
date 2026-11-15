@@ -19,7 +19,7 @@ Les prix sont des propositions de l'équipe. Le paiement n'est pas branché sur 
 | Les 4 jeux et le quiz | Livres de coloriage imprimés |
 | Feuilleter les livres en entier | Packs classe pour les écoles |
 | Colorier 3 pages à l'écran | Cartes Mémoire à l'unité et boosters |
-| Un booster d'essai | Livres documentaires (Atlas, Carnet, Mars) |
+| Un booster d'essai | |
 
 Pas de compte, pas de publicité, pas de données collectées : c'est un argument de confiance pour les parents et les écoles.
 
@@ -44,9 +44,6 @@ Ces prix sont des relevés ponctuels, à revérifier avant un lancement réel.
 | Pack classe (10 livres imprimés + PDF enseignant) | **49 €** | 4,90 € le livre, soit 29 % de moins qu'à l'unité. Vise les écoles et les associations. |
 | Carte Mémoire commune / rare / légendaire | **0,90 € / 1,90 € / 3,90 €** | La rareté crée l'envie de collectionner, sans prix excessifs. |
 | Booster de 5 cartes (au moins une rare) | **3,90 €** | Moins cher que 5 cartes communes à l'unité (4,50 €) et qu'un booster Pokémon en magasin (4,50 € à 6,50 €). |
-| Carnet d'explorateur | **6,90 €** | Même niveau que le livre imprimé. |
-| Mars en silence | **9,90 €** | Livre documentaire jeunesse, prix d'entrée de gamme. |
-| L'Atlas des machines oubliées | **14,90 €** | Produit premium (13 doubles pages), cadeau. |
 
 **Principes :**
 - **Prix psychologiques** (2,90 €, 6,90 €) : lisibles et sous les seuils de 3 € et 7 €.
