@@ -94,9 +94,9 @@ listed on the site's **Sources** page.
 
 <!-- DEMO VIDEO: paste the GitHub video link (https://github.com/user-attachments/assets/...) on its own line below. -->
 
-*30-second demo: coming soon.*
+30-second demo (1080p): [`demo/AYYUR-demo-30s.mp4`](demo/AYYUR-demo-30s.mp4).
 
-The full 5-minute pitch video is in the repo: [`pitch/demo/AYYUR-pitch-5min.mp4`](pitch/demo/AYYUR-pitch-5min.mp4) (1080p, 30 fps). See [Pitch](#pitch).
+The full 5-minute pitch video: [`pitch/AYYUR-pitch-5min.mp4`](pitch/AYYUR-pitch-5min.mp4) (1080p, 30 fps).
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -191,7 +191,8 @@ The language menu sits at the top right; the choice of English, French, Spanish 
 | `assets/books/` | Source PDFs of the colouring books |
 | `assets/brand/` | AYYUR logo pack (SVG, PNG, animated GIF/MP4) and posters (`ayyur-affiche.pdf`) |
 | `docs/` | Submission answers (`SUBMISSION.md`), business plan (`BUSINESS.md`) and README images |
-| `pitch/` | The 5-minute presentation for the jury (not deployed), see [Pitch](#pitch) |
+| `demo/` | The 30-second demo video for the submission |
+| `pitch/` | The 5-minute pitch video for the jury |
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -219,17 +220,13 @@ interactive, add its origin to `frame-src` there, or the browser will block the 
 <!-- PITCH -->
 ## Pitch
 
-`pitch/` holds the team's 5-minute presentation for the jury. It is separate from the site, is not
-deployed, and works offline. Guide in French: [`pitch/README.md`](pitch/README.md).
-
-| Path | Content |
+| File | Content |
 |---|---|
-| `pitch/presentation/` | Clicker version: open `index.html` in Chrome or Edge. Guide in French: `README.md` |
-| `pitch/presentation-video/` | Self-running version: `index.html?auto`, plus the cover with the crew in orbit |
-| `pitch/demo/AYYUR-pitch-5min.mp4` | The 5-minute video (1080p, 30 fps) |
-| `pitch/demo/AYYUR-demo-30s.mp4` | The 30-second demo for the submission form (source: `pitch/demo-30s/`) |
+| [`demo/AYYUR-demo-30s.mp4`](demo/AYYUR-demo-30s.mp4) | 30-second demo for the submission form: English captions, ends on the live site |
+| [`pitch/AYYUR-pitch-5min.mp4`](pitch/AYYUR-pitch-5min.mp4) | 5-minute pitch shown to the jury while the team presents |
 
-Speaker texts in Darija: `pitch/presentation/docs/script-darija.md` and `pitch/presentation-video/docs/script-video-darija.md`.
+Both videos are built from the same NASA facts, photos and 3D models as the site. AI use is declared: the
+AYYUR logo was made with the help of AI, and the colouring-book drawings are AI-generated and marked as such.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 

@@ -25,3 +25,6 @@ dist-ssr
 
 # Original team photos (the site uses the WebP copies in public/team/)
 assets/team/
+
+# Local tools (Claude Code skills), not part of the project
+.claude/
