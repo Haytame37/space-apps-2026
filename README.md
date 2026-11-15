@@ -92,9 +92,7 @@ listed on the site's **Sources** page.
 
 ### Demo video
 
-<!-- DEMO VIDEO: paste the GitHub video link (https://github.com/user-attachments/assets/...) on its own line below. -->
-
-*30-second demo: coming soon.*
+https://github.com/user-attachments/assets/50ec1649-d517-41d8-97fc-9261c16edd15
 
 The full 5-minute pitch video is in the repo: [`pitch/demo/AYYUR-pitch-5min.mp4`](pitch/demo/AYYUR-pitch-5min.mp4) (1080p, 30 fps). See [Pitch](#pitch).
 
