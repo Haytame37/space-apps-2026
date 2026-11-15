@@ -235,7 +235,8 @@ export const fr: Dict = {
     ai: [
       'L’idée, le concept et les choix de contenu sont le travail de l’équipe AYYUR.',
       'Un assistant IA (Claude, d’Anthropic) a aidé à écrire le code de ce site, ainsi qu’à rédiger et traduire ses textes à partir des sources NASA listées ici. L’équipe les a relus.',
-      'Aucune image, vidéo, modèle 3D ou son de ce site n’a été généré par IA.',
+      'Les dessins des livres de coloriage (Pioneer 10, Apollo 11) ont été générés avec Google Gemini, puis choisis, vérifiés et mis en page par l’équipe. Ils portent la mention « Généré par IA ».',
+      'Toutes les photos et tous les modèles 3D viennent de la NASA. Aucune photo, vidéo, modèle 3D ou son de ce site n’a été généré par IA.',
     ],
     teamTitle: 'Équipe',
     team: 'Ce site a été créé par l’équipe AYYUR pour le NASA Space Apps Challenge 2026, défi « Abandoned but not Forgotten ».',

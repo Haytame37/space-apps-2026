@@ -10,7 +10,8 @@ export interface Member {
   track: Track
   /** Accent of the member's star and badge. */
   hue: string
-  photo?: { src: string; srcSet: string; width: number; height: number }
+  /** `focus` is the CSS object-position that keeps the face in the wide frame. */
+  photo?: { src: string; srcSet: string; width: number; height: number; focus: string }
   portfolio: string
   github: string
   linkedin: string
@@ -27,6 +28,7 @@ export const TEAM: Member[] = [
     hue: '#5ee7ff',
     photo: {
       src: '/team/youssef-ait-karroum.webp',
+      focus: '50% 18%',
       srcSet: '/team/youssef-ait-karroum.webp 1x, /team/youssef-ait-karroum@2x.webp 2x',
       width: 480,
       height: 600,
@@ -42,6 +44,13 @@ export const TEAM: Member[] = [
     initials: 'IE',
     track: 'tdi',
     hue: '#ffb07a',
+    photo: {
+      src: '/team/imad-el-ades.webp',
+      focus: '50% 62%',
+      srcSet: '/team/imad-el-ades.webp 1x, /team/imad-el-ades@2x.webp 2x',
+      width: 480,
+      height: 600,
+    },
     portfolio: 'https://imadelades.vercel.app/',
     github: 'https://github.com/imad-elades',
     linkedin: 'https://www.linkedin.com/in/imad-elades/',
@@ -53,6 +62,13 @@ export const TEAM: Member[] = [
     initials: 'OK',
     track: 'cyberAi',
     hue: '#c4b0ff',
+    photo: {
+      src: '/team/othmane-karim.webp',
+      focus: '50% 2%',
+      srcSet: '/team/othmane-karim.webp 1x, /team/othmane-karim@2x.webp 1.33x',
+      width: 480,
+      height: 600,
+    },
     portfolio: 'https://galdro-0.github.io/',
     github: 'https://github.com/Galdro-0',
     linkedin: 'https://www.linkedin.com/in/othmane-karim/',
@@ -64,6 +80,13 @@ export const TEAM: Member[] = [
     initials: 'HE',
     track: 'tdi',
     hue: '#3ddbb4',
+    photo: {
+      src: '/team/haytame-el-atraoui.webp',
+      focus: '50% 4%',
+      srcSet: '/team/haytame-el-atraoui.webp 1x, /team/haytame-el-atraoui@2x.webp 1.17x',
+      width: 480,
+      height: 600,
+    },
     portfolio: 'https://haytame37.github.io/',
     github: 'https://github.com/Haytame37',
     linkedin: 'https://www.linkedin.com/in/haytame-el-atraoui',
@@ -75,6 +98,13 @@ export const TEAM: Member[] = [
     initials: 'SA',
     track: 'tdi',
     hue: '#ffd77a',
+    photo: {
+      src: '/team/salah-atmane.webp',
+      focus: '50% 30%',
+      srcSet: '/team/salah-atmane.webp 1x',
+      width: 480,
+      height: 600,
+    },
     portfolio: 'https://salahat-creat.github.io/portfolio/',
     github: 'https://github.com/SalahAT-CREAT',
     linkedin: 'https://www.linkedin.com/in/salah-atmane/',

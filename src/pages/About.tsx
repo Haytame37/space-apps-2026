@@ -67,6 +67,7 @@ function Badge({ member, isLit, onActive }: { member: Member; isLit: boolean; on
             srcSet={member.photo.srcSet}
             width={member.photo.width}
             height={member.photo.height}
+            style={{ objectPosition: member.photo.focus }}
             alt={fmt(t.about.photoAlt, { name: member.name })}
             loading="lazy"
           />
