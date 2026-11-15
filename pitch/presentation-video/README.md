@@ -9,7 +9,7 @@ Différences avec la version au clicker :
 
 ## Trois façons de la passer
 
-1. **La vidéo MP4** : `AYYUR-pitch-5min.mp4`, à côté de ce dossier. Elle s'ouvre avec n'importe quel lecteur (VLC, Films et TV…).
+1. **La vidéo MP4** : `../demo/AYYUR-pitch-5min.mp4` (dossier `demo` à côté de ce dossier). Elle s'ouvre avec n'importe quel lecteur (VLC, Films et TV…).
 2. **Le même film dans Chrome, sans vidéo** : ouvre `index.html?auto`, appuie sur **F** pour le plein écran, puis sur **Espace** pour lancer.
    - **Espace** ou clic : pause / lecture
    - **→** : avancer de 5 s
