@@ -47,6 +47,10 @@ npx vercel --prod   # production URL
 | `src/games/` | Mystery machine, Rebuild the mission, Photo puzzle, Memory match |
 | `public/models/` | NASA glTF models, compressed with gltf-transform (meshopt + WebP) |
 | `public/media/` | NASA photos from the challenge's resource pages, resized to WebP |
+| `assets/books/` | Source PDFs of the colouring books; `node scripts/book-pages.mjs <book-id>` turns them into `public/books/` |
+| `assets/brand/` | AYYUR logo pack (SVG, PNG, animated GIF/MP4, 4K poster) |
+| `assets/team/` | Original team photos; the site uses the resized WebP copies in `public/team/` |
+| `docs/` | Submission answers (`SUBMISSION.md`) and business plan (`BUSINESS.md`) |
 
 ## Security headers
 

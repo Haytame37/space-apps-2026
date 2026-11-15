@@ -22,3 +22,6 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Original team photos (the site uses the WebP copies in public/team/)
+assets/team/

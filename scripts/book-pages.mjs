@@ -23,8 +23,8 @@ import sharp from 'sharp'
 
 /** Each book: its PDF, the pages (1-based) cropped for colouring, and the pages with no drawing. */
 const BOOKS = {
-  'pioneer-10': { pdf: 'Coloring Book Pioneer 10.pdf', colorPages: [3, 4, 16], textPages: [22] },
-  'apollo-11': { pdf: 'Appolo 11 coloring book.pdf', colorPages: [3, 5, 10], textPages: [22] },
+  'pioneer-10': { pdf: 'assets/books/pioneer-10.pdf', colorPages: [3, 4, 16], textPages: [22] },
+  'apollo-11': { pdf: 'assets/books/apollo-11.pdf', colorPages: [3, 5, 10], textPages: [22] },
 }
 
 const BOOK_ID = process.argv[2] ?? 'pioneer-10'
