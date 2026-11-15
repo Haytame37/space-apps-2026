@@ -1,26 +1,32 @@
 import { useEffect, useRef, useState, type KeyboardEvent } from 'react'
-import { pageSrc, PIONEER_BOOK, PIONEER_PAGE_TEXT } from '../data/books'
+import { pageSrc, type ColouringBook } from '../data/books'
 import { useI18n } from '../i18n/context'
 import { CRESCENT_PATH } from '../lib/ayyurMotion'
 import { useReducedMotion } from '../lib/useReducedMotion'
 
-const PAGES = PIONEER_BOOK.pages
 /**
  * One leaf per two pages. The last leaf carries a blank inside of the back cover on its front
  * and the back cover on its back, so the closed book ends on its back cover, as a real book does.
+ * `frontOf` and `backOf` give the page on each side of leaf `i` (1-based, 0 for the blank inside cover).
  */
-const LEAVES = Math.ceil((PAGES + 1) / 2)
-/** Page shown on each side of leaf `i` (1-based page numbers, 0 for the blank inside cover). */
-const frontOf = (i: number) => (i === LEAVES - 1 ? 0 : 2 * i + 1)
-const backOf = (i: number) => (i === LEAVES - 1 ? PAGES : 2 * i + 2)
+function leavesOf(pages: number) {
+  const leaves = Math.ceil((pages + 1) / 2)
+  return {
+    leaves,
+    frontOf: (i: number) => (i === leaves - 1 ? 0 : 2 * i + 1),
+    backOf: (i: number) => (i === leaves - 1 ? pages : 2 * i + 2),
+  }
+}
 /** Halfway through the turn the leaf passes the others: then it takes its place in the stack. */
 const RESTACK_MS = 520
 /** Leaves ahead of the furthest one reached whose pages are already fetched, so turning never shows a blank page. */
 const AHEAD = 2
 
-/** Leaf through the 23 pages, two at a time, with a page turning in 3D. */
-export function FlipBook() {
+/** Leaf through the book's pages, two at a time, with a page turning in 3D. */
+export function FlipBook({ book }: { book: ColouringBook }) {
   const { t, fmt } = useI18n()
+  const PAGES = book.pages
+  const { leaves: LEAVES, frontOf, backOf } = leavesOf(PAGES)
   const reducedMotion = useReducedMotion()
   const [turned, setTurned] = useState(0)
   const [moving, setMoving] = useState<number | null>(null)
@@ -74,11 +80,11 @@ export function FlipBook() {
     return (
       <span className={className} aria-hidden={!isVisible}>
         <img
-          src={pageSrc(page)}
-          width={PIONEER_BOOK.pageSize.width}
-          height={PIONEER_BOOK.pageSize.height}
-          alt={PIONEER_PAGE_TEXT[page - 1]}
-          lang={PIONEER_BOOK.language}
+          src={pageSrc(book, page)}
+          width={book.pageSize.width}
+          height={book.pageSize.height}
+          alt={book.pageText[page - 1]}
+          lang={book.language}
           loading={page <= 2 ? 'eager' : 'lazy'}
           decoding="async"
           draggable={false}

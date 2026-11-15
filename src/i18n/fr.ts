@@ -554,9 +554,21 @@ export const fr: Dict = {
     disclaimer: "Cette section est un exemple : les produits, les prix et les livres sont des propositions, et le paiement n’est pas branché. Photos : NASA, issues des sources du site. Avant toute vente réelle, vérifiez les règles de la NASA sur l’usage commercial de ses images et de son nom.",
   },
   book: {
+    /** Each colouring book's own texts. */
+    books: {
+      'apollo-11': {
+        lead: "La vraie histoire d’Eagle, le module lunaire qui s’est posé sur la Lune en {year}, racontée en {n} dessins à colorier. Chaque page a une phrase simple et un fait vérifié dans les archives de la NASA.",
+        stops: ["Décollage sur une fusée Saturn 5, depuis Cap Canaveral.", "Atterrissage dans la mer de la Tranquillité : « The Eagle has landed. »", "Neil Armstrong pose le pied sur la Lune.", "Le haut d’Eagle redécolle. Le bas reste sur la Lune.", "EASEP ne répond plus aux commandes : sa mission s’arrête."],
+        cartKind: "Livre de coloriage Apollo 11",
+      },
+      'pioneer-10': {
+        lead: "L’histoire vraie d’une petite sonde partie en {year}, racontée en {n} dessins à colorier. Chaque page a une phrase simple et un fait vérifié sur le site de la NASA.",
+        stops: ["Décollage depuis la Floride.", "Première sonde à entrer dans la ceinture d’astéroïdes.", "Elle frôle Jupiter et prend environ 500 photos.", "Premier objet humain à dépasser l’orbite de Neptune.", "Dernier signal. Elle file vers l’étoile Aldébaran."],
+        cartKind: "Livre de coloriage Pioneer 10",
+      },
+    },
     back: "Boutique",
     eyebrow: "Livre de coloriage · {from} à {to} ans",
-    lead: "L’histoire vraie d’une petite sonde partie en {year}, racontée en {n} dessins à colorier. Chaque page a une phrase simple et un fait vérifié sur le site de la NASA.",
     tags: [
       "{n} pages à colorier",
       "Texte en anglais",
@@ -612,13 +624,6 @@ export const fr: Dict = {
     ],
     tripEyebrow: "Ce que raconte le livre",
     tripTitle: "Le voyage en cinq étapes",
-    stops: [
-      "Décollage depuis la Floride.",
-      "Première sonde à entrer dans la ceinture d’astéroïdes.",
-      "Elle frôle Jupiter et prend environ 500 photos.",
-      "Premier objet humain à dépasser l’orbite de Neptune.",
-      "Dernier signal. Elle file vers l’étoile Aldébaran.",
-    ],
     buyEyebrow: "Trois façons de l’avoir",
     buyTitle: "Choisis ta version",
     best: "Le préféré",
@@ -649,7 +654,6 @@ export const fr: Dict = {
         ],
       },
     },
-    cartKind: "Livre de coloriage Pioneer 10",
     example: "Exemple de section : les prix et les trois versions sont des propositions, et le paiement n’est pas branché.",
     tile: {
       eyebrow: "Nouveau · Livre de coloriage",

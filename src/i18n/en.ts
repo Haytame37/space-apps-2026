@@ -574,9 +574,21 @@ export const en = {
     disclaimer: "This section is an example: the products, prices and books are proposals, and payment is not connected. Photos: NASA, from the site’s sources. Before any real sale, check NASA’s rules on the commercial use of its images and its name.",
   },
   book: {
+    /** Each colouring book's own texts. */
+    books: {
+      'apollo-11': {
+        lead: "The true story of Eagle, the lunar module that landed on the Moon in {year}, told in {n} drawings to colour. Each page has a simple sentence and a fact checked in NASA’s archive.",
+        stops: ["Liftoff on a Saturn 5 rocket from Cape Canaveral.", "Touchdown in the Sea of Tranquility: “The Eagle has landed.”", "Neil Armstrong steps onto the Moon.", "Eagle’s top half lifts off. The bottom half stays on the Moon.", "EASEP stops answering commands: its mission ends."],
+        cartKind: "Apollo 11 colouring book",
+      },
+      'pioneer-10': {
+        lead: "The true story of a little probe that left in {year}, told in {n} drawings to colour. Each page has a simple sentence and a fact checked on NASA’s website.",
+        stops: ["Liftoff from Florida.", "First spacecraft to enter the asteroid belt.", "It zooms past Jupiter and takes about 500 pictures.", "First human-made object to go beyond Neptune’s orbit.", "Last signal. It is heading toward the star Aldebaran."],
+        cartKind: "Pioneer 10 colouring book",
+      },
+    },
     back: "Shop",
     eyebrow: "Colouring book · ages {from} to {to}",
-    lead: "The true story of a little probe that left in {year}, told in {n} drawings to colour. Each page has a simple sentence and a fact checked on NASA’s website.",
     tags: [
       "{n} pages to colour",
       "Text in English",
@@ -632,13 +644,6 @@ export const en = {
     ],
     tripEyebrow: "What the book tells",
     tripTitle: "The journey in five stops",
-    stops: [
-      "Liftoff from Florida.",
-      "First spacecraft to enter the asteroid belt.",
-      "It zooms past Jupiter and takes about 500 pictures.",
-      "First human-made object to go beyond Neptune’s orbit.",
-      "Last signal. It is heading toward the star Aldebaran.",
-    ],
     buyEyebrow: "Three ways to get it",
     buyTitle: "Choose your version",
     best: "Favourite",
@@ -669,7 +674,6 @@ export const en = {
         ],
       },
     },
-    cartKind: "Pioneer 10 colouring book",
     example: "Example section: the prices and the three versions are proposals, and payment is not connected.",
     tile: {
       eyebrow: "New · Colouring book",

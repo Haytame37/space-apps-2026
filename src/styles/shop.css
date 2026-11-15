@@ -518,6 +518,28 @@
 
 /* ---------- Tile leading to the Pioneer 10 colouring book ---------- */
 
+.book-tiles {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 440px), 1fr));
+  gap: 18px;
+}
+
+.book-tiles .book-tile {
+  grid-template-columns: minmax(96px, 170px) minmax(0, 1fr);
+}
+
+/* Apollo 11: the Moon's blue instead of Pioneer's orange. */
+.book-tile[data-book='apollo-11'] {
+  border-color: #5ee7ff;
+  background:
+    radial-gradient(40rem 20rem at 90% 0%, rgba(94, 231, 255, 0.2), transparent 60%),
+    linear-gradient(140deg, #0b1140, #050824);
+}
+
+.book-tile[data-book='apollo-11']:hover {
+  box-shadow: 0 18px 40px -16px rgba(94, 231, 255, 0.55);
+}
+
 .book-tile {
   display: grid;
   grid-template-columns: minmax(120px, 220px) minmax(0, 1fr);

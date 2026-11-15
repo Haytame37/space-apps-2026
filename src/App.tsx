@@ -44,7 +44,7 @@ export default function App() {
               <Route path="play/memory" element={<ForKids kid={<KidMemory />} other={<Memory />} />} />
               <Route path="quiz" element={<ForKids kid={<KidQuiz />} other={<Quiz />} />} />
               <Route path="shop" element={<Shop />} />
-              <Route path="shop/pioneer-10" element={<BookRoute />} />
+              <Route path="shop/:bookId" element={<BookRoute />} />
               <Route path="sources" element={<Sources />} />
               <Route path="about" element={<About />} />
               <Route path="*" element={<NotFound />} />

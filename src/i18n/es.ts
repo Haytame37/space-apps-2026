@@ -554,9 +554,21 @@ export const es: Dict = {
     disclaimer: "Esta sección es un ejemplo: los productos, los precios y los libros son propuestas, y el pago no está conectado. Fotos: NASA, de las fuentes del sitio. Antes de cualquier venta real, consulta las normas de la NASA sobre el uso comercial de sus imágenes y de su nombre.",
   },
   book: {
+    /** Each colouring book's own texts. */
+    books: {
+      'apollo-11': {
+        lead: "La historia real de Eagle, el módulo lunar que se posó en la Luna en {year}, contada en {n} dibujos para colorear. Cada página tiene una frase sencilla y un dato comprobado en el archivo de la NASA.",
+        stops: ["Despegue en un cohete Saturn 5 desde Cabo Cañaveral.", "Aterrizaje en el mar de la Tranquilidad: «The Eagle has landed».", "Neil Armstrong pisa la Luna.", "La parte de arriba de Eagle despega. La de abajo se queda en la Luna.", "EASEP deja de responder a las órdenes: su misión termina."],
+        cartKind: "Libro para colorear Apollo 11",
+      },
+      'pioneer-10': {
+        lead: "La historia real de una pequeña sonda que partió en {year}, contada en {n} dibujos para colorear. Cada página tiene una frase sencilla y un dato comprobado en la web de la NASA.",
+        stops: ["Despegue desde Florida.", "Primera nave en entrar en el cinturón de asteroides.", "Pasa rozando Júpiter y toma unas 500 fotos.", "Primer objeto humano en ir más allá de la órbita de Neptuno.", "Última señal. Se dirige hacia la estrella Aldebarán."],
+        cartKind: "Libro para colorear Pioneer 10",
+      },
+    },
     back: "Tienda",
     eyebrow: "Libro para colorear · de {from} a {to} años",
-    lead: "La historia real de una pequeña sonda que partió en {year}, contada en {n} dibujos para colorear. Cada página tiene una frase sencilla y un dato comprobado en la web de la NASA.",
     tags: [
       "{n} páginas para colorear",
       "Texto en inglés",
@@ -612,13 +624,6 @@ export const es: Dict = {
     ],
     tripEyebrow: "Lo que cuenta el libro",
     tripTitle: "El viaje en cinco etapas",
-    stops: [
-      "Despegue desde Florida.",
-      "Primera nave en entrar en el cinturón de asteroides.",
-      "Pasa rozando Júpiter y toma unas 500 fotos.",
-      "Primer objeto humano en ir más allá de la órbita de Neptuno.",
-      "Última señal. Se dirige hacia la estrella Aldebarán.",
-    ],
     buyEyebrow: "Tres maneras de tenerlo",
     buyTitle: "Elige tu versión",
     best: "El favorito",
@@ -649,7 +654,6 @@ export const es: Dict = {
         ],
       },
     },
-    cartKind: "Libro para colorear Pioneer 10",
     example: "Sección de ejemplo: los precios y las tres versiones son propuestas, y el pago no está conectado.",
     tile: {
       eyebrow: "Novedad · Libro para colorear",

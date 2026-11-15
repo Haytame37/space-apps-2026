@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState, type KeyboardEvent, type MouseEvent } from 'react'
-import { PIONEER_COLOURING } from '../data/books'
+import type { ColouringBook } from '../data/books'
 import { useI18n } from '../i18n/context'
 
 /** Twelve felt-tip colours, in the order of the colour names in the locale files. */
@@ -95,7 +95,7 @@ function fill(sheet: Sheet, x: number, y: number, colour: number): boolean {
 }
 
 /** Colour three real pages of the book: pick a colour, then touch an area of the drawing. */
-export function ColoringCanvas() {
+export function ColoringCanvas({ drawings }: { drawings: ColouringBook['colouring'] }) {
   const { t, fmt } = useI18n()
   const canvas = useRef<HTMLCanvasElement>(null)
   const [index, setIndex] = useState(0)
@@ -105,7 +105,7 @@ export function ColoringCanvas() {
   const [canUndo, setCanUndo] = useState(false)
   const [target, setTarget] = useState<{ x: number; y: number } | null>(null)
   const [status, setStatus] = useState('')
-  const src = PIONEER_COLOURING[index].src
+  const src = drawings[index].src
   const shown = ready?.src === src ? ready : null
 
   useEffect(() => {
@@ -202,7 +202,7 @@ export function ColoringCanvas() {
             height={shown?.height ?? 790}
             tabIndex={0}
             role="img"
-            aria-label={fmt(t.book.canvasLabel, { n: PIONEER_COLOURING[index].bookPage })}
+            aria-label={fmt(t.book.canvasLabel, { n: drawings[index].bookPage })}
             aria-describedby="bk-canvas-help"
             onClick={onClick}
             onKeyDown={onKey}
@@ -247,7 +247,7 @@ export function ColoringCanvas() {
         </div>
         <h3>{t.book.sheets}</h3>
         <div className="bk-thumbs" role="group" aria-label={t.book.sheets}>
-          {PIONEER_COLOURING.map((s, i) => (
+          {drawings.map((s, i) => (
             <button
               key={s.src}
               type="button"

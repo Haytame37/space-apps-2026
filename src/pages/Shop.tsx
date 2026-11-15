@@ -3,6 +3,7 @@ import { MACHINES, WORLDS, type Machine, type WorldId } from '../data/machines'
 import type { ProductId } from '../data/shop'
 import { useI18n } from '../i18n/context'
 import { BookTile } from '../book/BookTile'
+import { COLOURING_BOOKS } from '../data/books'
 import { Booster } from '../shop/Booster'
 import { Books } from '../shop/Books'
 import { CardFocus } from '../shop/CardFocus'
@@ -110,7 +111,11 @@ export function Shop() {
         </ol>
       </section>
 
-      <BookTile price={isKid ? null : euros} />
+      <div className="book-tiles">
+        {COLOURING_BOOKS.map((b) => (
+          <BookTile key={b.id} book={b} price={isKid ? null : euros} />
+        ))}
+      </div>
 
       <section aria-labelledby="h-cards">
         <div className="shop-head">

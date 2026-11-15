@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState, type PointerEvent } from 'react'
-import { pageSrc, PIONEER_BOOK } from '../data/books'
+import { pageSrc, type ColouringBook } from '../data/books'
 import { useI18n } from '../i18n/context'
 import { onFrame } from '../lib/frameTicker'
 import { useReducedMotion } from '../lib/useReducedMotion'
@@ -15,7 +15,7 @@ const TURN_MS = 950
  * The book in CSS 3D: cover, back, spine, page edges. It floats and sways at rest, leans towards
  * the pointer, and turns over with a click or Enter. When motion is reduced it stays still.
  */
-export function Book3D() {
+export function Book3D({ book: data }: { book: ColouringBook }) {
   const { t } = useI18n()
   const reducedMotion = useReducedMotion()
   const scene = useRef<HTMLDivElement>(null)
@@ -111,11 +111,11 @@ export function Book3D() {
           }
         }}
       >
-        <div className="bk-front" style={{ backgroundImage: `url(${pageSrc(1)})` }} />
-        <div className="bk-back" style={{ backgroundImage: `url(${pageSrc(PIONEER_BOOK.pages)})` }} />
+        <div className="bk-front" style={{ backgroundImage: `url(${pageSrc(data, 1)})` }} />
+        <div className="bk-back" style={{ backgroundImage: `url(${pageSrc(data, data.pages)})` }} />
         <div className="bk-spine">
           <span>
-            {PIONEER_BOOK.title.toUpperCase()} · AYYUR
+            {data.title.toUpperCase()} · AYYUR
           </span>
         </div>
         <div className="bk-edge" />

@@ -1,9 +1,9 @@
-import { PIONEER_JOURNEY } from '../data/books'
+import type { ColouringBook } from '../data/books'
 import { useI18n } from '../i18n/context'
 import { ProbePath } from './ProbePath'
 
 /** The five stops of the journey on a dotted line, with the little probe travelling along it. */
-export function JourneyStrip() {
+export function JourneyStrip({ book }: { book: ColouringBook }) {
   const { t, date } = useI18n()
   return (
     <div className="bk-trip">
@@ -11,10 +11,10 @@ export function JourneyStrip() {
         <ProbePath />
       </svg>
       <ol>
-        {PIONEER_JOURNEY.map((stop, i) => (
-          <li key={stop.date} className="bk-stop">
+        {book.journey.map((stop, i) => (
+          <li key={i} className="bk-stop">
             <time dateTime={stop.date}>{date(stop)}</time>
-            <p>{t.book.stops[i]}</p>
+            <p>{t.book.books[book.id].stops[i]}</p>
           </li>
         ))}
       </ol>
