@@ -21,6 +21,11 @@ import './styles/shop.css'
 import './styles/cards.css'
 import './styles/about.css'
 
+// Every load or refresh opens on the home page, whatever address was in the bar.
+if (window.location.pathname !== '/' || window.location.search || window.location.hash) {
+  window.history.replaceState(null, '', '/')
+}
+
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <App />

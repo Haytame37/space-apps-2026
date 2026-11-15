@@ -57,24 +57,6 @@ export const TEAM: Member[] = [
     skills: ['React', 'Spring Boot', 'FastAPI', 'Docker', 'Azure DevOps', 'PySpark'],
   },
   {
-    id: 'othmane',
-    name: 'Othmane Karim',
-    initials: 'OK',
-    track: 'cyberAi',
-    hue: '#c4b0ff',
-    photo: {
-      src: '/team/othmane-karim.webp',
-      focus: '50% 2%',
-      srcSet: '/team/othmane-karim.webp 1x, /team/othmane-karim@2x.webp 1.33x',
-      width: 480,
-      height: 600,
-    },
-    portfolio: 'https://galdro-0.github.io/',
-    github: 'https://github.com/Galdro-0',
-    linkedin: 'https://www.linkedin.com/in/othmane-karim/',
-    skills: ['Wazuh · SIEM', 'Threat hunting', 'DFIR', 'Burp Suite', 'PyTorch', 'OpenCV'],
-  },
-  {
     id: 'haytame',
     name: 'Haytame El Atraoui',
     initials: 'HE',
@@ -110,13 +92,31 @@ export const TEAM: Member[] = [
     linkedin: 'https://www.linkedin.com/in/salah-atmane/',
     skills: ['QGIS · HEC-RAS', 'OR-Tools', 'Next.js', 'FastAPI', 'IoT', 'Docker'],
   },
+  {
+    id: 'othmane',
+    name: 'Othmane Karim',
+    initials: 'OK',
+    track: 'cyberAi',
+    hue: '#c4b0ff',
+    photo: {
+      src: '/team/othmane-karim.webp',
+      focus: '50% 2%',
+      srcSet: '/team/othmane-karim.webp 1x, /team/othmane-karim@2x.webp 1.33x',
+      width: 480,
+      height: 600,
+    },
+    portfolio: 'https://galdro-0.github.io/',
+    github: 'https://github.com/Galdro-0',
+    linkedin: 'https://www.linkedin.com/in/othmane-karim/',
+    skills: ['Wazuh · SIEM', 'Threat hunting', 'DFIR', 'Burp Suite', 'PyTorch', 'OpenCV'],
+  },
 ]
 
 /** Where each member's star sits in the constellation (viewBox 0 0 600 220). */
 export const STARS: Record<MemberId, { x: number; y: number }> = {
   youssef: { x: 70, y: 150 },
   imad: { x: 190, y: 70 },
-  othmane: { x: 300, y: 130 },
-  haytame: { x: 420, y: 55 },
-  salah: { x: 530, y: 140 },
+  haytame: { x: 300, y: 130 },
+  salah: { x: 420, y: 55 },
+  othmane: { x: 530, y: 140 },
 }

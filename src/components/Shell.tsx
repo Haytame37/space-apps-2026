@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
-import { Link, NavLink, Outlet, useLocation, useNavigate } from 'react-router'
+import { Link, NavLink, Outlet, useLocation } from 'react-router'
 import { LANGS, useI18n, type Lang } from '../i18n/context'
 import { useReducedMotion } from '../lib/useReducedMotion'
 import { usePrefs } from '../state/prefs'
@@ -16,22 +16,12 @@ export function Shell() {
   const [isSplashDone, setSplashDone] = useState(false)
   const isSplash = !isSplashDone && !reducedMotion
   const location = useLocation()
-  const navigate = useNavigate()
   const main = useRef<HTMLElement>(null)
   const nav = useRef<HTMLElement>(null)
   const section = location.pathname.split('/')[1] ?? ''
   // Home and Explore share one 3D scene: they must not be remounted when moving between them.
   const boundaryKey = section === '' || section === 'explore' ? 'stage' : section
   const firstSection = useRef(section)
-  const booted = useRef(false)
-
-  // A returning young explorer lands directly on the games.
-  useEffect(() => {
-    if (booted.current) return
-    booted.current = true
-    if (profile === 'kid' && location.pathname === '/') navigate('/play', { replace: true })
-  }, [profile, location.pathname, navigate])
-
   useEffect(() => {
     if (firstSection.current === section) {
       firstSection.current = '\u0000'

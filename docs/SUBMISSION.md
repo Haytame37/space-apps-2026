@@ -40,10 +40,10 @@ It matters because these objects are humanity's first heritage beyond Earth. AYY
 ### Project *(public link, no login)*
 
 ```
-https://github.com/Haytame37/space-apps-2026
+https://ayyuur.vercel.app
 ```
 
-> Better: deploy on Vercel (see README) and paste the live site URL here, with the GitHub link in the details.
+> Source code (public): https://github.com/Haytame37/space-apps-2026 — add it in Project Details if there is room.
 
 ---
 
@@ -65,7 +65,7 @@ For young explorers (6–12)
 • Printable and on-screen colouring books (Pioneer 10, Apollo 11 "Eagle").
 
 How it works
-A static web app: React 19, TypeScript and Vite; 3D with three.js and React Three Fiber; NASA glTF models compressed with glTF-Transform; NASA photos resized to WebP with sharp. All facts live in one data file, each linked to its NASA source. Deployed on Vercel.
+A static web app: React 19, TypeScript and Vite; 3D with three.js and React Three Fiber; NASA glTF models compressed with glTF-Transform; NASA photos resized to WebP with sharp. All facts live in one data file, each linked to its NASA source. Deployed on Vercel: https://ayyuur.vercel.app — code: https://github.com/Haytame37/space-apps-2026.
 
 Benefits and impact
 • Turns "discarded equipment" into shared heritage that people can visit and remember.
@@ -169,7 +169,7 @@ AYYUR: five engineering students from ENSA Béni Mellal, Morocco.
 Tick both boxes **only after** the checks below are done:
 
 - [ ] Demo link added, public, ≤ 7 slides or ≤ 30 s.
-- [ ] Project link opens without login (test in a private window).
+- [ ] https://ayyuur.vercel.app opens without login (test in a private window) and shows the latest version.
 - [ ] AI-generated drawings carry a visible "AI-generated" mark (rule for SI images).
 - [ ] No flag, NASA logo or mission insignia inside AI-generated drawings (Apollo 11 book: cover, pages 11 and 16 show flags — redraw or remove them).
 - [ ] Apollo 11 book, last page: remove the leftover placeholder "[Noto Color Emoji (open source), if used]".
